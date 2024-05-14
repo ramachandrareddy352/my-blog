@@ -1,6 +1,4 @@
-Thanks for downloading this template!
-
-Template Name: iPortfolio
-Template URL: https://bootstrapmade.com/iportfolio-bootstrap-portfolio-websites-template/
-Author: BootstrapMade.com
-License: https://bootstrapmade.com/license/
+Author: Rama Chandra reddy
+Title : Rama@eth
+Website URL: hhttps://ramachandrareddy.netlify.app/
+Description : This is my personal blog, here I will update my status of learnings and works.
