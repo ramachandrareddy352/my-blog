@@ -17,7 +17,7 @@ a {
 }
 
 a:hover {
-  color: #37b3ed;
+  color: #80d0f4;
   text-decoration: none;
 }
 
@@ -52,6 +52,7 @@ b {
 }
 
 #levelBox {
+    margin: 0px 5px;
     padding: 5px;
     color:blueviolet;
     background-color: #e7e8e9;
