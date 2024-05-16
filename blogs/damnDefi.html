@@ -3432,7 +3432,49 @@ describe('[Challenge] Wallet mining', function () {
                         </ul>
                         <h5>>> Solution : </h5>
                         <ul>
-                            <li></li>
+                            <li>
+                                Exploit is very similar to Puppet-V2 except this uses <b>Uniswap's V3 Time
+                                    Weighted Average Price (TWAP)</b> to calculate the price. We also need to
+                                connect to Uniswaps Router to make our lives easier.
+                            </li>
+                            <li>
+                                A TWAP (Time Weighted Average Price) is like a simple moving <b>average</b> except that
+                                times where the price <b>stayed the same</b> longer get more weight — a TWAP weights
+                                price by how long the price stays at a certain level.
+                                <div>
+                                    <img src="./blog-images/twap.webp" width="60%" height="150px">
+                                </div>
+                            </li>
+                            <li>
+                                This can be exploited if the TWAP period is short enough that it is still
+                                suseptible to short term violatility.
+                            </li>
+                            <li>
+                                We make a trade buying all WETH in the pool, heavily devaluing the DVT
+                                token relative to the WETH token.
+                            </li>
+                            <li>
+                                However if we were to get the price directly after the trade, the price
+                                would still be <b>1:1</b> since the new price has a <b>Time Weight of 0</b>.
+                            </li>
+                            <li>
+                                So we need to wait a few minutes for the TWAP to move to an appropriate
+                                price <b>(100 seconds)</b> then call the lending pool which then uses the
+                                heavily devalued price
+                            </li>
+                            <li>
+                                <b>borrow() </b>allows borrowing `borrowAmount` of tokens by first depositing three
+                                times their
+                                value in WETH. Sender must have approved enough WETH in advance. Calculations assume
+                                that WETH and the borrowed token have the same number of decimals.
+                            </li>
+                            <li>
+                                <b>calculateDepositOfWETHRequired()</b> returns the amount of WETH we have to deposit to
+                                get the DVT tokens for borrowing.
+                            </li>
+                            <li>
+                                <b>_getOracleQuote() </b>get the quote amount from the <b>Uniswap-v3 oracle library</b>.
+                            </li>
                         </ul>
                     </div>
                     <br>
@@ -3720,8 +3762,113 @@ describe('[Challenge] Puppet v3', function () {
                         </ul>
                         <h5>>> Solution : </h5>
                         <ul>
-                            <li></li>
+                            <li>
+                                Exploring the contracts.
+                                <ul>
+                                    <li><b>AuthorizedExecutor.sol</b> : </li>
+                                    <li><b>SelfAuthorizedVault.sol</b> : </li>
+                                </ul>
+                            </li>
+                            <li>
+                                Here we call <b>execute() </b>function and passing traget as <b>SelfAuthorizedVault</b>
+                                contract
+                                address and inside the data parameter we call <b>sweepFunds()</b> to recover all the DVT
+                                tokens
+                                inside the <b>SelfAuthorizedVault contract.</b>
+                            </li>
+                            <li>
+                                Before executing the transaction we have to <b>setPermissions() </b>for sweepFunds(),
+                                caller
+                                and SelfAuthorizedVault address. Here setPermissions() can be called by any one as it is
+                                <b>external</b> function.
+                            </li>
+                            <li>
+                                When having dynamically-allocated types, you need to specify the size, length, or
+                                quantity (in a 32 bytes segment) of the expected elements to let the contract know up to
+                                what point extends a structure. And immediately afterward comes the content.
+                            </li>
+                            <li>
+                                Now, the position of that combination (size, content) is not arbitrary. It is previously
+                                defined by a 32 bytes segment that contains its offset (in bytes).
+                            </li>
+                            <li>
+                                This is the current calldata layout for the normal execution of this challenge's execute
+                                function.
+                                <div>
+                                    <img src="./blog-images//abi1.webp" width="60%" height="150px">
+                                </div>
+                                <div>
+                                    <img src="./blog-images//abi2.webp" width="60%" height="300px">
+                                </div>
+                            </li>
+                            <li>
+                                we keep the function selector of an authorized function such as withdraw's 0xd9caed12 on
+                                the same position where it will be expected to be? AND THEN we get the freedom to fill
+                                actionData as we want.
+                                <div>
+                                    <img src="./blog-images//abi3.webp" width="40%" height="250px">
+                                </div>
+                            </li>
+                            <li>
+                                The layout of the calldata looks like.
+                                <div>
+                                    <img src="./blog-images//abi4.webp" width="60%" height="250px">
+                                </div>
+                            </li>
+                            <li>
+                                Having a check over static position on a clearly manipulable calldata makes for a great
+                                bypass of the permissions, allowing us to execute whatever we want to. And in this case,
+                                this is where sweepFunds enters into action.
+                            </li>
+                            <li>
+                                Have the following 4 bytes after 100th position(4 + 32 * 3) occupied with a function
+                                selector authorized for the caller. In our case, player is authorized to use withdraw.
+                            </li>
+                            <li>
+                                Immediately afterward, actionData's size and content, containing the working calldata
+                                (sweepFunds) to drain the vault to the recovery address.
+                            </li>
+                            <li>
+                                Point actionData's beginning to the new position. Fill the freed space in between with
+                                zeroes.
+                                <div>
+                                    <img src="./blog-images//abi5.webp" width="60%" height="350px">
+                                </div>
+                            </li>
+                            <li>
+                                From the default layout of the generated calldata, to our own crafted layout.
+                                <div>
+                                    <img src="./blog-images//abi6.webp" width="60%" height="450px">
+                                </div>
+                            </li>
+                            <li>
+                                <b>sweepFunds()</b> getting smuggled behind withdraw's funcsig to trigger a bypass.
+                                <div>
+                                    <img src="./blog-images//abi7.webp" width="60%" height="500px">
+                                </div>
+                            </li>
+                            <li>
+                                The final payload calldata looks like :
+                            </li>
                         </ul>
+                        <div class="repo">
+                            <pre>
+0x1cff79cd                                                              => execute function slecor
+000000000000000000000000e7f1725E7734CE288F8367e1Bb143E90bb3F0512(0x00)  => selfAuthorizedVault address
+0000000000000000000000000000000000000000000000000000000000000080(0x20)  => bytes location = 0x80(128)
+
+telling where to find the data location to execute
+0000000000000000000000000000000000000000000000000000000000000000(0x40)  => zero padded
+d9caed1200000000000000000000000000000000000000000000000000000000(0x60)  => withdraw function selector
+
+to verify for the player permission we use withdraw selector at (4 + 32 * 3) bytes location
+0000000000000000000000000000000000000000000000000000000000000044(0x80)  => bytes length to start execution
+
+85fb709d                                                                => sweepfunds function selector
+0000000000000000000000003C44CdDdB6a900fa2b585dd299e03d12FA4293BC        => recevory address
+0000000000000000000000005FbDB2315678afecb367f032d93F642f64180aa3        => DVD token address
+</pre>
+                        </div>
                     </div>
                     <br>
 
