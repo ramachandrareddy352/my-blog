@@ -112,7 +112,7 @@
                 <!-- Introduction -->
                 <div>
                     <h3> >> Uniswap-V2</h3>
-                    <p>Hello WEB3, in this blog post i have tried my best to explain the <a
+                    <p>Hello WEB3, in this blog post I tried my best to explain the <a
                             href="https://docs.uniswap.org/contracts/v2/overview/" target="_blank">UNISWAP-V2</a>
                         protocol. Uniswap V2
                         can create an exchange market between any two ERC-20 tokens. In this
@@ -132,14 +132,21 @@
                     </p>
                     <p>
                         I have studied many resources to understand this protocol, that are mentioned at below the post.
-                        I have tried my best to explain it.
+                        I have uploaded my notes and uniswap-v2 implimentaion contracts which helps you more to
+                        understand simply. This blog is divided into 2 parts mainly:
+                    <ol>
+                        <li>Introduction to Protocol</li>
+                        <li>Uniswap-V2 Architecture</li>
+                    </ol>
+                    At end of the blog I have return some smart contracts which teach you that how to implement the
+                    Uniswap-V2 protocol.
                     </p>
                 </div>
                 <hr class="breakLine">
 
                 <!-- Inner Introduction -->
                 <div>
-                    <h3>>> Introduction</h3>
+                    <h3>>> Introduction to Protocol</h3>
                     <p>
                         Before diving into the protocol we have to known about 3 things.
                     </p>
@@ -156,9 +163,16 @@
                         understanding of key concepts in decentralized finance (DeFi) that enhance one's grasp of how
                         Uniswap and other DeFi protocols operate. Both ERC-4626 and ERC-3156 contribute to the
                         composability of DeFi protocols. By understanding these standards, you can see how Uniswap V2
-                        fits into the larger DeFi ecosystem and interacts with other protocols seamlessly. Automated
+                        fits into the larger DeFi ecosystem and interacts with other protocols seamlessly.
+                    </p>
+                    <p>
+                        Automated
                         Market Makers (AMMs) are a crucial component of the Uniswap V2 protocol, providing a
-                        decentralized, permissionless, and efficient mechanism for trading cryptocurrencies.
+                        decentralized, permissionless, and efficient mechanism for trading cryptocurrencies without the
+                        need for traditional order books or centralized intermediaries. In Uniswap
+                        V2, users trade directly against liquidity pools, which consist of token pairs provided by
+                        liquidity providers (LPs). This decentralized approach removes the need for intermediaries and
+                        allows anyone to trade any token pair as long as there is a corresponding pool.
                     </p>
                     <p>So we are
                         understanding the concepts of ERC-4626 vaults, ERC-3156 falsh loans and Automated Market Makers
@@ -509,8 +523,11 @@
 
                     <h5>>> Summary of functions</h5>
                     <div>
-                        <img src="./blog-images/erc4626-functions-summary.png" width="700px" height="400px"
-                            alt="summary"><br><br>
+                        <img src="https://static.wixstatic.com/media/935a00_f35911d645ed4c9cb85c9eb60ccdf1a7~mv2.png/v1/fill/w_925,h_603,al_c,q_90,usm_0.66_1.00_0.01,enc_auto/935a00_f35911d645ed4c9cb85c9eb60ccdf1a7~mv2.png"
+                            alt="ERC4626 function descriptions" data-pin-url="https://www.rareskills.io/post/erc4626"
+                            data-pin-media="https://static.wixstatic.com/media/935a00_f35911d645ed4c9cb85c9eb60ccdf1a7~mv2.png/v1/fill/w_1274,h_830,al_c,q_90/935a00_f35911d645ed4c9cb85c9eb60ccdf1a7~mv2.png"
+                            style="width: 740px; height: 482px; object-fit: cover; object-position: 50% 50%; max-width: 100%;"
+                            fetchpriority="high" data-load-done="">
                     </div>
 
                     <h5>>> ERC-4626 Events</h5>
@@ -567,10 +584,46 @@ event Withdraw(
                         <div style="width: 50%; float: left;">
                             <h6>>> How many Shares to mint for given Assests</h6>
                             <img src="./blog-images/erc-4626-mint-shares.png" width="500px" height="350px">
+                            <p></p>
+                            <b>Initial State</b>
+                            <ul>
+                                <li>Balance of Vault before Deposit(B): 1000 DAI
+                                <li>Total Shares before Mint(T): 100 shares
+                                <li>Exchange Rate (Shares to Assets): 1 share = 10 DAI
+                                <li>This means that the vault currently has a 1:10 ratio of shares to DAI.</li>
+                            </ul>
+                            <b>Calculating New Shares</b>
+                            <ul>
+                                <li>Amount to Deposit(a): 200 DAI</li>
+                                <li>Shares to mint(s): ?</li>
+                            </ul>
+                            <p>Amount of Shares to Mint(s) = (a * T) / B</p>
+                            <p>shares = (200 * 100) / 1000</p>
+                            <p>shares = 20</p>
+                            <P>For depositing 200 DAI at the following states, we have to mint 20 shares to the user.
+                            </P>
                         </div>
                         <div style="width: 50%; float: right;">
                             <h6>>> How many Assests to give for given Shares</h6>
                             <img src="./blog-images/erc-4626-burn-shares.png" width="500px" height="350px">
+                            <p></p>
+                            <b>Initial State</b>
+                            <ul>
+                                <li>Balance of Vault before Deposit(B): 1000 DAI
+                                <li>Total Shares before Mint(T): 100 shares
+                                <li>Exchange Rate (Shares to Assets): 1 share = 10 DAI
+                                <li>This means that the vault currently has a 1:10 ratio of shares to DAI.</li>
+                            </ul>
+                            <b>Calculating New Shares</b>
+                            <ul>
+                                <li>Amount to Withdraw(a): ? DAI</li>
+                                <li>Shares to burn(s): 10</li>
+                            </ul>
+                            <p>Amount to Withdraw(a) = (s * B) / T</p>
+                            <p>amount = (10 * 1000) / 100</p>
+                            <p>amount = 100</p>
+                            <P>For burning 10 Shares at the following states, user can Withdraw 100 DAI.
+                            </P>
                         </div>
                     </div>
                     <span>.<br></span>
@@ -581,8 +634,6 @@ event Withdraw(
                             Any token swapping protocol has an issue where the user might not get back the amount of
                             tokens
                             they were expecting.
-                        </p>
-                        <p>
                             For example, with automated market makers, a large trade might use up the liquidity and
                             cause
                             the price to move substantially.
@@ -878,19 +929,26 @@ event Withdraw(
                     <h4>#2 ERC-3156 Flash Loan </h4>
                     <div>
                         <p>
-                            A flash loan is a smart contract transaction in which a lender smart contract lends assets
+                            A flash loan is a smart contract transaction in which a lender smart contract lends
+                            assets
                             to a
-                            borrower smart contract with the condition that the assets are returned, plus an optional
+                            borrower smart contract with the condition that the assets are returned, plus an
+                            optional
                             fee,
-                            before the end of the transaction. This ERC specifies interfaces for lenders to accept flash
+                            before the end of the transaction. This ERC specifies interfaces for lenders to accept
+                            flash
                             loan requests, and for borrowers to take temporary control of the transaction within the
                             lender
                             execution. The process for the safe execution of flash loans is also specified.
                         </p>
-                        <img src="./blog-images/erc-3156-flash-loan.webp" width="800px" height="850px"
-                            alt="erc-3156"><br>
+                        <img src="https://static.wixstatic.com/media/935a00_e13df16589cb453ba2083e2cc4f575ed~mv2.png/v1/fill/w_925,h_1074,al_c,q_90,usm_0.66_1.00_0.01,enc_auto/935a00_e13df16589cb453ba2083e2cc4f575ed~mv2.png"
+                            alt="flash loan example" data-pin-url="https://www.rareskills.io/post/erc-3156"
+                            data-pin-media="https://static.wixstatic.com/media/935a00_e13df16589cb453ba2083e2cc4f575ed~mv2.png/v1/fill/w_1774,h_2060,al_c,q_95/935a00_e13df16589cb453ba2083e2cc4f575ed~mv2.png"
+                            style="width: 740px; height: 859px; object-fit: cover; object-position: 50% 50%; max-width: 100%;"
+                            fetchpriority="high" data-load-done=""><br>
                         <p>
-                            If the borrower does not pay back the loan, therequire statement with the message “flash not
+                            If the borrower does not pay back the loan, therequire statement with the message “flash
+                            not
                             paid back” will cause the entire transaction to revert.
                         <ul>
                             <li>
@@ -907,29 +965,37 @@ event Withdraw(
                     <div>
                         <b>Arbitrage</b>
                         <p>
-                            The most common use case for a flash loan is to do an arbitrage trade. For example, if Ether
+                            The most common use case for a flash loan is to do an arbitrage trade. For example, if
+                            Ether
                             is
-                            trading for $1,200 in one pool and $1,300 in another DeFi application, it would be desirable
+                            trading for $1,200 in one pool and $1,300 in another DeFi application, it would be
+                            desirable
                             to
                             buy
-                            the Ether in the first pool and sell it in the second pool for a $100 profit. However, you
+                            the Ether in the first pool and sell it in the second pool for a $100 profit. However,
+                            you
                             need
                             to
-                            money to buy the Ether in the first place. A flash loan is the ideal solution for it, as you
+                            money to buy the Ether in the first place. A flash loan is the ideal solution for it, as
+                            you
                             don’t
-                            need $1,200 lying around. You can borrow $1,200 of Ether, sell it for $1,300, and pay back
+                            need $1,200 lying around. You can borrow $1,200 of Ether, sell it for $1,300, and pay
+                            back
                             the
                             $1,200 keeping a $100 profit for yourself (minus fees).
                         </p>
 
                         <b>Refinancing Loans</b>
                         <p>
-                            For regular DeFi loans, they typically require some kind of collateral. For example, if you
+                            For regular DeFi loans, they typically require some kind of collateral. For example, if
+                            you
                             were
-                            borrowing $10,000 in stable coins, you would need to deposit $15,000 of Ether as collateral.
+                            borrowing $10,000 in stable coins, you would need to deposit $15,000 of Ether as
+                            collateral.
                         </p>
                         <p>
-                            If your stable coins loan had a 5% interest and you wanted to refinance with another lending
+                            If your stable coins loan had a 5% interest and you wanted to refinance with another
+                            lending
                             smart
                             contract at 4%, you would need to
                         </p>
@@ -948,28 +1014,34 @@ event Withdraw(
                             </li>
                         </ol>
                         <p>
-                            This would be problematic if you had the $10,000 tied up in some other application. With a
+                            This would be problematic if you had the $10,000 tied up in some other application. With
+                            a
                             flashloan, you can do steps 1-4 without using any of your own stable coins.
                         </p>
 
                         <b>Exchanging collateral</b>
                         <p>
-                            In the example above, the borrower was using $15,000 of Ether as collateral. But suppose the
+                            In the example above, the borrower was using $15,000 of Ether as collateral. But suppose
+                            the
                             protocol is offering a lower collateralization ratio using wBTC (wrapped bitcoin)? The
                             borrower
-                            could use a flash loan and a similar set of steps outline above to swap out the collateral
+                            could use a flash loan and a similar set of steps outline above to swap out the
+                            collateral
                             instead
                             of the principal.
                         </p>
 
                         <b>Liquidating Borrowers</b>
                         <p>
-                            In the context of DeFi loans, if the collateral falls below a certain threshold, then the
+                            In the context of DeFi loans, if the collateral falls below a certain threshold, then
+                            the
                             collateral
-                            can get liquidated — forcibly sold to cover the cost of the loan. In the example above, if
+                            can get liquidated — forcibly sold to cover the cost of the loan. In the example above,
+                            if
                             the
                             value
-                            of the Ether was to drop to $12,000, then the protocol might allow someone to purchase the
+                            of the Ether was to drop to $12,000, then the protocol might allow someone to purchase
+                            the
                             Ether
                             for
                             $11,500 if they first pay back the $10,000 loan.
@@ -977,17 +1049,20 @@ event Withdraw(
                         <p>
                             A liquidator could use a flash loan to pay off the $10,000 stable coin loan and receive
                             $11,500.
-                            They would then sell this on another exchange for stable coins, and then pay back the flash
+                            They would then sell this on another exchange for stable coins, and then pay back the
+                            flash
                             loan.
                         </p>
 
                         <b>Increase yield for other DeFi applications</b>
                         <p>
-                            Uniswap and AAVE earn depositors’ money through trading fees or lending interest. But since
+                            Uniswap and AAVE earn depositors’ money through trading fees or lending interest. But
+                            since
                             they
                             have such a large amount of capital in one place, they can make additional money by also
                             offering
-                            flash loans. This increases the efficiency of capital since the same capital now has more
+                            flash loans. This increases the efficiency of capital since the same capital now has
+                            more
                             uses.
                         </p>
 
@@ -998,7 +1073,8 @@ event Withdraw(
                             The
                             primary attack vectors for flash loans are price manipulation and governance (vote)
                             manipulation.
-                            Used on DeFi applications with inadequate defense, flash loans allow attackers to heavily
+                            Used on DeFi applications with inadequate defense, flash loans allow attackers to
+                            heavily
                             buy up
                             an
                             asset increasing its price, or acquiring a bunch of voting tokens to push through a
@@ -1018,7 +1094,8 @@ event Withdraw(
                     <h5>>> Examples of Flash Loan Hacks</h5>
                     <div>
                         <p>
-                            Flash loan attacks are one of the most common exploits, presumably because developers coming
+                            Flash loan attacks are one of the most common exploits, presumably because developers
+                            coming
                             from a web2 background aren’t accustomed to it. Here are some of the more notorious
                             examples. I am recommended to solve the <a href="https://www.damnvulnerabledefi.xyz/"
                                 target="_blank">Damn Vulnerable Defi CTF's</a> which helps to understand more about
@@ -1054,10 +1131,12 @@ event Withdraw(
                     <h5>>> ERC3156 Protocol</h5>
                     <div>
                         <p>
-                            ERC-3156 is an Ethereum standard that defines an interface for flash loans, a unique type of
+                            ERC-3156 is an Ethereum standard that defines an interface for flash loans, a unique
+                            type of
                             loan in decentralized finance (DeFi) that must be borrowed and repaid within the same
                             transaction. Flash loans enable users to borrow large amounts of cryptocurrency without
-                            collateral, provided the loan is repaid before the transaction ends. If the borrower fails
+                            collateral, provided the loan is repaid before the transaction ends. If the borrower
+                            fails
                             to
                             repay, the entire transaction is reverted, ensuring the lender's funds are secure.
                         </p>
@@ -1066,38 +1145,51 @@ event Withdraw(
                     <h5>>> ERC3156 Receiver Specification</h5>
                     <div>
                         <p>
-                            The first aspect of the standard is the interface the borrower needs to implement, which is
+                            The first aspect of the standard is the interface the borrower needs to implement, which
+                            is
                             shown below. The borrower only needs to implement one function.
                         </p>
-                        <img src="./blog-images/erc-3156-receiver.webp" width="800px" height="400px"><br>
+                        <img src="https://static.wixstatic.com/media/935a00_de95cc5285eb4bcda435f68015695c3a~mv2.png/v1/fill/w_925,h_528,al_c,q_90,usm_0.66_1.00_0.01,enc_auto/935a00_de95cc5285eb4bcda435f68015695c3a~mv2.png"
+                            alt="erc3156 receiver" data-pin-url="https://www.rareskills.io/post/erc-3156"
+                            data-pin-media="https://static.wixstatic.com/media/935a00_de95cc5285eb4bcda435f68015695c3a~mv2.png/v1/fill/w_1928,h_1100,al_c,q_95/935a00_de95cc5285eb4bcda435f68015695c3a~mv2.png"
+                            style="width: 740px; height: 422px; object-fit: cover; object-position: 50% 50%; max-width: 100%;"
+                            fetchpriority="high" data-load-done=""><br>
                         <p>We describe the function parameters at below.</p>
                         <b>initiator</b>
                         <p>
-                            This is the address that initiated the flash loan. You probably want some kind of validation
-                            here so that untrusted addresses are not initiating flashloans on your contract. Usually,
+                            This is the address that initiated the flash loan. You probably want some kind of
+                            validation
+                            here so that untrusted addresses are not initiating flashloans on your contract.
+                            Usually,
                             the address would be you, but you shouldn’t assume that!
                         </p>
                         <p>
                             The function onFlashLoan is expected to be called by the flash loan contract, not the
-                            initiator. You should check msg.sender is the flash loan contract inside the onFlashLoan()
+                            initiator. You should check msg.sender is the flash loan contract inside the
+                            onFlashLoan()
                             function because this function is external and anyone can call it.
-                            Initiator is not msg.sender or the flash loan contract. It is the address that triggered the
+                            Initiator is not msg.sender or the flash loan contract. It is the address that triggered
+                            the
                             flash lending contract to call the receiver’s onFlashLoan function.
                         </p>
 
                         <b>token</b>
                         <p>
                             This is the address of the ERC20 token you are borrowing. Contracts offering flash loans
-                            will usually hold several tokens they can flash loan out. The ERC3156 flash loan standard
-                            does not support flash loaning native Ether, but this can be implemented by flash loaning
+                            will usually hold several tokens they can flash loan out. The ERC3156 flash loan
+                            standard
+                            does not support flash loaning native Ether, but this can be implemented by flash
+                            loaning
                             WETH and having the borrower unwrap the WETH. Because the borrowing contract is not
-                            necessarily the contract that called the flash loaner, the borrowing contract may need to be
+                            necessarily the contract that called the flash loaner, the borrowing contract may need
+                            to be
                             told what token is being flash lent.
                         </p>
 
                         <b>fee</b>
                         <p>
-                            Fee is how much of the token needs to be paid as a fee for the loan. It is denominated in
+                            Fee is how much of the token needs to be paid as a fee for the loan. It is denominated
+                            in
                             absolute amount, not percentages.
                         </p>
 
@@ -1105,25 +1197,35 @@ event Withdraw(
                         <p>
                             If your flash loan receiving contract isn’t hard coded to take a particular action when
                             receiving a flash loan, you can parameterize its behavior with the data parameter. For
-                            example, if your contract is arbitraging trading pools, then you would specify which pools
+                            example, if your contract is arbitraging trading pools, then you would specify which
+                            pools
                             to trade with.
                         </p>
 
                         <b>return value</b>
                         <p>
-                            The contract must return keccak256("ERC3156FlashBorrower.onFlashLoan") for reasons we will
+                            The contract must return keccak256("ERC3156FlashBorrower.onFlashLoan") for reasons we
+                            will
                             discuss later.
                         </p>
 
                         <b>Reference implementation of the borrower</b>
                         <p>
-                            This has been modified from the code in the ERC 3156 spec to make the snippet smaller. Note
-                            that this contract is still placing perfect trust into the flash lender. If the flash lender
+                            This has been modified from the code in the ERC 3156 spec to make the snippet smaller.
+                            Note
+                            that this contract is still placing perfect trust into the flash lender. If the flash
+                            lender
                             were somehow compromised, the contract below could be exploited through feeding it bogus
-                            amount and fee and initiator data. If the lender is immutable, this isn’t a concern, but it
+                            amount and fee and initiator data. If the lender is immutable, this isn’t a concern, but
+                            it
                             could be an attack vector if the lender is upgradeable.
                         </p>
-                        <img src="./blog-images/erc-3156-flash-borrower.webp" width="800px" height="550px"><br>
+                        <img src="https://static.wixstatic.com/media/935a00_43c3fcc7d60342d3acf4ddecfc80b4dd~mv2.png/v1/fill/w_925,h_751,al_c,q_90,usm_0.66_1.00_0.01,enc_auto/935a00_43c3fcc7d60342d3acf4ddecfc80b4dd~mv2.png"
+                            alt="erc 3156 flash borrower implementation"
+                            data-pin-url="https://www.rareskills.io/post/erc-3156"
+                            data-pin-media="https://static.wixstatic.com/media/935a00_43c3fcc7d60342d3acf4ddecfc80b4dd~mv2.png/v1/fill/w_1946,h_1580,al_c,q_95/935a00_43c3fcc7d60342d3acf4ddecfc80b4dd~mv2.png"
+                            style="width: 740px; height: 601px; object-fit: cover; object-position: 50% 50%; max-width: 100%;"
+                            fetchpriority="high" data-load-done="">
                     </div>
 
                     <h5>>> ERC3156 Lender Specification</h5>
@@ -1131,8 +1233,13 @@ event Withdraw(
                         <p>
                             Below is the interface for the lender specified by ERC3156
                         </p>
-                        <img src="./blog-images/erc-3156-flash-lender.webp" width="800px" height="450px"><br>
-                        The arguments in the interface above have the same meaning as described in the previous section,
+                        <img src="https://static.wixstatic.com/media/935a00_09bb6818bc9e43ea915640a248f8ded1~mv2.png/v1/fill/w_925,h_655,al_c,q_90,usm_0.66_1.00_0.01,enc_auto/935a00_09bb6818bc9e43ea915640a248f8ded1~mv2.png"
+                            alt="erc3156 lender" data-pin-url="https://www.rareskills.io/post/erc-3156"
+                            data-pin-media="https://static.wixstatic.com/media/935a00_09bb6818bc9e43ea915640a248f8ded1~mv2.png/v1/fill/w_1620,h_1148,al_c,q_90/935a00_09bb6818bc9e43ea915640a248f8ded1~mv2.png"
+                            style="width: 740px; height: 524px; object-fit: cover; object-position: 50% 50%; max-width: 100%;"
+                            fetchpriority="high" data-load-done=""><br>
+                        The arguments in the interface above have the same meaning as described in the previous
+                        section,
                         so
                         it won’t be repeated here.
                         <p>
@@ -1140,7 +1247,8 @@ event Withdraw(
                         </p>
                         <ul>
                             <li>
-                                Someone might call flashLoan() with a token the flash loan contract does not support.
+                                Someone might call flashLoan() with a token the flash loan contract does not
+                                support.
                                 This
                                 should be
                                 checked for.
@@ -1159,13 +1267,19 @@ event Withdraw(
                             More importantly, flashLoan() must transfer the tokens to the receiver and transfer them
                             back.
                             It
-                            should not rely on the borrower transferring the tokens back for repayment. The rational for
+                            should not rely on the borrower transferring the tokens back for repayment. The rational
+                            for
                             this
-                            will be discussed in the next section. We have copied the reference implementation which can
+                            will be discussed in the next section. We have copied the reference implementation which
+                            can
                             be
                             found in the EIP 3156 Spec, here to emphasize the important parts:
                         </p>
-                        <img src="./blog-images/flash-loan-function.webp" width="800px" height="450px"><br>
+                        <img src="https://static.wixstatic.com/media/935a00_903543ded5744d87a0df8979f611734c~mv2.png/v1/fill/w_925,h_703,al_c,q_90,usm_0.66_1.00_0.01,enc_auto/935a00_903543ded5744d87a0df8979f611734c~mv2.png"
+                            alt="erc 3156 transfer back" data-pin-url="https://www.rareskills.io/post/erc-3156"
+                            data-pin-media="https://static.wixstatic.com/media/935a00_903543ded5744d87a0df8979f611734c~mv2.png/v1/fill/w_1890,h_1436,al_c,q_95/935a00_903543ded5744d87a0df8979f611734c~mv2.png"
+                            style="width: 740px; height: 562px; object-fit: cover; object-position: 50% 50%; max-width: 100%;"
+                            fetchpriority="high" data-load-done=""><br>
                         <p>
                             Note that the reference implementation is assuming that the ERC20 tokens return true on
                             success,
@@ -1177,53 +1291,65 @@ event Withdraw(
                     <div>
                         <b>Access control and input validation for borrower</b>
                         <p>
-                            The borrowing smart contract must have the controls in place to only allow the flash lender
+                            The borrowing smart contract must have the controls in place to only allow the flash
+                            lender
                             contract
                             to be the caller of onFlashLoan(). Otherwise, some actor other than the flash lender can
                             call
                             onFlashLoan() and cause unexpected behavior.
                         </p>
                         <p>
-                            Furthermore, anyone can call flashloan() with an arbitrary borrower as the target and pass
+                            Furthermore, anyone can call flashloan() with an arbitrary borrower as the target and
+                            pass
                             arbitrary
-                            data. To ensure the data is not malicious, a flash loan receiver contract should only allow
+                            data. To ensure the data is not malicious, a flash loan receiver contract should only
+                            allow
                             a
                             restricted set of initiators.
                         </p>
 
                         <b>Reentrance locks are very important</b>
                         <p>
-                            ERC 3156 by definition cannot follow the check effects pattern to prevent reentrancy. It has
+                            ERC 3156 by definition cannot follow the check effects pattern to prevent reentrancy. It
+                            has
                             to
-                            notify the borrower it has received the tokens (make an external call), then transfer the
+                            notify the borrower it has received the tokens (make an external call), then transfer
+                            the
                             tokens
                             back. As such, nonReentrant locks should be added to the contract.
                         </p>
                         <p>
-                            It is important that the lender is the one transferring the tokens back or that reentrancy
+                            It is important that the lender is the one transferring the tokens back or that
+                            reentrancy
                             locks
                             are
                             in place.
-                            In the above implementations, the lender transfers the tokens back from the borrower. The
+                            In the above implementations, the lender transfers the tokens back from the borrower.
+                            The
                             borrower
-                            does not transfer the loans to the lender. This is important to avoid “side entrances” where
+                            does not transfer the loans to the lender. This is important to avoid “side entrances”
+                            where
                             the
-                            borrower deposits money into the protocol as a lender. Now the pool sees it’s balance has
+                            borrower deposits money into the protocol as a lender. Now the pool sees it’s balance
+                            has
                             returned
-                            to what it was before, but the borrower suddenly has become a lender with a large deposit.
+                            to what it was before, but the borrower suddenly has become a lender with a large
+                            deposit.
                         </p>
                         <p>
                             UniswapV2’s flash loan does not transfer the tokens back after the flash loan finishes.
                             However,
                             it
-                            uses a reentrancy lock to ensure that the borrower cannot “pay back the loan” by depositing
+                            uses a reentrancy lock to ensure that the borrower cannot “pay back the loan” by
+                            depositing
                             it
                             back
                             into the protocol as if they were a lender.
                         </p>
                         <p>
                             For the borrower, ensure only flash lender contract can call onFlashLoan
-                            The flash lender is hardcoded to only call the receiver’s onFlashLoan() function and nothing
+                            The flash lender is hardcoded to only call the receiver’s onFlashLoan() function and
+                            nothing
                             else.
                             If a borrower had a way to specify which function the flash lender would call, then the
                             flash
@@ -1231,7 +1357,8 @@ event Withdraw(
                             could be manipulated into transferring other tokens in it’s possession (by calling
                             ERC20.transfer)
                             or granting approval to it’s token balance to a malicious address.
-                            Because such actions require an explicit call to an ERC20 transfer or approve, this can’t
+                            Because such actions require an explicit call to an ERC20 transfer or approve, this
+                            can’t
                             happen
                             if
                             the flash lender can only call onFlashLoan().
@@ -1239,15 +1366,18 @@ event Withdraw(
 
                         <b>Using token.balanceOf(address(this)) can be manipulated</b>
                         <p>
-                            In the implementation above, we do not use balanceOf(address(this)) except to determine the
+                            In the implementation above, we do not use balanceOf(address(this)) except to determine
+                            the
                             maximum
                             flash loan size. This can be altered by someone else directly transferring tokens to the
                             contract,
                             interfering with the logic. The way we know the flash loan was paid back is because the
                             lender
-                            transferred back the loan amount + fee. There are valid ways to use balanceOf(address(this))
+                            transferred back the loan amount + fee. There are valid ways to use
+                            balanceOf(address(this))
                             to
-                            check repayment, but this must be combined with reentrancy checks to avoid paying back the
+                            check repayment, but this must be combined with reentrancy checks to avoid paying back
+                            the
                             loan
                             as a
                             deposit.
@@ -1255,7 +1385,8 @@ event Withdraw(
 
                         <b>Why the flash borrower needs to return keccak256("ERC3156FlashBorrower.onFlashLoan");</b>
                         <p>
-                            This handles the situation where a contract (not the flash lender contract) with a fallback
+                            This handles the situation where a contract (not the flash lender contract) with a
+                            fallback
                             function
                             has given approval to the flash lending contract. Someone could repeatedly initiate a
                             flashloan
@@ -1264,24 +1395,30 @@ event Withdraw(
                         </p>
                         <p>
                             The victim contract gets a flashloan
-                            The victim contract gets called with onFlashLoan() and the fallback function is triggered
+                            The victim contract gets called with onFlashLoan() and the fallback function is
+                            triggered
                             but
                             does
-                            not revert. The fallback function responds to any function call that doesn't match the rest
+                            not revert. The fallback function responds to any function call that doesn't match the
+                            rest
                             of
                             the
                             functions in the contract, so it will respond to a onFlashLoan() call.
                             The flash lender withdraws tokens from the borrower + fee
-                            If this operation happens in a loop, the victim contract with the fallback will get drained.
+                            If this operation happens in a loop, the victim contract with the fallback will get
+                            drained.
                             The
-                            same could happen with an EOA wallet, since calling a wallet address with onFlashLoan does
+                            same could happen with an EOA wallet, since calling a wallet address with onFlashLoan
+                            does
                             not
                             revert.
                         </p>
                         <p>
-                            Checking that the onFlashLoan function does not revert isn’t good enough. The flash lender
+                            Checking that the onFlashLoan function does not revert isn’t good enough. The flash
+                            lender
                             also
-                            checks that the value keccack256("ERC3156FlashBorrower.onFlashLoan") is returned so that it
+                            checks that the value keccack256("ERC3156FlashBorrower.onFlashLoan") is returned so that
+                            it
                             knows
                             the borrower intended to borrow the tokens and also pay back the fee.
                         </p>
@@ -1310,20 +1447,27 @@ event Withdraw(
                     <div>
                         <p>
                             <b>Liquidity pools</b> are collections of funds locked in a smart contract on a
-                            decentralized exchange (DEX) or other DeFi (Decentralized Finance) platforms. These funds
-                            are used to facilitate trading by providing the necessary liquidity for buying and selling
-                            assets without relying on traditional market makers. Liquidity pools are fundamental to the
+                            decentralized exchange (DEX) or other DeFi (Decentralized Finance) platforms. These
+                            funds
+                            are used to facilitate trading by providing the necessary liquidity for buying and
+                            selling
+                            assets without relying on traditional market makers. Liquidity pools are fundamental to
+                            the
                             functioning of automated market makers (AMMs) like Uniswap, SushiSwap, and Balancer.
                         </p>
                         <p>
                             <b>Liquidity Providers (LPs)</b> are users who deposit tokens into liquidity pools. In
-                            return for providing liquidity, LPs receive LP tokens, which represent their share of the
+                            return for providing liquidity, LPs receive LP tokens, which represent their share of
+                            the
                             pool and the fees generated from trades.
                         </p>
                         <p>
-                            Liquidity pools and liquidity providers are essential components of decentralized exchanges
-                            and the broader DeFi ecosystem. Liquidity pools enable efficient and decentralized trading,
-                            while liquidity providers are incentivized through fees and rewards for contributing their
+                            Liquidity pools and liquidity providers are essential components of decentralized
+                            exchanges
+                            and the broader DeFi ecosystem. Liquidity pools enable efficient and decentralized
+                            trading,
+                            while liquidity providers are incentivized through fees and rewards for contributing
+                            their
                             assets to these pools. Understanding how these mechanisms work is crucial for anyone
                             participating in or developing for the DeFi space.
                         </p>
@@ -1332,11 +1476,14 @@ event Withdraw(
                     <h5>>> What Are the Different Automated Market Maker (AMM) Models?</h5>
                     <div>
                         <p>
-                            Constant function market makers (CFMMs), such as constant product market makers, constant
+                            Constant function market makers (CFMMs), such as constant product market makers,
+                            constant
                             sum market makers, and constant mean market makers, are a class of first-generation AMMs
-                            made popular by protocols like Bancor, Curve, and Uniswap. These AMM exchanges are based on
+                            made popular by protocols like Bancor, Curve, and Uniswap. These AMM exchanges are based
+                            on
                             a constant function, where the combined asset reserves of trading pairs must remain
-                            unchanged. In non-custodial AMMs, user deposits for trading pairs are pooled within a smart
+                            unchanged. In non-custodial AMMs, user deposits for trading pairs are pooled within a
+                            smart
                             contract that any trader can use for token swap liquidity. Users trade against the smart
                             contract (pooled assets) as opposed to directly with a counterparty as in order book
                             exchanges.
@@ -1370,12 +1517,16 @@ event Withdraw(
                         </p>
                         <h6>>> Constant Mean Market Maker (CMMM)</h6>
                         <p>
-                            The third type is a constant mean market maker (CMMM), which enables the creation of AMMs
+                            The third type is a constant mean market maker (CMMM), which enables the creation of
+                            AMMs
                             that can have more than two tokens and be weighted outside of the standard 50/50
-                            distribution. In this model, the weighted geometric mean of each reserve remains constant.
-                            For a liquidity pool with three assets, the equation would be the following: <b>(x * y * z)
+                            distribution. In this model, the weighted geometric mean of each reserve remains
+                            constant.
+                            For a liquidity pool with three assets, the equation would be the following: <b>(x * y *
+                                z)
                                 ^ (⅓) = k</b>.
-                            This allows for variable exposure to different assets in the pool and enables swaps between
+                            This allows for variable exposure to different assets in the pool and enables swaps
+                            between
                             any of the pool’s assets.
                         </p>
                     </div>
@@ -1383,25 +1534,31 @@ event Withdraw(
                     <h5>>> Problems of First-Generation AMM Models</h5>
                     <div>
                         <p>
-                            Many of first-generation AMMs are limited by impermanent loss and low capital efficiency,
+                            Many of first-generation AMMs are limited by impermanent loss and low capital
+                            efficiency,
                             which
                             impacts both liquidity providers and traders.
                         </p>
                         <h6>>> Even small orders move the price in AMMs</h6>
                         <p>
                             If you place an order to buy 100 shares of Apple, your order will not cause the price to
-                            move because there are thousands of shares available for sale at the price you specify. This
-                            is not the case with an automated market maker. Every trade, no matter how small, moves the
+                            move because there are thousands of shares available for sale at the price you specify.
+                            This
+                            is not the case with an automated market maker. Every trade, no matter how small, moves
+                            the
                             price.
                         </p>
                         <p>
-                            This has two implications. A buy or sell order will generally encounter more slippage than
+                            This has two implications. A buy or sell order will generally encounter more slippage
+                            than
                             in an order book model, and the mechanism of swapping invites sandwich attacks.
                         </p>
                         <h6>>> Sandwich attacks are largely unavoidable in AMMs</h6>
                         <p>
-                            Since every order is going to move the price, MEV (Maximal Extractable Value) traders will
-                            wait for a sufficiently large buy order to come in, then place a buy order right before the
+                            Since every order is going to move the price, MEV (Maximal Extractable Value) traders
+                            will
+                            wait for a sufficiently large buy order to come in, then place a buy order right before
+                            the
                             victim's order and a sell order right after it. The leading buy order will drive up the
                             price for the original trader, which gives them worse execution. It’s called a sandwich
                             attack, since the victim’s trade is “sandwiched” between the attackers.
@@ -1421,21 +1578,28 @@ event Withdraw(
                         </p>
                         <h6>>> Liquidity providers don’t have control over the price their assets are sold at</h6>
                         <p>
-                            For reasons we will discuss later, liquidity providers can only provide assets proportional
-                            to the current ratio of tokens in the pool. For example, if there are 100 token 𝒳 and 200
+                            For reasons we will discuss later, liquidity providers can only provide assets
+                            proportional
+                            to the current ratio of tokens in the pool. For example, if there are 100 token 𝒳 and
+                            200
                             token 𝒴, the new liquidity provider must provide twice as many token 𝒴 as 𝒳.
                         </p>
                         <p>
-                            In a traditional order book, a market maker can place limit orders at levels they believe
+                            In a traditional order book, a market maker can place limit orders at levels they
+                            believe
                             reflect a desirable bid or ask (For example, place a bid order below the current market
-                            price or place a sell order above the current market price), but this is not possible with
-                            an automated market maker. Remember that Automated Market Makers use a formula to set prices
-                            based on the asset ratios in the pool, as a result market makers cannot set specific prices
+                            price or place a sell order above the current market price), but this is not possible
+                            with
+                            an automated market maker. Remember that Automated Market Makers use a formula to set
+                            prices
+                            based on the asset ratios in the pool, as a result market makers cannot set specific
+                            prices
                             at which they wish to sell their assets.
                         </p>
                         <h6>>> Impermanent Loss</h6>
                         <p>
-                            Impermanent loss is the difference in value over time between depositing tokens in an AMM
+                            Impermanent loss is the difference in value over time between depositing tokens in an
+                            AMM
                             versus
                             simply holding those tokens in a wallet. This loss occurs when the market-wide price of
                             tokens
@@ -1445,7 +1609,8 @@ event Withdraw(
                             assets
                             until the prices offered by the AMM match the market-wide price of external markets. The
                             profit
-                            extracted by arbitrageurs is siphoned from the pockets of liquidity providers, creating a
+                            extracted by arbitrageurs is siphoned from the pockets of liquidity providers, creating
+                            a
                             loss.
                         </p>
 
@@ -1453,18 +1618,23 @@ event Withdraw(
                         <p>
                             Traditional AMM designs require large amounts of liquidity to achieve the same level of
                             price
-                            impact as an order book-based exchange. This is due to the fact that a substantial portion
+                            impact as an order book-based exchange. This is due to the fact that a substantial
+                            portion
                             of
-                            AMM liquidity is available only when the pricing curve begins to turn exponential. As such,
+                            AMM liquidity is available only when the pricing curve begins to turn exponential. As
+                            such,
                             most
                             liquidity will never be used by rational traders due to the extreme price impact
                             experienced.
                         </p>
                         <p>
-                            In this situation, AMM liquidity providers have no control over which price points are being
+                            In this situation, AMM liquidity providers have no control over which price points are
+                            being
                             offered to traders, leading some people to refer to AMMs as “lazy liquidity” that’s
-                            underutilized and poorly provisioned. Meanwhile, market makers on order book exchanges can
-                            control exactly the price points at which they want to buy and sell tokens. This leads to
+                            underutilized and poorly provisioned. Meanwhile, market makers on order book exchanges
+                            can
+                            control exactly the price points at which they want to buy and sell tokens. This leads
+                            to
                             very
                             high capital efficiency, but with the trade-off of requiring active participation and
                             oversight
@@ -1475,34 +1645,45 @@ event Withdraw(
                     <h5>>> Improving AMM Models With Hybrid, Dynamic, Proactive, and Virtual Solutions</h5>
                     <div>
                         <p>
-                            The above limitations are being overcome by innovative projects with new design patterns,
+                            The above limitations are being overcome by innovative projects with new design
+                            patterns,
                             such
-                            as hybrid automated market makers, dynamic automated market makers, proactive market makers,
+                            as hybrid automated market makers, dynamic automated market makers, proactive market
+                            makers,
                             and
                             virtual automated market makers.
                         </p>
                         <h6>>> Hybrid CFMMs</h6>
                         <p>
-                            As AMM-based liquidity has progressed, we have seen the emergence of advanced hybrid CFMMs
+                            As AMM-based liquidity has progressed, we have seen the emergence of advanced hybrid
+                            CFMMs
                             which
-                            combine multiple functions and parameters to achieve specific behaviors, such as adjusted
+                            combine multiple functions and parameters to achieve specific behaviors, such as
+                            adjusted
                             risk
                             exposure for liquidity providers or reduced price impact for traders.
                         </p>
                         <p>
-                            For example, Curve AMMs—known as the stableswap invariant—combine both a CPMM and CSMM using
+                            For example, Curve AMMs—known as the stableswap invariant—combine both a CPMM and CSMM
+                            using
                             an
-                            advanced formula to create denser pockets of liquidity that bring down price impact within a
-                            given range of trades. The result is a hyperbola (blue line) that returns a linear exchange
+                            advanced formula to create denser pockets of liquidity that bring down price impact
+                            within a
+                            given range of trades. The result is a hyperbola (blue line) that returns a linear
+                            exchange
                             rate
-                            for large parts of the price curve and exponential prices when exchange rates near the outer
+                            for large parts of the price curve and exponential prices when exchange rates near the
+                            outer
                             bounds.
                         </p>
-                        <img src="./blog-images/stable-swap-amm.png" width="800px" height="350px">
+                        <img src="https://assets-global.website-files.com/5f75fe1dce99248be5a892db/63989f611320eb867b2b8423_63752b45bdc5e073aa886cd6_uniswap.png"
+                            alt="Curve whitepaper‌‌">
                         <p>
-                            Hybrid CFMMs enable extremely low price impact trades by using an exchange rate curve that
+                            Hybrid CFMMs enable extremely low price impact trades by using an exchange rate curve
+                            that
                             is
-                            mostly linear and becomes parabolic only once the liquidity pool is pushed to its limits.
+                            mostly linear and becomes parabolic only once the liquidity pool is pushed to its
+                            limits.
                             Liquidity providers earn more in fees (albeit on a lower fee-per-trade basis) because
                             capital is
                             used more efficiently, while arbitrageurs still profit from rebalancing the pool.
@@ -1510,7 +1691,8 @@ event Withdraw(
                         <p>
                             Curve offers low-price-impact swaps between tokens that have a relatively stable 1:1
                             exchange
-                            rate. This means its solution is predominantly designed for stablecoins. However, Curve has
+                            rate. This means its solution is predominantly designed for stablecoins. However, Curve
+                            has
                             also
                             recently launched support for more volatile token pairs with similarly concentrated
                             liquidity.
@@ -1519,12 +1701,15 @@ event Withdraw(
                         <p>
                             Using a dynamic automated market maker (DAMM) model, Sigmadex leverages Chainlink Price
                             Feeds
-                            and implied volatility to help dynamically distribute liquidity along the price curve. By
+                            and implied volatility to help dynamically distribute liquidity along the price curve.
+                            By
                             incorporating multiple dynamic variables into its algorithm, it can create a more robust
                             market
-                            maker that adapts to changing market conditions. During periods of low volatility, Sigmadex
+                            maker that adapts to changing market conditions. During periods of low volatility,
+                            Sigmadex
                             can
-                            concentrate liquidity near the market price and increase capital efficiency, and then expand
+                            concentrate liquidity near the market price and increase capital efficiency, and then
+                            expand
                             it
                             during periods of high volatility to help protect traders from impairment loss.
                         </p>
@@ -1532,23 +1717,33 @@ event Withdraw(
                         <p>
                             Also aiming to increase liquidity on its protocol, DODO is using a model known as a
                             proactive
-                            market maker (PMM) that mimics the human market-making behaviors of a traditional central
+                            market maker (PMM) that mimics the human market-making behaviors of a traditional
+                            central
                             limit
-                            order book. The protocol uses globally accurate market prices from Chainlink Price Feeds to
-                            proactively move the price curve of each asset in response to market changes, increasing the
-                            liquidity near the current market price. Ultimately, this facilitates more efficient trading
+                            order book. The protocol uses globally accurate market prices from Chainlink Price Feeds
+                            to
+                            proactively move the price curve of each asset in response to market changes, increasing
+                            the
+                            liquidity near the current market price. Ultimately, this facilitates more efficient
+                            trading
                             and
                             reduces the impairment loss for liquidity providers.
                         </p>
                         <h6>>> Virtual Automated Market Makers (vAMM) </h6>
                         <p>
-                            Virtual automated market makers (vAMMs) such as Perpetual Protocol minimize price impact,
-                            mitigate impermanent loss, and enable single token exposure for synthetic assets. vAMMs use
+                            Virtual automated market makers (vAMMs) such as Perpetual Protocol minimize price
+                            impact,
+                            mitigate impermanent loss, and enable single token exposure for synthetic assets. vAMMs
+                            use
                             the
-                            same x*y=k constant product formula as CPMMs, but instead of relying on a liquidity pool,
-                            traders deposit collateral to a smart contract. By trading synthetic assets rather than the
-                            underlying asset, users can gain exposure to the price movements of a wide variety of crypto
-                            assets in a highly efficient manner. However, users holding an open position in a synthetic
+                            same x*y=k constant product formula as CPMMs, but instead of relying on a liquidity
+                            pool,
+                            traders deposit collateral to a smart contract. By trading synthetic assets rather than
+                            the
+                            underlying asset, users can gain exposure to the price movements of a wide variety of
+                            crypto
+                            assets in a highly efficient manner. However, users holding an open position in a
+                            synthetic
                             asset are at risk of having their collateral liquidated if the price moves against them.
                         </p>
                     </div>
@@ -1563,7 +1758,8 @@ event Withdraw(
                         <h5>>> Core Contracts</h5>
                         <ul>
                             <li>
-                                <b>UniswapV2Factory</b>: This contract manages the creation of new pools. It records all
+                                <b>UniswapV2Factory</b>: This contract manages the creation of new pools. It records
+                                all
                                 pairs
                                 and provides the addresses of the pair contracts.
                             </li>
@@ -1579,7 +1775,8 @@ event Withdraw(
                             </li>
                         </ul>
                         <p>
-                            Core is minimalist in design, removing all logic that is not strictly necessary to secure
+                            Core is minimalist in design, removing all logic that is not strictly necessary to
+                            secure
                             liquidity stored in its pools. Logic related to trader security or ease-of-use must be
                             implemented in external helper contracts. Since external helpers can be improved and
                             replaced without needing to migrate liquidity, this improves on the flexibility and
@@ -1588,32 +1785,42 @@ event Withdraw(
                         <h5>>> Peripheral Contracts</h5>
                         <ul>
                             <li>
-                                <b>UniswapV2Router02</b>: This contract provides user-friendly methods for interacting
+                                <b>UniswapV2Router02</b>: This contract provides user-friendly methods for
+                                interacting
                                 with the
-                                core contracts. It includes functions for adding/removing liquidity, swapping tokens,
+                                core contracts. It includes functions for adding/removing liquidity, swapping
+                                tokens,
                                 and querying pool information.
                             </li>
                             <li>
-                                <b>UniswapV2Library</b>: A library with utility functions for interacting with the core
+                                <b>UniswapV2Library</b>: A library with utility functions for interacting with the
+                                core
                                 contracts.
                             </li>
                         </ul>
                         <p>
-                            Periphery contracts described as "Example" are for illustrative purposes only and should not
-                            be used in actual transactions.While this is a huge improvement, there are some new smart
-                            contract patterns introduced which developers building on top of Uniswap should be aware of.
+                            Periphery contracts described as "Example" are for illustrative purposes only and should
+                            not
+                            be used in actual transactions.While this is a huge improvement, there are some new
+                            smart
+                            contract patterns introduced which developers building on top of Uniswap should be aware
+                            of.
                         </p>
                         <ul>
-                            <li>Core uses WETH instead of ETH. Routers can convert between ETH and WETH allowing users
+                            <li>Core uses WETH instead of ETH. Routers can convert between ETH and WETH allowing
+                                users
                                 to use ETH directly</li>
-                            <li>Core stores ERC20 token balances internally instead of relying on the balances stored in
+                            <li>Core stores ERC20 token balances internally instead of relying on the balances
+                                stored in
                                 the ERC20 token contract</li>
-                            <li>Core no longer calls transferFrom on msg.sender. Instead ERC20 tokens should be sent to
+                            <li>Core no longer calls transferFrom on msg.sender. Instead ERC20 tokens should be sent
+                                to
                                 core directly by a router before calling the swap, mint or burn functions.</li>
                             <li>Core will determine the number of ERC20 tokens sent to it based on the difference
                                 between its current and stored balances.</li>
                             <li>Core no longer returns the maximum number of ERC20 tokens for a given input amount.
-                                Instead, a router must specify the number of ERC20 tokens it wants. Core will send this
+                                Instead, a router must specify the number of ERC20 tokens it wants. Core will send
+                                this
                                 number as long as the invariant is preserved after taking 0.3% off any input amount.
                             </li>
                             <li>Routers should handle logic around slippage safety checks and multihop trades.</li>
@@ -1624,14 +1831,17 @@ event Withdraw(
                     <div>
                         <p>
                             Observe that the router contract above is in a repository called <a
-                                href="https://github.com/Uniswap/v2-periphery" target="_blank">V2-Periphery</a> and the
+                                href="https://github.com/Uniswap/v2-periphery" target="_blank">V2-Periphery</a> and
+                            the
                             pair
                             is in the <a href="https://github.com/Uniswap/v2-core" target="_blank">V2-Core</a>
                             repository. Uniswap V2 follows the “core /
                             periphery” design pattern
-                            where the most essential logic is held in the core while the “optional” logic is held in the
+                            where the most essential logic is held in the core while the “optional” logic is held in
+                            the
                             periphery.
-                            The intent behind this is to have the core hold as little code as possible, which reduces
+                            The intent behind this is to have the core hold as little code as possible, which
+                            reduces
                             the possibility of bugs in the core business logic.
                         </p>
                     </div>
@@ -1639,22 +1849,1457 @@ event Withdraw(
                     <h5>>> Why not use clones</h5>
                     <div>
                         <p>
-                            The EIP 1167 clone pattern is used to create a collection of similar contracts, so why not
+                            The EIP 1167 clone pattern is used to create a collection of similar contracts, so why
+                            not
                             use
-                            that here? Although the deployment would be cheaper, it would introduce an extra 2,600 gas
+                            that here? Although the deployment would be cheaper, it would introduce an extra 2,600
+                            gas
                             per
                             transaction due to the delegatecall. Since pools are intended to be used frequently, the
                             cost
-                            savings from deployment would eventually be lost after a few hundred transactions, so it is
+                            savings from deployment would eventually be lost after a few hundred transactions, so it
+                            is
                             worth deploying a pool as a new contract.
                         </p>
+                    </div>
+
+                    <h5>>> Architecture concepts</h5>
+                    <ol start="4">
+                        <li>Twap Oracles</li>
+                        <li>Calculating the Settlement Price of an AMM Swap</li>
+                        <li>UniswapV2-Factory</li>
+                        <li>Swap function</li>
+                        <li>Mint and Burn Functions</li>
+                        <li>MintFee</li>
+                        <li>Uniswap-V2 Core Libraries</li>
+                        <li>Uniswap-V2 Peripheral Libraries</li>
+                        <li>Uniswap-V2 Routers-01</li>
+                        <li>Uniswap-V2 Routers-02</li>
+                        <li>Building a Uniswap V2 Clone</li>
+                    </ol>
+                </div>
+                <hr class="breakLine">
+
+                <!-- Twap Oracles -->
+                <div>
+                    <h3>>> Twap Oracle</h3>
+                    <div>
+                        <h4>>> What exactly is “price” in Uniswap?</h4>
+                        <p>
+                            Suppose we have 1 Ether and 2,000 USDC in a pool. This implies that the price of Ether
+                            is
+                            2,000 USDC. Specifically, the price of Ether is 2,000 USDC / 1 Ether (ignoring
+                            decimals).
+                        </p>
+                        More generally, the price of an asset, in terms of the price of the other asset in the pair,
+                        is
+                        a ratio where the “asset you care about” is in the denominator.
+                        <img src="https://static.wixstatic.com/media/935a00_3c7e7da18f8a4c07b4b6b2aac48a8762~mv2.png/v1/fill/w_410,h_123,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_3c7e7da18f8a4c07b4b6b2aac48a8762~mv2.png"
+                            alt="" data-pin-url="https://www.rareskills.io/post/twap-uniswap-v2"
+                            data-pin-media="https://static.wixstatic.com/media/935a00_3c7e7da18f8a4c07b4b6b2aac48a8762~mv2.png/v1/fill/w_694,h_207,al_c,lg_1,q_85/935a00_3c7e7da18f8a4c07b4b6b2aac48a8762~mv2.png"
+                            style="width: 328px; height: 98px; object-fit: cover; object-position: 50% 50%; max-width: 100%;"
+                            fetchpriority="high" data-load-done="">
+                        In the example above, it is saying “how may bars do you need to pay to get one foo”
+                        (ignoring
+                        fees).
+                        <h4>>> Price is a ratio</h4>
+                        <p>
+                            Because price is a ratio, they need to be stored with a data type which has decimal
+                            points
+                            (which Solidity types do not have by default).
+                            That is, we say Ethereum is 2000 and USDC (in price of Ethereum) is 0.0005 (this is
+                            ignoring
+                            decimals of both assets).
+                        </p>
+                        <p>
+                            Uniswap uses a fixed point number with 112 bits of precision on each side of the
+                            decimal,
+                            this takes up a total of 224 bits, and when packed with a 32 bit number, it uses up a
+                            single
+                            slot.
+                        </p>
+                        <h4>>> Oracle definition</h4>
+                        <p>
+                            An oracle in computer science terms is a “source of truth.” A price oracle is a source
+                            of
+                            prices. Uniswap has an implied price when holding two assets, and other smart contracts
+                            can
+                            use this as a price oracle.
+                            The intended users of the oracle are other smart contracts, since other smart contracts
+                            can
+                            easily communicate with Uniswap to determine the price, but getting price data from an
+                            off-chain exchange would be a lot harder.
+                            However, just taking the ratio of the balances to get the current price isn’t safe.
+                        </p>
+
+                        <h4>>> Motivation behind TWAP</h4>
+                        <p>
+                            Measuring an instantaneous snapshot of assets in the pool leaves an opportunity for
+                            flash
+                            loan attacks. That is, someone can make a huge trade using a flash loan to cause a
+                            temporary
+                            dramatic shift in the price, then take advantage of another smart contract that uses
+                            this
+                            price to make decisions.
+                        </p>
+                        <img src="//images.ctfassets.net/oc3ca6rftwdu/1AogZXNEKw1mI5lsbDg652/c99f14f50b09dc33dbc20f4a45d4102c/v2_twap.png"
+                            alt="v2_twap.png">
+                        <p>
+                            The Uniswap V2 oracle defends against this in two ways:
+                        </p>
+                        <ol>
+                            <li>
+                                It provides a mechanisms for consumers of the price (usually smart contracts) to
+                                take
+                                the average a previous time period (decided by the user). This means an attacker has
+                                to
+                                constantly manipulate the price for several blocks, which is a lot more costly than
+                                using a flash loan.
+                            </li>
+                            <li>
+                                It doesn’t incorporate the current balance into the oracle calculation
+                            </li>
+                        </ol>
+                        This should not give the impression that oracles which use a moving average are immune to
+                        price
+                        manipulation attacks. If the asset does not have much liquidity, or the time window of
+                        taking
+                        the average is not sufficiently large, then a well-resourced attacker can still prop up the
+                        price (or suppress the price) long enough to manipulate the average price at the time of
+                        measurement.
+
+                        <h4>>> How TWAP works</h4>
+                        <p>
+                            A TWAP (Time Weighted Average Price) is like a simple moving average except that times
+                            where
+                            the price “stayed the same” longer get more weight — a TWAP weights price by how long
+                            the
+                            price stays at a certain level.
+                        </p>
+                        <ul>
+                            <li>
+                                Over the last day, the price of an asset was $10 for the first 12 hours and $11 for
+                                the
+                                second 12 hours. The average price is the same as the time weighted average price:
+                                $10.5.
+                            </li>
+                            <li>
+                                Over the last day, the price of an asset was $10 for the first 23 hours and $11 for
+                                the
+                                most recent one. The expected average price should be closer to $10 than $11, but it
+                                will still be in between those values. Specifically, it will be ($10 * 23 + $11 * 1)
+                                /
+                                24 = $10.0417
+                            </li>
+                            <li>
+                                Over the last day, the price of an asset was $10 for the first hour, and $11 for the
+                                most recent 23 hours. We expect the TWAP to be closer to $11 than 10. Specifically,
+                                it
+                                will be ($10 * 1 + $11 * 23) / 24 = $10.9583
+                            </li>
+                        </ul>
+                        In general, the TWAP formula is
+                        <img src="https://static.wixstatic.com/media/935a00_cdd0c97f14834dfdbfb812597b8a34c3~mv2.png/v1/fill/w_438,h_130,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_cdd0c97f14834dfdbfb812597b8a34c3~mv2.png"
+                            alt="" data-pin-url="https://www.rareskills.io/post/twap-uniswap-v2"
+                            data-pin-media="https://static.wixstatic.com/media/935a00_cdd0c97f14834dfdbfb812597b8a34c3~mv2.png/v1/fill/w_694,h_207,al_c,lg_1,q_85/935a00_cdd0c97f14834dfdbfb812597b8a34c3~mv2.png"
+                            style="width: 350px; height: 104px; object-fit: cover; object-position: 50% 50%; max-width: 100%;"
+                            fetchpriority="high" data-load-done="">
+                        Here T is a duration, not a timestamp. That is, how long the price stayed at that level.
+
+                        <h4>>> Uniswap V2 does not store lookback or the denominator</h4>
+                        <p>
+                            In our example above, we only looked at prices for the last 24 hours, but what if you
+                            care
+                            about prices for the last hour, week, or some other interval? Uniswap of course cannot
+                            store
+                            every look back that someone might be interested, and there also isn’t a good way to
+                            consistently snapshot the price as someone would have to pay for the gas.
+                        </p>
+                        <p>
+                            The solution is that Uniswap only stores the numerator of values — every time a change
+                            is
+                            the liquidity ratio happens (mint, burn, swap, or sync are called), it records the new
+                            price
+                            and how long the previous price lasted.
+                        </p>
+                        <img src="https://static.wixstatic.com/media/935a00_db5fb7c3ed5b4e37ae3550b1f779af85~mv2.jpg/v1/fill/w_925,h_335,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/935a00_db5fb7c3ed5b4e37ae3550b1f779af85~mv2.jpg"
+                            alt="" data-pin-url="https://www.rareskills.io/post/twap-uniswap-v2"
+                            data-pin-media="https://static.wixstatic.com/media/935a00_db5fb7c3ed5b4e37ae3550b1f779af85~mv2.jpg/v1/fill/w_2718,h_984,al_c,q_90/935a00_db5fb7c3ed5b4e37ae3550b1f779af85~mv2.jpg"
+                            style="width: 740px; height: 268px; object-fit: cover; object-position: 50% 50%; max-width: 100%;"
+                            fetchpriority="high" data-load-done="">
+                        <p>
+                            The variables price0Cumulativelast and price1CumulativeLast are public, so an interested
+                            party needs to snapshot them.
+                        </p>
+                        <p>
+                            But this is an important point you should always remember price0CumulativeLast and
+                            price1CumulativeLast are only updated on lines 79 and 80 in the code above (orange
+                            circle),
+                            and they can only increase until they overflow. There is no mechanism make them “go
+                            down.”
+                            They always increase with every call to _update. This means they accumulate prices ever
+                            since the pool is launched, which could be a very long time.
+                        </p>
+
+                        <h4>>> Limiting the lookback window</h4>
+                        <p>
+                            Clearly, we are generally not interested in the average price since the pool came into
+                            existence. We only want to look back a certain amount of time (1 hour, 1 day, etc).
+                        </p>
+                        Here is the TWAP formula gain.
+                        <img src="https://static.wixstatic.com/media/935a00_3659b722d3504a39b91de635f328fa89~mv2.png/v1/fill/w_784,h_120,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_3659b722d3504a39b91de635f328fa89~mv2.png"
+                            alt="" data-pin-url="https://www.rareskills.io/post/twap-uniswap-v2"
+                            data-pin-media="https://static.wixstatic.com/media/935a00_3659b722d3504a39b91de635f328fa89~mv2.png/v1/fill/w_1347,h_207,al_c,lg_1,q_85/935a00_3659b722d3504a39b91de635f328fa89~mv2.png"
+                            style="width: 627px; height: 96px; object-fit: cover; object-position: 50% 50%; max-width: 100%;"
+                            fetchpriority="high" data-load-done="">
+                        If we are only interested in prices since T4, then we want to be doing the following
+                        <img src="https://static.wixstatic.com/media/935a00_759d6b9214404826a3feaca90bfa6274~mv2.png/v1/fill/w_810,h_125,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_759d6b9214404826a3feaca90bfa6274~mv2.png"
+                            alt="" data-pin-url="https://www.rareskills.io/post/twap-uniswap-v2"
+                            data-pin-media="https://static.wixstatic.com/media/935a00_759d6b9214404826a3feaca90bfa6274~mv2.png/v1/fill/w_1347,h_207,al_c,lg_1,q_85/935a00_759d6b9214404826a3feaca90bfa6274~mv2.png"
+                            style="width: 648px; height: 100px; object-fit: cover; object-position: 50% 50%; max-width: 100%;"
+                            fetchpriority="high" data-load-done="">
+                        How do we accomplish this with code? Since the price0Cumulativelast keeps recording
+                        <img src="https://static.wixstatic.com/media/935a00_3e1f2ae7df104cd7b9ec14a7b495ec91~mv2.png/v1/fill/w_789,h_91,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_3e1f2ae7df104cd7b9ec14a7b495ec91~mv2.png"
+                            alt="" data-pin-url="https://www.rareskills.io/post/twap-uniswap-v2"
+                            data-pin-media="https://static.wixstatic.com/media/935a00_3e1f2ae7df104cd7b9ec14a7b495ec91~mv2.png/v1/fill/w_1347,h_157,al_c,lg_1,q_85/935a00_3e1f2ae7df104cd7b9ec14a7b495ec91~mv2.png"
+                            style="width: 631px; height: 73px; object-fit: cover; object-position: 50% 50%; max-width: 100%;"
+                            fetchpriority="high" data-load-done="">
+                        We need a way to isolate the parts we care about. Consider the following
+                        <img src="https://static.wixstatic.com/media/935a00_22ca22d53903438688382dc23ba9fcef~mv2.png/v1/fill/w_741,h_178,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_22ca22d53903438688382dc23ba9fcef~mv2.png"
+                            alt="" data-pin-url="https://www.rareskills.io/post/twap-uniswap-v2"
+                            data-pin-media="https://static.wixstatic.com/media/935a00_22ca22d53903438688382dc23ba9fcef~mv2.png/v1/fill/w_1154,h_276,al_c,lg_1,q_85/935a00_22ca22d53903438688382dc23ba9fcef~mv2.png"
+                            style="width: 593px; height: 142px; object-fit: cover; object-position: 50% 50%; max-width: 100%;"
+                            fetchpriority="high" data-load-done="">
+                        If we snapshot the price at the end of T3, we get the value UpToTime3. If we wait until T6
+                        finishes, then we do price0Cumulativelast - UpToTime3then we will get the cumulative prices
+                        of
+                        only the recent window. If we divide that by the duration of the RecentWindow (T4 + T5 +
+                        T6),
+                        then we get the TWAP price of the recent window.
+                        <p>
+                            Graphically, this is what is what we are doing with the price accumulator.
+                        </p>
+                        <img src="https://static.wixstatic.com/media/935a00_558498fb35a24fdb97b9034071fb8390~mv2.jpg/v1/fill/w_925,h_694,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_558498fb35a24fdb97b9034071fb8390~mv2.jpg"
+                            alt="" data-pin-url="https://www.rareskills.io/post/twap-uniswap-v2"
+                            data-pin-media="https://static.wixstatic.com/media/935a00_558498fb35a24fdb97b9034071fb8390~mv2.jpg/v1/fill/w_2160,h_1620,al_c,q_90/935a00_558498fb35a24fdb97b9034071fb8390~mv2.jpg"
+                            style="width: 740px; height: 555px; object-fit: cover; object-position: 50% 50%; max-width: 100%;"
+                            fetchpriority="high" data-load-done="">
+                        <h4>>> Only calculating the last 1 hour TWAP in Solidity</h4>
+                        <p>
+                            If we want a 1 hour TWAP, we need to anticipate that we will need a snapshot of the
+                            accumulator one hour from now. So we need to access the public variable
+                            price0CumulativeLast
+                            and the public function getReserves() to get the last update time, and snapshot those
+                            values. (See the snapshot() function below).
+                            After at least 1 hour has passed, we can call getOneHourPrice() and we will access the
+                            newest value of price0CumulativeLast from Uniswap V2.
+                        </p>
+                        Since the time we snapshotted the old price, Uniswap has been updating the accumulator
+                        <img src="https://static.wixstatic.com/media/935a00_f8d1610ae2e9423ba4b80bd449397793~mv2.png/v1/fill/w_438,h_93,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_f8d1610ae2e9423ba4b80bd449397793~mv2.png"
+                            alt="" data-pin-url="https://www.rareskills.io/post/twap-uniswap-v2"
+                            data-pin-media="https://static.wixstatic.com/media/935a00_f8d1610ae2e9423ba4b80bd449397793~mv2.png/v1/fill/w_759,h_160,al_c,lg_1,q_85/935a00_f8d1610ae2e9423ba4b80bd449397793~mv2.png"
+                            style="width: 350px; height: 74px; object-fit: cover; object-position: 50% 50%; max-width: 100%;"
+                            fetchpriority="high" data-load-done="">
+                        The following code is made as simple as possible for illustration purposes, production use
+                        is
+                        not advised.
+                        <img src="https://static.wixstatic.com/media/935a00_e894f9d9400c4d7ca42105a214c43fd4~mv2.png/v1/fill/w_925,h_953,al_c,q_90,usm_0.66_1.00_0.01,enc_auto/935a00_e894f9d9400c4d7ca42105a214c43fd4~mv2.png"
+                            alt="" data-pin-url="https://www.rareskills.io/post/twap-uniswap-v2"
+                            data-pin-media="https://static.wixstatic.com/media/935a00_e894f9d9400c4d7ca42105a214c43fd4~mv2.png/v1/fill/w_1086,h_1118,al_c,q_90/935a00_e894f9d9400c4d7ca42105a214c43fd4~mv2.png"
+                            style="width: 740px; height: 762px; object-fit: cover; object-position: 50% 50%; max-width: 100%;"
+                            fetchpriority="high" data-load-done="">
+                        <h4>>> What if the last snapshot is over three hours ago?</h4>
+                        <p>
+                            Astute readers may note that the above contract will not be able to snapshot if the pair
+                            it
+                            is interacting with hasn’t had an interaction in the last three hours. The Uniswap V2
+                            function _update is called during mint, burn, and swap, but none of those interactions
+                            happen, then lastSnapshotTime will record a time from a while ago. The solution is for
+                            the
+                            oracle to call the sync function at the time it does a snapshot, as that will internally
+                            call _update.
+                        </p>
+                        The sync function is screenshotted below.
+                        <img src="https://static.wixstatic.com/media/935a00_095d53e5f9cd42dead2b8369b03cbf2f~mv2.jpg/v1/fill/w_925,h_126,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/935a00_095d53e5f9cd42dead2b8369b03cbf2f~mv2.jpg"
+                            alt="" data-pin-url="https://www.rareskills.io/post/twap-uniswap-v2"
+                            data-pin-media="https://static.wixstatic.com/media/935a00_095d53e5f9cd42dead2b8369b03cbf2f~mv2.jpg/v1/fill/w_2710,h_369,al_c,q_85/935a00_095d53e5f9cd42dead2b8369b03cbf2f~mv2.jpg"
+                            style="width: 740px; height: 101px; object-fit: cover; object-position: 50% 50%; max-width: 100%;"
+                            fetchpriority="high" data-load-done="">
+
+                        <h4>>> Why TWAP must track two ratios</h4>
+                        <p>
+                            The price of A with respect to B is simply A/B and vice versa. For example, if we have
+                            2000
+                            USDC in the pool (ignoring decimals), and 1 Ether, then the price of 1 Ether is simply
+                            2000
+                            USDC / 1 ETH.
+                            The price of USDC, denominated in ETH, is simply that number with the numerator and
+                            denominator flipped.
+                        </p>
+                        However, we cannot just “invert” one of the prices to get the other when we are accumulating
+                        pricing. Consider the following. If our price accumulator starts at 2 and adds 3, we cannot
+                        just
+                        do one over the accumulator:
+                        <img src="https://static.wixstatic.com/media/935a00_f2678cb847b84a73bbb42c6caf5b1be4~mv2.png/v1/fill/w_183,h_78,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_f2678cb847b84a73bbb42c6caf5b1be4~mv2.png"
+                            alt="" data-pin-url="https://www.rareskills.io/post/twap-uniswap-v2"
+                            data-pin-media="https://static.wixstatic.com/media/935a00_f2678cb847b84a73bbb42c6caf5b1be4~mv2.png/v1/fill/w_347,h_148,al_c,lg_1,q_85/935a00_f2678cb847b84a73bbb42c6caf5b1be4~mv2.png"
+                            style="width: 146px; height: 62px; object-fit: cover; object-position: 50% 50%; max-width: 100%;"
+                            fetchpriority="high" data-load-done="">
+                        However, the prices are still “somewhat symmetric,” hence the choice of fixed point
+                        arithmetic
+                        representation must have the same capacity for the integers and for the decimals. If Eth is
+                        1,000 times more “valuable” than a USDC, then USDC is 1,000 times “less valuable” than USDC.
+                        To
+                        store this accurately, the fixed point number should have the same size on both sides of the
+                        decimal, hence Uniswap’s choice of u112x112.
+
+                        <h4>>> PriceCumulativeLast always increases until it overflows, then keeps going</h4>
+                        <p>
+                            Uniswap V2 was built before Solidity 0.8.0, thus arithmetic overflowed and underflowed
+                            by
+                            default. Correct modern implementations of the price oracle need to use the unchecked
+                            block
+                            to ensure everything overflows as expected.
+                            Eventually, the priceAccumulators and the block timestamp will overflow. In that case,
+                            the
+                            previous reserve will be higher than the new reserve. When the oracle computes the
+                            change in
+                            price, they will get a negative value. However, this won’t matter due to the rules of
+                            modular arithmetic.
+                        </p>
+                        <p>
+                            To make things simple let’s use an imaginary unsigned integers that overflow at 100.
+                        </p>
+                        <p>
+                            We snapshot the priceAccumulator at 80 and a few transactions/blocks later the
+                            priceAccumulator goes to 110, but it overflows to 10. We subtract 80 from 10, which
+                            gives
+                            -70. But the value is stored as an unsigned integer, so it gives -70 mod(100) which is
+                            30.
+                            That’s the same result we would expect if it didn’t overflow (110-80=30).
+                        </p>
+                        <p>
+                            This is true of all overflow boundaries, not just 100 in our example.
+                            Overflowing the timestamp or priceAccumulator does not cause issues because of how
+                            modular
+                            arithmetic works.
+                        </p>
+
+                        <h4>>> Overflowing the timestamp</h4>
+                        <p>
+                            The same thing happens when we overflow the timestamp. Because we are using a uint32 to
+                            represent it, there won’t be any negative numbers. Again, let’s assume we overflow at
+                            100
+                            for the sake of simplicity. If we snapshot at time 98 and consult the price oracle at
+                            time
+                            4, then 6 seconds have passed. 4 - 98 % 100 = 6, as expected.
+                        </p>
+
                     </div>
                 </div>
                 <hr class="breakLine">
 
-                <!-- Price Oracles -->
+                <!-- Calculating the Settlement Price of an AMM Swap -->
                 <div>
-                    <h3>>> Price Oracles</h3>
+                    <h3>>> Calculating the Settlement Price of an AMM Swap</h3>
+                    <div>
+                        <p>
+                            The swap() function on Uniswap V2 requires you to pre-calculate the amount of tokens to
+                            swap
+                            from the pool (including 0.3% in trading fees).
+                            Consider an ETH / USDC trading pair with 100 ETH and 100 USDC in the Liquidity Pool. For
+                            simplicity, this assumes 1 ETH is 1 USDC.
+                            Although the spot price of 1 ETH is 1 USDC and vice versa, this does not mean we can
+                            trade
+                            25 USDC for 25 ETH as this will not preserve the constant product formula.
+                        </p>
+                        <h4>>>Uniswap constant product formula implementation</h4>
+                        <p>
+                            In practice, the constant product formula is implemented through comparing the constant
+                            product of the liquidity pool before and after the trade to ensure it remains at least
+                            constant.
+                        </p>
+                        <p>
+                            Mathematical equation comparing constants before and after a swap, expressed as k_Before
+                            ≤
+                            k_After. This signifies that the constant k either increases or remains the same
+                            post-swap
+                            Uniswap does not stop you from giving the AMM more than you should, in the case that you
+                            do,
+                            it is your fault for underestimating how much you can withdraw, hence the ≤ sign.
+                        </p>
+                        <p>
+                            Expanding the equation above, we get the equivalent equation below:
+                            <img src="./blog-images/x-y-equation-simple.webp" width="500px" height="100px">
+                        <ul>
+                            <li>
+                                x_Before and y_Before is the quantity of each tokens in the pool before the swap.
+                            </li>
+                            <li>
+                                x_After and y_After is the quantity of tokens in the pool after the swap.
+                            </li>
+                        </ul>
+                        </p>
+                        <p>
+                            Uniswap V2 imposes a 0.3% AMM trading fee for every swap. When factoring in the fees,
+                            the
+                            constant product of the liquidity pool increases with each swap. This growth in the pool
+                            is
+                            the key incentives for liquidity providers. Only when liquidity providers withdraw their
+                            liquidity would the constant product of the pool decrease. We will show you how to
+                            calculate
+                            the swap with trading fees included towards the end of this article.
+                        </p>
+                        <h4>>> Why we cannot swap 25 ETH for 25 USDC</h4>
+                        <p>
+                            To determine if a swap is valid or not, we need to pre-calculate how the swap would
+                            affect
+                            the constant product of the pool. Does it remain at least the same?
+                        </p>
+                        <p>
+                            Swapping 25 ETH for 25 USDC would mean that we deposit 25 ETH into the AMM, and withdraw
+                            25
+                            USDC from it. This would adjust the pool’s liquidity to 125 ETH and 75 USDC. The AMM
+                            will
+                            reject this swap since the constant product of the pool decreases post swap
+                        </p>
+                        <img src="./blog-images/calculate-swap.webp" width="700px" height="250px">
+                        <p>
+                            The post-swap product is short of the pre-swap product, 10,000, which violates the
+                            constant
+                            product invariant. The graph below visualizes this swap.
+                        </p>
+                        <img src="https://static.wixstatic.com/media/706568_dec6cb523cff469186136ba8250a5ea9~mv2.gif"
+                            alt="GIF animation showing a graph of the invalid constant product equation 100 ETH x 100 USDC ≤ 125ETH x 125 USDC. "
+                            data-pin-url="https://www.rareskills.io/post/uniswap-v2-price-impact"
+                            data-pin-media="https://static.wixstatic.com/media/706568_dec6cb523cff469186136ba8250a5ea9~mv2.gif"
+                            style="object-fit: cover; max-width: 100%; width: 484px; height: 394px;"
+                            fetchpriority="high">
+                        Clearly, we cannot expect to withdraw 25 USDC — we will have to withdraw less to preserve
+                        the
+                        constant product invariant.
+                        <br>
+                        <br>
+                        <h4>>> Determining the Correct USDC Swap Amount</h4>
+                        <p>
+                            Circling back to the previous example, adding 25 ETH to the pool increases the ETH
+                            quantity
+                            to 125 ETH (100 + 25). The next task is to find the new, decreased quantity of USDC in
+                            the
+                            pool that preserves the constant product, thereby ensuring the AMM would accept it.
+                        </p>
+                        <img src="https://static.wixstatic.com/media/706568_43ac0f765249436baf4749d4c8e806a7~mv2.png/v1/fill/w_925,h_128,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/706568_43ac0f765249436baf4749d4c8e806a7~mv2.png"
+                            alt="Image of the equation 100 ETH \times 100 usdc ≤ 125 ETH \times (100USDC - \delta USDC)."
+                            data-pin-url="https://www.rareskills.io/post/uniswap-v2-price-impact"
+                            data-pin-media="https://static.wixstatic.com/media/706568_43ac0f765249436baf4749d4c8e806a7~mv2.png/v1/fill/w_1858,h_257,al_c,lg_1,q_90/706568_43ac0f765249436baf4749d4c8e806a7~mv2.png"
+                            style="width: 740px; height: 102px; object-fit: cover; object-position: 50% 50%; max-width: 100%;"
+                            fetchpriority="high" data-load-done="">
+                        We have an equation that reveals the maximum value of ΔUSDC that can be swapped for 25 ETH.
+                        <h4>>> Solving for ΔUSDC</h4>
+                        <p>
+                            We rearrange the equation to solve for ΔUSDC explicitly.
+                        </p>
+                        <img src="https://static.wixstatic.com/media/706568_72f51f996961410a83b3c5812489ac5d~mv2.gif"
+                            alt="GIf animation of reordering the equation 100 ETH \times 100 usdc ≤ 125 ETH \times (100USDC - \delta USDC) to \delta usdc ≤ 100 usdc - ((100ETH \times 100 usdc)/125ETH)."
+                            data-pin-url="https://www.rareskills.io/post/uniswap-v2-price-impact"
+                            data-pin-media="https://static.wixstatic.com/media/706568_72f51f996961410a83b3c5812489ac5d~mv2.gif"
+                            style="object-fit: cover; max-width: 100%; width: 740px; height: 197px;"
+                            fetchpriority="high">
+                        <img src="https://static.wixstatic.com/media/706568_0ec009fa64804c0c819aec4dcefe1259~mv2.png/v1/fill/w_618,h_246,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/706568_0ec009fa64804c0c819aec4dcefe1259~mv2.png"
+                            alt="Image of a series of equation solving for ΔUSDC."
+                            data-pin-url="https://www.rareskills.io/post/uniswap-v2-price-impact"
+                            data-pin-media="https://static.wixstatic.com/media/706568_0ec009fa64804c0c819aec4dcefe1259~mv2.png/v1/fill/w_1109,h_442,al_c,lg_1,q_90/706568_0ec009fa64804c0c819aec4dcefe1259~mv2.png"
+                            style="width: 494px; height: 197px; object-fit: cover; object-position: 50% 50%; max-width: 100%;"
+                            fetchpriority="high" data-load-done="">
+                        The pool now has 125 ETH and 80 USDC, which amounts to a constant product of 10,000.
+                        <img src="https://static.wixstatic.com/media/706568_ce878c0cdca9451e92374f6f626881bf~mv2.png/v1/fill/w_673,h_246,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/706568_ce878c0cdca9451e92374f6f626881bf~mv2.png"
+                            alt="Image of the equation 100 ETH x 100 USDC ≤ 125 ETH x 80 USDC and the equation 10,000 ≤ 10,000."
+                            data-pin-url="https://www.rareskills.io/post/uniswap-v2-price-impact"
+                            data-pin-media="https://static.wixstatic.com/media/706568_ce878c0cdca9451e92374f6f626881bf~mv2.png/v1/fill/w_1004,h_368,al_c,q_90/706568_ce878c0cdca9451e92374f6f626881bf~mv2.png"
+                            style="width: 538px; height: 197px; object-fit: cover; object-position: 50% 50%; max-width: 100%;"
+                            fetchpriority="high" data-load-done="">
+                        <p>
+                            Swapping 25 ETH for 20 USDC is the most amount of USDC you can extract from the AMM
+                            liquidity
+                            pool. This swap is accepted since it preserves the constant product formula. 20 USDC is
+                            one-fifth less than 25 USDC, hence we experienced slippage during this swap. Slippage is
+                            the
+                            degree to which the price moves as a result of our trade. If we placed a smaller trade,
+                            the
+                            price we end up paying would be close to 1 USDC : 1 ETH. But because our trade is large,
+                            we
+                            end
+                            up paying a higher price for less USDC, thus incurring a higher slippage.
+                        </p>
+                        <p>
+                            The generalized formula for calculating the swap can be expressed as follows:
+                        </p>
+                        <img src="https://static.wixstatic.com/media/706568_a7997300c3bc421fb5d90de584e8ecd3~mv2.png/v1/fill/w_371,h_151,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/706568_a7997300c3bc421fb5d90de584e8ecd3~mv2.png"
+                            alt="Image of the generalized formula for finding the quantity of y we can swap with x. Δy ≤ x - (xy/(x+Δx))"
+                            data-pin-url="https://www.rareskills.io/post/uniswap-v2-price-impact"
+                            data-pin-media="https://static.wixstatic.com/media/706568_a7997300c3bc421fb5d90de584e8ecd3~mv2.png/v1/fill/w_753,h_308,al_c,lg_1,q_85/706568_a7997300c3bc421fb5d90de584e8ecd3~mv2.png"
+                            style="width: 297px; height: 121px; object-fit: cover; object-position: 50% 50%; max-width: 100%;"
+                            fetchpriority="high" data-load-done="">
+                        <ul>
+                            <li>
+                                x and y represents the quantity of tokens in the liquidity pool before the swap
+                            </li>
+                            <li>
+                                Δx represents the amount of token deposited into the AMM
+                            </li>
+                            <li>
+                                Δy represents the amount swapped out of the AMM</li>
+                        </ul>
+
+                        <h4>>> Calculating the swap with fees</h4>
+                        <p>
+                            The calculations we performed above were “theoretical” which excluded trading fees. As
+                            mentioned before, Uniswap V2 applies a 0.3% trading fee for every swap, but the fees
+                            only
+                            apply towards the token deposited into the AMM. Say we swapped token X for token Y, 0.3%
+                            fee
+                            is taken out only from X, and not from Y.
+                        </p>
+
+                        How Uniswap V2 calculates the 0.3% fee is by dividing the deposited token into 2 parts:
+                        <ul>
+                            <li>Fee: 0.3%</li>
+                            <li>Amount available left for the swap: 99.7%</li>
+                        </ul>
+
+                        For 25 ETH, our fee and the amount available left for the swap would be:
+                        <ul>
+                            <li>Fee(0.3%): 0.075 ETH</li>
+                            <li>Amount available left for the swap(99.7%): 24.925 ETH</li>
+                        </ul>
+                        The fee is immediately excluded from this swap’s calculation, so the swapper will not be
+                        credited with the 0.3% fee portion.
+                        What’s left is the amount available for the swap which is 24.925 ETH. This is the actual
+                        amount that we are swapping USDC for from the pool.
+                        <p>
+                            Let’s solve for the maximum amount of USDC (ΔUSDC) we can withdraw out of the pool.
+                            Adding
+                            24.925 ETH to the pool would increase the ETH quantity to 124.925 ETH.
+                        </p>
+                        <img src="https://static.wixstatic.com/media/706568_82100b4d78904c1c9fa057d52ca20c67~mv2.png/v1/fill/w_925,h_184,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/706568_82100b4d78904c1c9fa057d52ca20c67~mv2.png"
+                            alt="Image of the constant product formula equation.  The formula shows the addition of 24.925 ETH to the pool, while the change in USDC (ΔUSDC) remains an unknown variable."
+                            data-pin-url="https://www.rareskills.io/post/uniswap-v2-price-impact"
+                            data-pin-media="https://static.wixstatic.com/media/706568_82100b4d78904c1c9fa057d52ca20c67~mv2.png/v1/fill/w_1584,h_314,al_c,q_90/706568_82100b4d78904c1c9fa057d52ca20c67~mv2.png"
+                            style="width: 740px; height: 147px; object-fit: cover; object-position: 50% 50%; max-width: 100%;"
+                            fetchpriority="high" data-load-done="">
+                        solving for ΔUSDC we get:
+                        <img src="https://static.wixstatic.com/media/706568_f3380932c22845af9fe92820f25a3fce~mv2.png/v1/fill/w_925,h_260,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/706568_f3380932c22845af9fe92820f25a3fce~mv2.png"
+                            alt="Image of a series equation to solve for ΔUSDC when traded for 24.925 ETH in a liquidity pool of 100 ETH and 100 USDC."
+                            data-pin-url="https://www.rareskills.io/post/uniswap-v2-price-impact"
+                            data-pin-media="https://static.wixstatic.com/media/706568_f3380932c22845af9fe92820f25a3fce~mv2.png/v1/fill/w_1500,h_422,al_c,q_90/706568_f3380932c22845af9fe92820f25a3fce~mv2.png"
+                            style="width: 740px; height: 208px; object-fit: cover; object-position: 50% 50%; max-width: 100%;"
+                            fetchpriority="high" data-load-done="">
+                        <p>
+                            Accounting for the 0.3% swapping fee, we could withdraw approximately 19.952 USDC from
+                            the
+                            AMM. This is less than the 20 USDC we could receive in the example with no fees. The
+                            primary
+                            difference in calculation when factoring in fees is that we multiply the deposited token
+                            by
+                            99.7%, 0.3% is set aside and allocated to the AMM. Given Δx is the deposited token and
+                            Δy is
+                            the withdrawn token amount, the general equation becomes:
+                        </p>
+                        <img src="https://static.wixstatic.com/media/706568_d3d7ed0067f44daca31b387c9ab3770b~mv2.png/v1/fill/w_441,h_123,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/706568_d3d7ed0067f44daca31b387c9ab3770b~mv2.png"
+                            alt="An image of the generalized equation used to calculate Δy, the amount of a token being removed from a liquidity pool, given a deposit of Δx into the pool"
+                            data-pin-url="https://www.rareskills.io/post/uniswap-v2-price-impact"
+                            data-pin-media="https://static.wixstatic.com/media/706568_d3d7ed0067f44daca31b387c9ab3770b~mv2.png/v1/fill/w_955,h_266,al_c,lg_1,q_85/706568_d3d7ed0067f44daca31b387c9ab3770b~mv2.png"
+                            style="width: 353px; height: 98px; object-fit: cover; object-position: 50% 50%; max-width: 100%;"
+                            fetchpriority="high" data-load-done="">
+                    </div>
+                </div>
+                <hr class="breakLine">
+
+                <!-- Swap function -->
+                <div>
+                    <h4>>> Swap function</h4>
+                    Here is the Uniswap-V2 swap() code:
+                    <img src="https://static.wixstatic.com/media/935a00_3c6633164b96444ebf6861c42e8dbb5b~mv2.png/v1/fill/w_925,h_576,al_c,q_90,usm_0.66_1.00_0.01,enc_auto/935a00_3c6633164b96444ebf6861c42e8dbb5b~mv2.png"
+                        alt="uniswap v2 swap function"
+                        data-pin-url="https://www.rareskills.io/post/uniswap-v2-swap-function"
+                        data-pin-media="https://static.wixstatic.com/media/935a00_3c6633164b96444ebf6861c42e8dbb5b~mv2.png/v1/fill/w_1752,h_1092,al_c,q_90/935a00_3c6633164b96444ebf6861c42e8dbb5b~mv2.png"
+                        style="width: 740px; height: 461px; object-fit: cover; object-position: 50% 50%; max-width: 100%;"
+                        fetchpriority="high" data-load-done="">
+                    Admittedly, this is a wall of code, but let’s break it down.
+                    <ul>
+                        <li>
+                            On line 170-171 (indicated with a yellow box), the function directly transfers out the
+                            amount of tokens that the trader requested in the function arguments. There is no place
+                            inside the function where tokens are transferred in. Scan the code and see if you can
+                            find
+                            where the tokens are transferred in, it doesn’t exist. But this does not mean we can
+                            just
+                            call swap and drain all the tokens we want to!
+                        </li>
+                        <li>
+                            The reason we can remove tokens right away is so that we can do flash loans. Of course,
+                            the
+                            require statement on line 182 (orange arrow) will require us to pay back the flash loan
+                            with
+                            interest.
+                        </li>
+                        <li>
+                            At the top of the function, there is a comment which says the function should be called
+                            from
+                            another smart contract which implements important safety checks. That means this
+                            function in
+                            particular is missing safety checks (red underline). We’ll want to determine what those
+                            are.
+                        </li>
+                        <li>
+                            The variables _reserve0 and _reserve1 (blue underline) are read on lines 161, 176-177,
+                            and
+                            182, but they are not written to in this function.
+                        </li>
+                        <li>
+                            Line 182 (orange arrow) does not strictly check if X × Y = K. It checks if
+                            balance1Adjusted
+                            × balance2Adjusted ≥ K. This is the only require statement that does something
+                            “interesting.” The other require statements check that values aren’t zero or that you
+                            aren’t
+                            sending the tokens to their own contract address.
+                        </li>
+                        <li>
+                            balance0 and balance1 are directly read from the actual balance of the pair contract
+                            using
+                            ERC20 balanceOf
+                        </li>
+                        <li>
+                            Line 172 (below the yellow box) is only executed if data is non-empty, otherwise it is
+                            not
+                            executed
+                            Using these observations, we will make sense of this function one feature at a time.
+                        </li>
+                    </ul>
+
+                    <h5>>> Flash Borrowing</h5>
+                    Users do not have to use the swap function for trading tokens, it can be used purely as a flash
+                    loan.
+                    <img src="https://static.wixstatic.com/media/935a00_a54daf3d2a764e2d83cf4f2db18c6c1e~mv2.png/v1/fill/w_925,h_575,al_c,q_90,usm_0.66_1.00_0.01,enc_auto/935a00_a54daf3d2a764e2d83cf4f2db18c6c1e~mv2.png"
+                        alt="uniswap v2 flash borrowing"
+                        data-pin-url="https://www.rareskills.io/post/uniswap-v2-swap-function"
+                        data-pin-media="https://static.wixstatic.com/media/935a00_a54daf3d2a764e2d83cf4f2db18c6c1e~mv2.png/v1/fill/w_1752,h_1088,al_c,q_90/935a00_a54daf3d2a764e2d83cf4f2db18c6c1e~mv2.png"
+                        style="width: 740px; height: 460px; object-fit: cover; object-position: 50% 50%; max-width: 100%;"
+                        fetchpriority="high" data-load-done="">
+                    <p>
+                        The borrowing contract simply requests the amount of tokens they wish to borrow (A) without
+                        collateral and they will be transferred to the contract (B).
+                        The data that should be provided with the function call is passed in as a function argument
+                        (C),
+                        and this will be passed to a function that implements
+                        IUniswapV2Callee. The function uniswapV2Call must pay back the flash loan plus the fee or
+                        the
+                        transaction will revert.
+                    </p>
+                    <b>Swap requires using a smart contract</b>
+                    <p>
+                        If a flash loan is not used, the incoming tokens must be sent as part of calling the swap
+                        function.
+                        It should be clear that only a smart contract is able to interact with a swap function,
+                        because
+                        an EOA cannot simultaneously send the incoming ERC20 tokens and call swap in one transaction
+                        without the aid of another smart contract.
+                    </p>
+                    <h5>>> Measuring the amount of incoming tokens</h5>
+                    The way Uniswap V2 “measures” the amount of tokens sent in is done on line 176 and 177, marked
+                    with
+                    the yellow box below.
+                    <img src="https://static.wixstatic.com/media/935a00_0b98b9ec5b0f46318c83353606b54f32~mv2.png/v1/fill/w_925,h_405,al_c,q_90,usm_0.66_1.00_0.01,enc_auto/935a00_0b98b9ec5b0f46318c83353606b54f32~mv2.png"
+                        alt="swap measure reserves and balances"
+                        data-pin-url="https://www.rareskills.io/post/uniswap-v2-swap-function"
+                        data-pin-media="https://static.wixstatic.com/media/935a00_0b98b9ec5b0f46318c83353606b54f32~mv2.png/v1/fill/w_1752,h_766,al_c,q_90/935a00_0b98b9ec5b0f46318c83353606b54f32~mv2.png"
+                        style="width: 740px; height: 324px; object-fit: cover; object-position: 50% 50%; max-width: 100%;"
+                        fetchpriority="high" data-load-done="">
+                    Remember, _reserve0 and _reserve1 are not updated inside this function. They reflect the balance
+                    of
+                    the contract before the new set of tokens were sent in as part of the swap.
+                    <p>
+                        One of two things can happen for each of the two tokens in the pair:
+                    </p>
+                    <ol>
+                        <li>
+                            The pool had a net increase in the amount of a particular token.
+                        </li>
+                        <li>
+                            The pool had a net decrease (or no change) in the amount of a particular token.
+                        </li>
+                    </ol>
+                    The way the code determines which situation happened with the following logic:
+                    <pre class="CnafS WU-Vc SbPYh" dir="auto" id="viewer-buv8m"><span class=""><span>currentContractbalanceX &gt; _reserveX - _amountXOut
+// alternatively
+currentContractBalanceX &gt; previousContractBalanceX - _amountXOut</span></span></pre>
+                    If it measures a net decrease, the ternary operator returns zero, otherwise it will measure the
+                    net
+                    gain of tokens in.
+                    <pre class="CnafS WU-Vc SbPYh" dir="auto"
+                        id="viewer-2r4ir"><span class=""><span>amountXIn = balanceX - (_reserveX - amountXOut)</span></span></pre>
+                    It is always the case that _reserveX > amountXOut because of the require statement on line 162.
+                    <img src="https://static.wixstatic.com/media/935a00_66290d79a547494282218b32b751005c~mv2.png/v1/fill/w_925,h_24,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_66290d79a547494282218b32b751005c~mv2.png"
+                        alt="" data-pin-url="https://www.rareskills.io/post/uniswap-v2-swap-function"
+                        data-pin-media="https://static.wixstatic.com/media/935a00_66290d79a547494282218b32b751005c~mv2.png/v1/fill/w_2176,h_56,al_c,lg_1,q_85/935a00_66290d79a547494282218b32b751005c~mv2.png"
+                        style="width: 740px; height: 19px; object-fit: cover; object-position: 50% 50%; max-width: 100%;"
+                        fetchpriority="high" data-load-done="">
+
+                    <b>Some examples.</b>
+                    <ul>
+                        <li>
+                            Suppose our previous balance was 10, amountOut is zero, and currentBalance is 12. That
+                            means
+                            the user deposited 2 tokens. amountXIn will be 2.
+                        </li>
+                        <li>
+                            Suppose our previous balance was 10, amountOut is 7, and currentBalance is 3. amountXIn
+                            will
+                            be 0.
+                        </li>
+                        <li>
+                            Suppose our previous balance was 10, amountOut is 7, and currentBalance is 2. amountXIn
+                            will
+                            still be zero, not -1. It is true that the pool had a net loss of 8 tokens, but
+                            amountXIn
+                            cannot be negative.
+                        </li>
+                        <li>
+                            Suppose our previous balance was 10, and amountOut is 6. If the currentBalance is 18,
+                            then
+                            the user “borrowed” 6 tokens but paid back 8 tokens.
+                        </li>
+                    </ul>
+                    <p>
+                        Conclusion: amount0In and amount1In will reflect the net gain if there was a net gain for
+                        the
+                        token,
+                        and they will be zero if there was a net loss of that token.
+                    </p>
+
+                    <h5>>> Balancing XY = K</h5>
+                    <p>
+                        Now that we know how many tokens the user sent in, let’s see how to enforce XY = K.
+                        The code again is
+                    </p>
+                    <img src="https://static.wixstatic.com/media/935a00_b7e8d0adcb204f4b9d41a0a297aab8b0~mv2.png/v1/fill/w_925,h_59,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_b7e8d0adcb204f4b9d41a0a297aab8b0~mv2.png"
+                        alt="" data-pin-url="https://www.rareskills.io/post/uniswap-v2-swap-function"
+                        data-pin-media="https://static.wixstatic.com/media/935a00_b7e8d0adcb204f4b9d41a0a297aab8b0~mv2.png/v1/fill/w_2083,h_132,al_c,lg_1,q_85/935a00_b7e8d0adcb204f4b9d41a0a297aab8b0~mv2.png"
+                        style="width: 740px; height: 47px; object-fit: cover; object-position: 50% 50%; max-width: 100%;"
+                        fetchpriority="high" data-load-done="">
+                    Uniswap V2 charges a hardcoded 0.3% per swap, which is why we see the numbers 1000 and 3 at
+                    play,
+                    but lets simplify this by changing it to the case where Uniswap V2 charged no fees. This means
+                    we
+                    can remove the .sub(amountXIn.mul(3)) term and not multiply by 1000 on lines 180 to 181 or
+                    1000**2
+                    on line 182.
+                    <p>
+                        The new code would be
+                    </p>
+                    <pre class="CnafS WU-Vc SbPYh" dir="auto"
+                        id="viewer-3hjm2"><span class=""><span>require(balance0 * balance1 &gt;= reserve0 * reserve1, "K");</span></span></pre>
+                    <p>
+                        This is saying
+                    </p>
+                    <img src="https://static.wixstatic.com/media/935a00_7f13068c31e7432a9f4c6cb20409ad0d~mv2.png/v1/fill/w_438,h_99,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_7f13068c31e7432a9f4c6cb20409ad0d~mv2.png"
+                        alt="increasing K in uniswap"
+                        data-pin-url="https://www.rareskills.io/post/uniswap-v2-swap-function"
+                        data-pin-media="https://static.wixstatic.com/media/935a00_7f13068c31e7432a9f4c6cb20409ad0d~mv2.png/v1/fill/w_1109,h_250,al_c,lg_1,q_85/935a00_7f13068c31e7432a9f4c6cb20409ad0d~mv2.png"
+                        style="width: 350px; height: 79px; object-fit: cover; object-position: 50% 50%; max-width: 100%;"
+                        fetchpriority="high" data-load-done="">
+
+                    <b>K is not really constant</b>
+                    <p>
+                        It’s a bit misleading to say “K remains constant” even though the AMM formula is sometimes
+                        referred to as a “constant product formula.”
+                        Think about it this way, if someone donated tokens to the pool and changed the value of K,
+                        we
+                        wouldn’t want to stop them because they made us liquidity providers richer, right?
+                    </p>
+                    <p>
+                        Uniswap V2 doesn’t prevent you from “paying too much” i.e. transferring in too many tokens
+                        in
+                        during the swap (this is related to one of the safety checks, which we will get to later).
+                        We would be upset if there was a net loss in the pool, which is what the require statement
+                        is
+                        checking. If K gets larger, it means the pool got larger, and as liquidity providers, that’s
+                        what we want.
+                    </p>
+
+                    <b>Accounting for fees</b>
+                    <p>
+                        But not only do we want K to get larger, we want it to get larger by at least an amount that
+                        enforces the 0.3% fee.
+                        Specifically, the 0.3% fee applies to the size of our trade, not the size of the pool. It
+                        only
+                        applies to the tokens that go in, not on the tokens that go out. Some examples:
+                    </p>
+                    <ul>
+                        <li>
+                            Suppose we put in 1000 of token0 and remove 1000 of token1. We would need to pay a fee
+                            of 3
+                            on token0 and no fee on token1.
+                        </li>
+                        <li>
+                            Suppose we borrow 1000 of token0 and do not borrow token1. We are going to have to put
+                            1000
+                            of token0 back in, and we will have to pay a 0.3% fee on that — 3 of token0.
+                        </li>
+                    </ul>
+                    <p>
+                        Observe that if we flash borrow one of the tokens, it results in the same fee as swapping
+                        that
+                        token
+                        for the same amount. You pay fees on tokens in, not on tokens out. But if you don’t put
+                        tokens
+                        in,
+                        there is no way for you to borrow or swap.
+                        Remember, reserve0 and reserve1 represent the old balances, and balance0 and balance1
+                        represent
+                        the
+                        updated balances.
+                    </p>
+                    <p>
+                        With that in mind, let’s write the code below should be self-explanatory. The multiplying by
+                        1000 and 3 is to simply accomplish “fractional” multiplication since it cancels out in the
+                        end.
+                    </p>
+                    <img src="https://static.wixstatic.com/media/935a00_2f3123e5591b44359ad9eb70393e71e6~mv2.png/v1/fill/w_925,h_59,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_2f3123e5591b44359ad9eb70393e71e6~mv2.png"
+                        alt="" data-pin-url="https://www.rareskills.io/post/uniswap-v2-swap-function"
+                        data-pin-media="https://static.wixstatic.com/media/935a00_2f3123e5591b44359ad9eb70393e71e6~mv2.png/v1/fill/w_2083,h_132,al_c,lg_1,q_85/935a00_2f3123e5591b44359ad9eb70393e71e6~mv2.png"
+                        style="width: 740px; height: 47px; object-fit: cover; object-position: 50% 50%; max-width: 100%;"
+                        fetchpriority="high" data-load-done="">
+                    <p>
+                        The code is accomplishing the following formula:
+                    </p>
+                    <img src="https://static.wixstatic.com/media/935a00_16d63bb2d51d41739274d039934b0077~mv2.png/v1/fill/w_925,h_104,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_16d63bb2d51d41739274d039934b0077~mv2.png"
+                        alt="measuring fees formula"
+                        data-pin-url="https://www.rareskills.io/post/uniswap-v2-swap-function"
+                        data-pin-media="https://static.wixstatic.com/media/935a00_16d63bb2d51d41739274d039934b0077~mv2.png/v1/fill/w_1515,h_171,al_c,lg_1,q_85/935a00_16d63bb2d51d41739274d039934b0077~mv2.png"
+                        style="width: 740px; height: 83px; object-fit: cover; object-position: 50% 50%; max-width: 100%;"
+                        fetchpriority="high" data-load-done="">
+                    <p>
+                        That is, the new balance must increase by 0.3% of the amount in. In the code, the formula is
+                        scaled by multiplying each term by 1,000 because Solidity doesn’t have floating point
+                        numbers,
+                        but the math formula shows what the code is trying to accomplish.
+                    </p>
+
+                    <h5>>> Updating Reserves</h5>
+                    <p>
+                        Now that the trade is completed, then the “previous balance” must be replaced with the
+                        current
+                        balance. This happens in the call to the _update() function at the end of swap().
+                    </p>
+                    <img src="https://static.wixstatic.com/media/935a00_5193907a21a44de0bb29396c6f9e51ca~mv2.png/v1/fill/w_925,h_568,al_c,q_90,usm_0.66_1.00_0.01,enc_auto/935a00_5193907a21a44de0bb29396c6f9e51ca~mv2.png"
+                        alt="update reserves function call"
+                        data-pin-url="https://www.rareskills.io/post/uniswap-v2-swap-function"
+                        data-pin-media="https://static.wixstatic.com/media/935a00_5193907a21a44de0bb29396c6f9e51ca~mv2.png/v1/fill/w_1702,h_1044,al_c,q_90/935a00_5193907a21a44de0bb29396c6f9e51ca~mv2.png"
+                        style="width: 740px; height: 454px; object-fit: cover; object-position: 50% 50%; max-width: 100%;"
+                        fetchpriority="high" data-load-done="">
+                    <h5>>> The _update() function</h5>
+                    <img src="https://static.wixstatic.com/media/935a00_02048778d249465daee1f467f739199a~mv2.png/v1/fill/w_925,h_346,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_02048778d249465daee1f467f739199a~mv2.png"
+                        alt="update reserves in _update function"
+                        data-pin-url="https://www.rareskills.io/post/uniswap-v2-swap-function"
+                        data-pin-media="https://static.wixstatic.com/media/935a00_02048778d249465daee1f467f739199a~mv2.png/v1/fill/w_1460,h_546,al_c,q_90/935a00_02048778d249465daee1f467f739199a~mv2.png"
+                        style="width: 740px; height: 277px; object-fit: cover; object-position: 50% 50%; max-width: 100%;"
+                        fetchpriority="high" data-load-done="">
+                    <p>
+                        There is a lot of logic here to handle the TWAP oracle, but all we care about for now is
+                        lines
+                        82 an 83 where the storage variables reserve0 and reserve1 are updated to reflect the
+                        changed
+                        balances. The arguments _reserve0 and _reserve1 are used to update the oracle, but they are
+                        not
+                        stored.
+                    </p>
+
+
+                    <h5>>> Safety Checks</h5>
+                    There are two things that can go wrong:
+                    <ol>
+                        <li>
+                            The amountIn is not enforce to be optimal, so the user might overpay for the swap
+                        </li>
+                        <li>
+                            AmountOut has no flexibility as it is supplied as a parameter argument. If the amountIn
+                            turns out to not be sufficient relative to amountOut, the transaction will revert and
+                            gas
+                            will be wasted.
+                        </li>
+                        These circumstances can happen if someone frontruns a transaction (intentionally or not) and
+                        changes the ratio of assets in the pool in an undesirable direction.
+                </div>
+                <hr class="breakLine">
+
+                <!-- Mint and Burn Functions -->
+                <div>
+                    <h4>>> Mint and Burn Functions</h4>
+                    <p>
+                        The lifecycle of Uniswap V2 is someone mints LP tokens (supplies liquidity, i.e. tokens to
+                        the
+                        pool) for the first time, then a second depositor mints liquidity, swaps happen, then
+                        eventually
+                        the liquidity providers burn their LP tokens to redeem the pool tokens.
+                        It turns out to be easier to study these functions in reverse — burning, minting liquidity,
+                        then
+                        minting the initial liquidity.
+                    </p>
+
+                    <h5>>> Uniswap V2 Burn</h5>
+                    <p>
+                        Before liquidity tokens can be burned, there needs to be liquidity in the pool, so let’s
+                        make
+                        that assumption. We assume that there are two tokens in the system: token0 and token1.
+                    </p>
+                    <p>
+                        We’ve annotated the burn function below, we will explain the parts that aren’t totally
+                        obvious.
+                    </p>
+                    <img src="https://static.wixstatic.com/media/935a00_2dd6291bf39345298be8890801358bfb~mv2.png/v1/fill/w_925,h_456,al_c,q_90,usm_0.66_1.00_0.01,enc_auto/935a00_2dd6291bf39345298be8890801358bfb~mv2.png"
+                        alt="uniswap v2 burn function"
+                        data-pin-url="https://www.rareskills.io/post/uniswap-v2-mint-and-burn"
+                        data-pin-media="https://static.wixstatic.com/media/935a00_2dd6291bf39345298be8890801358bfb~mv2.png/v1/fill/w_1750,h_864,al_c,q_90/935a00_2dd6291bf39345298be8890801358bfb~mv2.png"
+                        style="width: 740px; height: 365px; object-fit: cover; object-position: 50% 50%; max-width: 100%;"
+                        fetchpriority="high" data-load-done="">
+                    <p>
+                        On line 140 (purple box), liquidity is measured by the amount of LP tokens owned by the pool
+                        contract. It is assumed that the burner sent in LP tokens before calling burn, but advisably
+                        as
+                        part of one transaction. (If they are sent as two transactions, someone else can burn your
+                        LP
+                        tokens and remove your liquidity!) The amount the user sent to the contract will be burned.
+                        In
+                        general, we can assume that the contract will have zero balance of LP tokens, because if LP
+                        tokens are just sitting in the pair contract, someone will burn them and claim some of the
+                        token0 and token1 for free. The mechanism of sending tokens as part of the transaction was
+                        introduced in the article on Uniswap V2 Swap.
+
+                    </p>
+                    <p>
+                        The red boxes on lines 142 and 154 denote fees, we will skip those for now as Uniswap does
+                        not
+                        apply fees to liquidity providers.
+                    </p>
+                    <p>
+                        The orange boxes on lines 144 to 145 are where the amounts that the LP provider will get
+                        back
+                        are calculated. If the total supply of liquidity tokens is 1,000, and they burn 100 LP
+                        tokens,
+                        then they get 10% of the token0 and token1 held by the pool. Liquidity / totalSupply is
+                        their
+                        burned share of the total supply of LP tokens.
+                    </p>
+                    <p>
+                        The blue box on line 147 to 149 is where the LP tokens are actually burned and the token0
+                        and
+                        token1 are sent to the liquidity provider.
+                    </p>
+                    <p>
+                        The (yellow box) on lines 150-151 updates balance variables so that the call to _update on
+                        line
+                        153 (green box) can update the _reserve variables. Aside from updating the TWAP, the _update
+                        function simply updates the _reserve variables.
+                    </p>
+                    <img src="https://static.wixstatic.com/media/935a00_7a4116cf8b0d468193d6b29eddba4319~mv2.png/v1/fill/w_925,h_338,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_7a4116cf8b0d468193d6b29eddba4319~mv2.png"
+                        alt="uniswap v2 _update function"
+                        data-pin-url="https://www.rareskills.io/post/uniswap-v2-mint-and-burn"
+                        data-pin-media="https://static.wixstatic.com/media/935a00_7a4116cf8b0d468193d6b29eddba4319~mv2.png/v1/fill/w_1484,h_542,al_c,q_90/935a00_7a4116cf8b0d468193d6b29eddba4319~mv2.png"
+                        style="width: 740px; height: 270px; object-fit: cover; object-position: 50% 50%; max-width: 100%;"
+                        fetchpriority="high" data-load-done="">
+
+                    <b>Safety checks</b>
+                    <p>
+                        The amount of token0 and token1 that the liquidity provider gets depends on the ratio of the
+                        LP
+                        tokens they burn to the total supply of LP tokens. However, the ratio can change before the
+                        burn
+                        transaction is confirmed. This means that the contract interacting with burn needs to
+                        implement
+                        slippage checks.
+                    </p>
+
+                    <h5>>> Minting liquidity when the pool is not empty</h5>
+                    <p>
+                        Here is the mint liquidity function. Much of the functionality is similar to burn, so we
+                        will
+                        not repeat the parts that should be obvious.
+                    </p>
+                    <img src="https://static.wixstatic.com/media/935a00_56eab68227d04143a9069541463f42bb~mv2.png/v1/fill/w_925,h_449,al_c,q_90,usm_0.66_1.00_0.01,enc_auto/935a00_56eab68227d04143a9069541463f42bb~mv2.png"
+                        alt="uniswap v2 mint function"
+                        data-pin-url="https://www.rareskills.io/post/uniswap-v2-mint-and-burn"
+                        data-pin-media="https://static.wixstatic.com/media/935a00_56eab68227d04143a9069541463f42bb~mv2.png/v1/fill/w_2192,h_1062,al_c,q_95/935a00_56eab68227d04143a9069541463f42bb~mv2.png"
+                        style="width: 740px; height: 359px; object-fit: cover; object-position: 50% 50%; max-width: 100%;"
+                        fetchpriority="high" data-load-done="">
+                    <p>
+                        If the pool empty, that is, liquidity tokens have a total supply of zero, then no liquidity
+                        has
+                        been provided yet. This is checked on line 119 (yellow box). In this section, we focus on
+                        the
+                        case where liquidity has already been provided (yellow box on line 123).
+
+                        The liquidity that is credited to the user, and later minted to them on line 126 (green
+                        box), is
+                        the lesser of two values.
+                    </p>
+                    <img src="https://static.wixstatic.com/media/935a00_59707ada357d4b1caafae749d59b8cf5~mv2.png/v1/fill/w_925,h_21,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_59707ada357d4b1caafae749d59b8cf5~mv2.png"
+                        alt="liquidity calculation"
+                        data-pin-url="https://www.rareskills.io/post/uniswap-v2-mint-and-burn"
+                        data-pin-media="https://static.wixstatic.com/media/935a00_59707ada357d4b1caafae749d59b8cf5~mv2.png/v1/fill/w_2878,h_67,al_c,lg_1,q_85/935a00_59707ada357d4b1caafae749d59b8cf5~mv2.png"
+                        style="width: 740px; height: 17px; object-fit: cover; object-position: 50% 50%; max-width: 100%;"
+                        fetchpriority="high" data-load-done="">
+                    <p>
+                        he ratio that line of code is measuring is amount0 / _reserve0 — scaled by the totalSupply
+                        of LP
+                        tokens.
+                    </p>
+                    <p>
+                        Let’s say there are 10 token0 and 10 token1. If the user supplied 10 token0 and 0 token1
+                        they
+                        will get the minimum of (10/10, 0/10) and get zero liquidity tokens back!
+                        Another example: if they increase the supply of token0 by 5% and token1 by 10%, they will
+                        only
+                        get minted 5% of the supply of LP tokens (remember, this ratio is scaled by _totalSupply
+                        which
+                        is the current supply of LP tokens).
+                    </p>
+                    <p>
+                        The fact that the user will get the worse of the two ratios (amount0 / _reserve0 or amount1
+                        /
+                        _reserve1) they provide incentivizes them to increase the supply of token0 and token1
+                        without
+                        changing the ratio of token0 and token1.
+                    </p>
+                    <p>
+                        Why enforce this? Let’s say the pool currently has 100 of token0 and 1 of token1, and the
+                        supply
+                        of LP tokens is 1. Let’s say the total value, in dollars, of both tokens is $100 each, so
+                        the
+                        total value of the pool is $200.
+                    </p>
+                    <p>
+                        If we took the maximum of the two ratios, someone could supply one additional token1 (at a
+                        cost
+                        of $100) and raise the pool value to $300. They’ve increase the pool value by 50%. However,
+                        under the maximum calculation, they would get minted 1 LP tokens, meaning they own 50% of
+                        the
+                        supply of the LP tokens, since the total circulating supply is now 2 LP tokens. Now they
+                        control
+                        50% of the $300 pool (worth $150) by only depositing $100 of value. This is clearly stealing
+                        from other LP providers.
+                    </p>
+
+                    <b>Supply Ratio Safety Check</b>
+                    <p>
+                        The user might try to respect the token ratios, but if another transaction executes in front
+                        of
+                        them and changes the balance of token 0 to token 1, then they will get fewer liquidity
+                        tokens
+                        back than they expected.
+                        Uniswap doesn't require exact amounts because otherwise the transaction would likely revert.
+                        Another transaction executed first would change the requirement between when the minter sent
+                        the
+                        transaction and when it was included in the block.
+                    </p>
+
+                    <b>TotalSupply safety check</b>
+                    <p>
+                        Just like the burn case, the totalSupply of LP tokens could change at the time, so some
+                        slippage
+                        protection must be implemented.
+                    </p>
+
+                    <h5>>> The first minter problem</h5>
+                    <p>
+                        Like any LP pool, Uniswap V2 needs defense against the “inflation attack.” We’ve described
+                        this
+                        problem, and defense against it, in our article on ERC 4626, so we won’t repeat it here.
+                        Uniswap
+                        V2’s defense is to burn first MINIMUM_LIQUIDITY tokens to ensure no-one owns the entire
+                        supply
+                        of LP tokens and can easily manipulate the price. Again, please refer to the other article
+                        if
+                        you are unfamiliar with this attack vector.
+                    </p>
+                    <img src="https://static.wixstatic.com/media/935a00_0df0a44406254e09803828cdf9a520b6~mv2.png/v1/fill/w_925,h_40,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_0df0a44406254e09803828cdf9a520b6~mv2.png"
+                        alt="minimum liquidity" data-pin-url="https://www.rareskills.io/post/uniswap-v2-mint-and-burn"
+                        data-pin-media="https://static.wixstatic.com/media/935a00_0df0a44406254e09803828cdf9a520b6~mv2.png/v1/fill/w_1431,h_62,al_c,lg_1,q_85/935a00_0df0a44406254e09803828cdf9a520b6~mv2.png"
+                        style="width: 740px; height: 32px; object-fit: cover; object-position: 50% 50%; max-width: 100%;"
+                        fetchpriority="high" data-load-done="">
+
+                    <h5>>> Why Uniswap Calculates Liquidity as Square Root K</h5>
+                    <p>
+                        The more interesting question is why Uniswap V2 takes the square root of the product of the
+                        tokens supplied to calculate the amount of LP shares to mint.
+                    </p>
+                    <img src="https://static.wixstatic.com/media/935a00_7b77ed55888b43a6bdb1aae90fb890bd~mv2.png/v1/fill/w_925,h_68,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_7b77ed55888b43a6bdb1aae90fb890bd~mv2.png"
+                        alt="liquidity as square root k"
+                        data-pin-url="https://www.rareskills.io/post/uniswap-v2-mint-and-burn"
+                        data-pin-media="https://static.wixstatic.com/media/935a00_7b77ed55888b43a6bdb1aae90fb890bd~mv2.png/v1/fill/w_2263,h_166,al_c,lg_1,q_90/935a00_7b77ed55888b43a6bdb1aae90fb890bd~mv2.png"
+                        style="width: 740px; height: 54px; object-fit: cover; object-position: 50% 50%; max-width: 100%;"
+                        fetchpriority="high" data-load-done="">
+                    <p>
+                        Specifically, liquidity = sqrt(amount0 * amount) after subtracting the minimum liquidity.
+                    </p>
+
+                    <h5>>> Doubling Liquidity</h5>
+                    <p>
+                        Let’s suppose we didn’t measure liquidity with the square root function and we start with 10
+                        of
+                        token0 and 10 of token1 in the pool. Later on, the pool has 20 of token0 and 20 of token1 in
+                        the
+                        pool.
+                    </p>
+                    <p>
+                        Intuitively, did the liquidity double or quadruple? Because if we don’t take the square
+                        root,
+                        liquidity would start at 100 (10 × 10) and end up at 400 (20 × 20). Arguably, liquidity did
+                        not
+                        quadruple. At first, the maximum of token0 you could obtain was (asymptotically) 100, but
+                        after
+                        the growth in liquidity, the “depth” of the liquidity for that token doubled, not
+                        quadrupled.
+                    </p>
+                    <p>
+                        But how does this matter if future liquidity providers are not calculating liquidity using
+                        the
+                        square root while minting or burning? We saw new liquidity providers are “forced” to supply
+                        assets at the current rate, and burners can only redeem at the current rate — no square
+                        roots
+                        are involved.
+                        The answer lies in how Uniswap would have collected fees from LPs if it chose to do so.
+                    </p>
+
+                    <h5>>> Fees</h5>
+                    <p>
+                        Going back to our earlier example of the pool growing from 100 of token0 and 100 of token1,
+                        to
+                        200 of each, the profit of the liquidity provider is 100%, so they should pay a fee
+                        proportional
+                        to that amount. If we measured the size of the pool from 100 to 400, then they would have to
+                        pay
+                        fees on quadruple profit.
+                    </p>
+                    <p>
+                        Uniswap opts to charge fees during liquidity removal because charging a protocol fee during
+                        swapping would increase the gas cost of a very common operation.
+                        Uniswap V2 never actually turned on the protocol fee, so this discussion is a bit
+                        theoretical.
+                    </p>
+                </div>
+                <hr class="breakLine">
+
+                <!-- MintFee -->
+                <div>
+                    <h4>>> MintFee</h4>
+                    <p>
+                        Uniswap V2 was designed to collect 1/6th of the swap fees to the protocol. Since a swap fee
+                        is
+                        0.3%, 1/6th of that is 0.05%, so 0.05% of every trade would go to the protocol.
+                    </p>
+
+                    <h5>>> Collecting protocol fees during swaps is inefficient</h5>
+                    <p>
+                        It would be inefficient to collect 0.05% of the fee on every trade because that would
+                        require
+                        additional token transfers. Transferring ERC20 tokens requires a storage update, so
+                        transferring
+                        to two addresses instead of one would be considerably more expensive.
+                    </p>
+                    <p>
+                        Therefore, the fee is collected when a liquidity provider calls burn or mint. Since these
+                        operations are infrequent compared to swapping tokens, this will lead to gas savings. To
+                        collect
+                        the mintFee, the contract calculates the amount of fees collected since that last happened,
+                        and
+                        mints enough LP tokens to the beneficiary address such that the beneficiary is entitled to
+                        1/6th
+                        of the fee.
+                    </p>
+
+                    <h5>>> Terminology of fee and mintFee</h5>
+                    <p>
+                        To avoid confusion in terminology, we refer to "fee" as the 0.3% collected from traders
+                        during
+                        the swap, and the "mintFee" the 1/6th of the 0.3% fee.
+                    </p>
+
+                    <h5>>> Computing the mintFee assumptions</h5>
+                    <p>
+                        For this to work, Uniswap V2 relies on the following two invariants:
+                    </p>
+                    <ul>
+                        <li>
+                            If mint and burn are not called, the liquidity of the pool can only increase.
+                        </li>
+                        <li>
+                            The increase in liquidity is purely due to fees (or donations).
+                        </li>
+                        By measuring the increase in liquidity since the last mint or burn, the pool knows how much
+                        fees
+                        were collected.
+
+                        <h5>>> Example calculation of mintFee</h5>
+                        <p>
+                            Suppose at t₁ the pool starts at 10 token0 and 10 token1.
+                            After a lot of trading and fee collection, the new pool balance is 40 token0 and 40
+                            token1
+                            at t₂.
+                        </p>
+                        <p>
+                            Liquidity is measured as the square root of the product of the two tokens, i.e.
+                            liquidity =
+                            sqrt(xy). The liquidity was 10 at t₁ and 40 at t₂, sqrt(100) and sqrt(1600)
+                            respectively. We
+                            are going to charge a fee on the growth from 10 to 40.
+                        </p>
+                        <p>
+                            Specifically, 3/4ths, or 30 units of liquidity of the pool is due to fees. We want to
+                            mint
+                            enough LP tokens, the “mintFee” such that the beneficiary receives 1/6th of the “fee
+                            portion” of the pool. That is, they should be entitled to 5 units of liquidity (30 / 6).
+                        </p>
+                        <p>
+                            Remember, the mint fee is dilutive. We mint more such that the proportional ownership of
+                            the
+                            liquidity providers is reduced.
+                            How do we compute this in general?
+                        </p>
+                        Let’s use the following notation:
+                        <img src="https://static.wixstatic.com/media/935a00_99f23a1a763b456a8aba147844bba6c6~mv2.png/v1/fill/w_374,h_150,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_99f23a1a763b456a8aba147844bba6c6~mv2.png"
+                            alt=""
+                            style="width: 299px; height: 120px; object-fit: cover; object-position: 50% 50%; max-width: 100%;"
+                            data-pin-url="https://www.rareskills.io/post/uniswap-v2-mintfee"
+                            data-pin-media="https://static.wixstatic.com/media/935a00_99f23a1a763b456a8aba147844bba6c6~mv2.png/v1/fill/w_806,h_325,al_c,lg_1,q_85/935a00_99f23a1a763b456a8aba147844bba6c6~mv2.png"
+                            fetchpriority="high" data-load-done="">
+                        The key insight is the invariant
+                        <img src="https://static.wixstatic.com/media/935a00_550fab79e53845979581d8a5d6f37209~mv2.png/v1/fill/w_143,h_93,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_550fab79e53845979581d8a5d6f37209~mv2.png"
+                            alt=""
+                            style="width: 114px; height: 74px; object-fit: cover; object-position: 50% 50%; max-width: 100%;"
+                            data-pin-url="https://www.rareskills.io/post/uniswap-v2-mintfee"
+                            data-pin-media="https://static.wixstatic.com/media/935a00_550fab79e53845979581d8a5d6f37209~mv2.png/v1/fill/w_246,h_160,al_c,lg_1,q_85/935a00_550fab79e53845979581d8a5d6f37209~mv2.png"
+                            fetchpriority="high" data-load-done="">
+                        That is, if the mintFee η can redeem the amount of liquidity due to the protocol 𝑝, then
+                        the
+                        original LP supply 𝑠 can redeem the rest of the pool 𝑑.
+                        <p>
+                            The graphic below solves for η in terms of the change in liquidity.
+                        </p>
+                        <img src="https://static.wixstatic.com/media/935a00_b6460940fa6f4d3a8e9c8bfc2d5701e7~mv2.jpg/v1/fill/w_925,h_694,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_b6460940fa6f4d3a8e9c8bfc2d5701e7~mv2.jpg"
+                            alt=""
+                            style="width: 740px; height: 555px; object-fit: cover; object-position: 50% 50%; max-width: 100%;"
+                            data-pin-url="https://www.rareskills.io/post/uniswap-v2-mintfee"
+                            data-pin-media="https://static.wixstatic.com/media/935a00_b6460940fa6f4d3a8e9c8bfc2d5701e7~mv2.jpg/v1/fill/w_2160,h_1620,al_c,q_90/935a00_b6460940fa6f4d3a8e9c8bfc2d5701e7~mv2.jpg"
+                            fetchpriority="high" data-load-done="">
+                        With that derivation in mind, the bulk of the Uniswap V2 _mintFee function should be
+                        self-explanatory. Here are some changes in notation:
+                        <ul>
+                            <li>current liquidity after fees ℓ₂ is rootK</li>
+                            <li>previous liquidity is kLast</li>
+                            <li>the supply of LP tokens before dilution s is totalSupply</li>
+                            <li>the function is state changing, it mints the mintFee inside the function rather than
+                                return the calculation of the mintFee (blue highlight)</li>
+                            <li>the fee can be switched on an off with the flag feeOn which we haven’t discussed yet
+                            </li>
+                        </ul>
+                        <img src="https://static.wixstatic.com/media/935a00_dc3d8ea8db88403aadba4d2ee1c48d05~mv2.png/v1/fill/w_925,h_568,al_c,q_90,usm_0.66_1.00_0.01,enc_auto/935a00_dc3d8ea8db88403aadba4d2ee1c48d05~mv2.png"
+                            alt=""
+                            style="width: 740px; height: 454px; object-fit: cover; object-position: 50% 50%; max-width: 100%;"
+                            data-pin-url="https://www.rareskills.io/post/uniswap-v2-mintfee"
+                            data-pin-media="https://static.wixstatic.com/media/935a00_dc3d8ea8db88403aadba4d2ee1c48d05~mv2.png/v1/fill/w_1870,h_1148,al_c,q_95/935a00_dc3d8ea8db88403aadba4d2ee1c48d05~mv2.png"
+                            fetchpriority="high" data-load-done="">
+                        <p>
+                            We will dive into this function some more, but first we want to note where kLast gets
+                            updated.
+                        </p>
+
+                        <h5>>>Where klast gets updated</h5>
+                        <p>
+                            In the code above, kLast is not set unless feeOn is switched to false. It is set at the
+                            completion of mint and burn but not swap because we are interested in measuring the
+                            growth
+                            of fees due to swaps between liquidity deposit and withdrawal events. The places kLast
+                            is
+                            set is marked with a yellow box.
+                        </p>
+
+                        <b>Mint function</b>
+                        <img src="https://static.wixstatic.com/media/935a00_fd8c409236f4494b9e175a7bac3b6cd4~mv2.png/v1/fill/w_925,h_496,al_c,q_90,usm_0.66_1.00_0.01,enc_auto/935a00_fd8c409236f4494b9e175a7bac3b6cd4~mv2.png"
+                            alt=""
+                            style="width: 740px; height: 397px; object-fit: cover; object-position: 50% 50%; max-width: 100%;"
+                            data-pin-url="https://www.rareskills.io/post/uniswap-v2-mintfee"
+                            data-pin-media="https://static.wixstatic.com/media/935a00_fd8c409236f4494b9e175a7bac3b6cd4~mv2.png/v1/fill/w_2410,h_1292,al_c,q_95/935a00_fd8c409236f4494b9e175a7bac3b6cd4~mv2.png"
+                            fetchpriority="high" data-load-done="">
+
+                        <B>Burn function</B>
+                        <img src="https://static.wixstatic.com/media/935a00_d75b0789f82249f79c4b42225747e368~mv2.png/v1/fill/w_925,h_514,al_c,q_90,usm_0.66_1.00_0.01,enc_auto/935a00_d75b0789f82249f79c4b42225747e368~mv2.png"
+                            alt=""
+                            style="width: 740px; height: 411px; object-fit: cover; object-position: 50% 50%; max-width: 100%;"
+                            data-pin-url="https://www.rareskills.io/post/uniswap-v2-mintfee"
+                            data-pin-media="https://static.wixstatic.com/media/935a00_d75b0789f82249f79c4b42225747e368~mv2.png/v1/fill/w_2410,h_1340,al_c,q_95/935a00_d75b0789f82249f79c4b42225747e368~mv2.png"
+                            fetchpriority="high" data-load-done="">
+
+                        <h5>>> The feeOn Switch</h5>
+                        <p>
+                            Now that we understand how kLast is updated, we can fully explain the _mintFee function.
+                        </p>
+                        <img src="https://static.wixstatic.com/media/935a00_dc3d8ea8db88403aadba4d2ee1c48d05~mv2.png/v1/fill/w_925,h_568,al_c,q_90,usm_0.66_1.00_0.01,enc_auto/935a00_dc3d8ea8db88403aadba4d2ee1c48d05~mv2.png"
+                            alt=""
+                            style="width: 740px; height: 454px; object-fit: cover; object-position: 50% 50%; max-width: 100%;"
+                            data-pin-url="https://www.rareskills.io/post/uniswap-v2-mintfee"
+                            data-pin-media="https://static.wixstatic.com/media/935a00_dc3d8ea8db88403aadba4d2ee1c48d05~mv2.png/v1/fill/w_1870,h_1148,al_c,q_95/935a00_dc3d8ea8db88403aadba4d2ee1c48d05~mv2.png"
+                            fetchpriority="high" data-load-done="">
+                        Let’s consider the possibilities in the code snippet above, repeated for convenience.
+                        <ol>
+                            <li>The feeOn is false, nothing is minted (green highlight)</li>
+                            <li>The feeOn is false, kLast is zero (yellow highlight)</li>
+                            <li>The feeOn is false, kLast is not zero (yellow highlight)</li>
+                            <li>The feeOn is true, but there was no growth in liquidity (orange highlight)</li>
+                            <li>The feeOn is true, and there was liquidity growth (orange highlight), so the mint
+                                fee
+                                applies (blue highlight)</li>
+                        </ol>
+                        <p>
+                            It’s easier to see the logic in a decision tree, so here is the decision tree with the
+                            branches colored the same as the if statements.
+                        </p>
+                        <img src="https://static.wixstatic.com/media/935a00_cd23aafc2f7645428bc30d245244a0e2~mv2.jpg/v1/fill/w_925,h_365,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/935a00_cd23aafc2f7645428bc30d245244a0e2~mv2.jpg"
+                            alt=""
+                            style="width: 740px; height: 292px; object-fit: cover; object-position: 50% 50%; max-width: 100%;"
+                            data-pin-url="https://www.rareskills.io/post/uniswap-v2-mintfee"
+                            data-pin-media="https://static.wixstatic.com/media/935a00_cd23aafc2f7645428bc30d245244a0e2~mv2.jpg/v1/fill/w_1151,h_454,al_c,q_85/935a00_cd23aafc2f7645428bc30d245244a0e2~mv2.jpg"
+                            fetchpriority="high" data-load-done="">
+                </div>
+                <hr class="breakLine">
+
+                <!-- Uniswap-V2 Library -->
+                <div>
+                    <h4>>> Uniswap-V2 Library</h4>
+                    <p>
+                        The Uniswap V2 Library simplifies some interactions with pair contracts and is used heavily
+                        by
+                        the Router contracts. It contains eight functions that are not state-changing,. They are
+                        also
+                        handy for integrating Uniswap V2 from a smart contract.
+                    </p>
+                    <p>
+                        If you want to predict how much to put into or expect out of a trade, or a sequence of
+                        trades
+                        across pairs, the UniswapV2Library is the tool to use.
+                    </p>
+
+                    <h5>>> getAmountOut() and getAmountIn()</h5>
+                    <p>
+                        If we want to predict the amount of token y we will get if we supply a fixed amount of token
+                        x,
+                        then
+                        we can derive the amount out using the sequence below (ignoring fees for simplicity). Let x
+                        be
+                        the
+                        incoming token, y be the outgoing token, Δx be the amount coming in and Δy be the amount
+                        going
+                        out
+                    </p>
+                    <img src="https://static.wixstatic.com/media/935a00_ea767ea3032e4e048ed59f09302cbd09~mv2.png/v1/fill/w_438,h_489,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_ea767ea3032e4e048ed59f09302cbd09~mv2.png"
+                        alt="mathematical derivation of amount out"
+                        data-pin-url="https://www.rareskills.io/post/uniswap-v2-library"
+                        data-pin-media="https://static.wixstatic.com/media/935a00_ea767ea3032e4e048ed59f09302cbd09~mv2.png/v1/fill/w_598,h_668,al_c,q_90/935a00_ea767ea3032e4e048ed59f09302cbd09~mv2.png"
+                        style="width: 350px; height: 391px; object-fit: cover; object-position: 50% 50%; max-width: 100%;"
+                        fetchpriority="high" data-load-done="">
+                    <p>
+                        With that in mind, the function for getAmountOut() in the UniswapV2Library.sol should be
+                        self-explanatory. Note that the numbers are scaled by 1,000 to account for the 0.3% fee. The
+                        derivation for getAmountIn() with fees is an exercise for the reader.
+                    </p>
+                    <img src="https://static.wixstatic.com/media/935a00_b9765b82621d404db1c740090b34e402~mv2.jpg/v1/fill/w_925,h_349,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/935a00_b9765b82621d404db1c740090b34e402~mv2.jpg"
+                        alt="functions getAmountOut and getAmountsIn"
+                        data-pin-url="https://www.rareskills.io/post/uniswap-v2-library"
+                        data-pin-media="https://static.wixstatic.com/media/935a00_b9765b82621d404db1c740090b34e402~mv2.jpg/v1/fill/w_2732,h_1031,al_c,q_90/935a00_b9765b82621d404db1c740090b34e402~mv2.jpg"
+                        style="width: 740px; height: 279px; object-fit: cover; object-position: 50% 50%; max-width: 100%;"
+                        fetchpriority="high" data-load-done="">
+
+                    <h5>>> Chaining getAmountOut() to getAmountsOut() for pair hops</h5>
+                    <p>
+                        If a trader supplies a sequence of pairs, (A, B), (B, C), (C, D) and iteratively calls
+                        getAmountOut starting with a certain amount of A, then the amount of token D that will be
+                        received can be predicted
+                    </p>
+                    <p>
+                        The address of the UniswapV2 pair contract for each (A, B), (B, C), etc. is
+                        deterministically
+                        derived from the addresses of the tokens and the address of the factory that deployed the
+                        pair
+                        using the create2 function. Given two tokens (A, B) and a factory address, pairFor() derives
+                        the
+                        address of the pair UniswapV2 pool contract for that pair, using sortTokens() as a helper
+                        function.
+                    </p>
+                    <img src="https://static.wixstatic.com/media/935a00_a3ac066c3bca4fad88be17b06fa5d2f0~mv2.jpeg/v1/fill/w_925,h_340,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/935a00_a3ac066c3bca4fad88be17b06fa5d2f0~mv2.jpeg"
+                        alt="functions pairFor and sortTokens"
+                        data-pin-url="https://www.rareskills.io/post/uniswap-v2-library"
+                        data-pin-media="https://static.wixstatic.com/media/935a00_a3ac066c3bca4fad88be17b06fa5d2f0~mv2.jpeg/v1/fill/w_2674,h_983,al_c,q_90/935a00_a3ac066c3bca4fad88be17b06fa5d2f0~mv2.jpeg"
+                        style="width: 740px; height: 272px; object-fit: cover; object-position: 50% 50%; max-width: 100%;"
+                        fetchpriority="high" data-load-done="">
+                    <p>
+                        Now that we know the addresses for all the pairs, we can get the reserves of each one and
+                        predict
+                        how much tokens we will receive at the end of the chain of swaps. Below is the code for
+                        getAmountsOut (emphasis on “Amounts” instead of “Amount”). The function getAmountsIn simply
+                        does
+                        the
+                        same thing in reverse so we won’t show it here.
+                    </p>
+                    Note a couple things:
+                    <ul>
+                        <li>The smart contract doesn’t figure out the optimal sequence of pairs on its own, it needs
+                            to
+                            be told the list of pairs to calculate the chain of swaps over. This is best done
+                            off-chain.
+                        </li>
+                        <li>It doesn’t just return the final token amountOut in the chain, but the amount out at
+                            every
+                            step.</li>
+                    </ul>
+                    <img src="https://static.wixstatic.com/media/935a00_6e4f70d756374b0f9b19fcce962d531c~mv2.jpg/v1/fill/w_925,h_175,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/935a00_6e4f70d756374b0f9b19fcce962d531c~mv2.jpg"
+                        alt="getAmountsOut function" data-pin-url="https://www.rareskills.io/post/uniswap-v2-library"
+                        data-pin-media="https://static.wixstatic.com/media/935a00_6e4f70d756374b0f9b19fcce962d531c~mv2.jpg/v1/fill/w_2732,h_516,al_c,q_85/935a00_6e4f70d756374b0f9b19fcce962d531c~mv2.jpg"
+                        style="width: 740px; height: 140px; object-fit: cover; object-position: 50% 50%; max-width: 100%;"
+                        fetchpriority="high" data-load-done="">
+
+                    <h5>>> getReserves()</h5>
+                    <p>
+                        The function getReserves is simply a wrapper around the function getReserves from the
+                        Uniswap V2
+                        pair contract except that it also removes the timestamp when the price was last updated. The
+                        function for getReserves from the pair contract is also shown for easy comparison (purple
+                        comments).
+                    </p>
+                    <img src="https://static.wixstatic.com/media/935a00_4446a5b0318941fe86ba7b7fcb3c9ee8~mv2.jpg/v1/fill/w_925,h_125,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/935a00_4446a5b0318941fe86ba7b7fcb3c9ee8~mv2.jpg"
+                        alt="uniswapV2Library getreserves"
+                        data-pin-url="https://www.rareskills.io/post/uniswap-v2-library"
+                        data-pin-media="https://static.wixstatic.com/media/935a00_4446a5b0318941fe86ba7b7fcb3c9ee8~mv2.jpg/v1/fill/w_2732,h_370,al_c,q_85/935a00_4446a5b0318941fe86ba7b7fcb3c9ee8~mv2.jpg"
+                        style="width: 740px; height: 100px; object-fit: cover; object-position: 50% 50%; max-width: 100%;"
+                        fetchpriority="high" data-load-done="">
+                    <b>Core function</b>
+                    <img src="https://static.wixstatic.com/media/935a00_61052d0a20bf4bb78c74521ba7ef79a4~mv2.jpg/v1/fill/w_925,h_114,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/935a00_61052d0a20bf4bb78c74521ba7ef79a4~mv2.jpg"
+                        alt="core v2 getreserves" data-pin-url="https://www.rareskills.io/post/uniswap-v2-library"
+                        data-pin-media="https://static.wixstatic.com/media/935a00_61052d0a20bf4bb78c74521ba7ef79a4~mv2.jpg/v1/fill/w_2732,h_337,al_c,q_85/935a00_61052d0a20bf4bb78c74521ba7ef79a4~mv2.jpg"
+                        style="width: 740px; height: 91px; object-fit: cover; object-position: 50% 50%; max-width: 100%;"
+                        fetchpriority="high" data-load-done="">
+
+                    <h5>>> quote()</h5>
+                    <p>
+                        This function returns the price of foo denominated in bar as of the last update. This
+                        function
+                        should be used with care as it is vulnerable to flash loan attacks.
+                    </p>
+                    <img src="https://static.wixstatic.com/media/935a00_39060f4174ea43f4be9f5a46043aff2c~mv2.jpg/v1/fill/w_925,h_131,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/935a00_39060f4174ea43f4be9f5a46043aff2c~mv2.jpg"
+                        alt="uniswap v2 library quote function"
+                        data-pin-url="https://www.rareskills.io/post/uniswap-v2-library"
+                        data-pin-media="https://static.wixstatic.com/media/935a00_39060f4174ea43f4be9f5a46043aff2c~mv2.jpg/v1/fill/w_2693,h_382,al_c,q_85/935a00_39060f4174ea43f4be9f5a46043aff2c~mv2.jpg"
+                        style="width: 740px; height: 105px; object-fit: cover; object-position: 50% 50%; max-width: 100%;"
+                        fetchpriority="high" data-load-done="">
                 </div>
                 <hr class="breakLine">
 
@@ -1754,3 +3399,9 @@ event Withdraw(
 </body>
 
 </html>
+
+<!--
+    At last add all photos of the notes related to uniswap-v2
+    Add solidity-by-expample contracts related to uniswap-v2
+    at introduction write about these adding at the end
+-->
