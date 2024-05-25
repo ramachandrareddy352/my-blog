@@ -519,7 +519,52 @@ event Swap(address indexed from, address indexed to, uint256 amountIn, uint256 a
             <!-- Security Considerations -->
             <div>
                 <h3>>> Security Considerations</h3>
+                <ul>
+                    <li>
+                        <i>Safe token transfer</i> : using low level calls to transfer ERC20 tokens, where some tokens
+                        doesn't return boolean values after token transfer.
+                    </li>
+                    <li>
+                        <i>Fuzz test</i> : Testing all the functions and write a Fuzz test for the Pool Library, because
+                        the main calculation is done in the pool library.
+                    </li>
+                    <li>
+                        <i>Emergency functions</i>: Created a emergency mintLiquidity(), whenever any liquidity issues
+                        occur in pool the factory owner will correct the liquidity by calling this function.
+                    </li>
+                    <li>
+                        <i>Price manipulation attack</i> : Reduce the price manipulation by introducing TICK variable
+                        which helps to swap the tokens in a range based on the reservers on that pool.
+                    </li>
+                    <li>
+                        <i>SafeMath library</i> : Using safeMath library protect from any other arithemetic issues.
+                    </li>
+                    <li>
+                        <i>Input Validation</i>: Checks for valid addresses in the constructor and various functions,
+                        preventing potential issues related to invalid or zero addresses.
+                    </li>
+                    <li>
+                        <i>Minimum Liquidity Lock</i>: A minimum liquidity amount is minted initially to lock some
+                        liquidity. This prevents an inflation attack where an attacker could artificially inflate the
+                        liquidity.
+                    </li>
+                    <li>
+                        <i>Liquidity Minting Approach</i>: The contract calculates initial liquidity shares using a
+                        square root function, inspired by Uniswap V2. This approach aims to mitigate the “doubling
+                        liquidity” problem that could lead to unintended consequences.
+                    </li>
+                    <li>
+                        <i>Fixed Exchange Rate:</i> Used a fixed exchange rate between token0 and token1 This simplifies
+                        the contract, it is important to note that in dynamic market conditions, fixed exchange rates
+                        may expose users to impermanent loss.
+                    </li>
+                    <li>
+                        <i>Reentrancy Protection</i>: Ensuring that functions are not susceptible to reentrancy attacks
+                        by applying nonReentrant modifier.
+                    </li>
+                </ul>
             </div>
+
         </div>
         <hr class="breakLine">
 
