@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>rama@eth</title>
+    <title>rcr-stake</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
@@ -79,7 +79,7 @@
                     <li><a href="../index.html" class="nav-link scrollto"><i class="bx bx-share-alt"></i>
                             <span>Portfolio</span></a></li>
                     <li><a href="../index.html" class="nav-link scrollto active"><i class="bx bx-book-content"></i>
-                            <span>Blogs/RCR-Stake</span></a></li>
+                            <span>Blogs/rcr-stake</span></a></li>
                     <li><a href="../index.html" class="nav-link scrollto"><i class="bx bx-server"></i>
                             <span>Services</span></a></li>
                     <li><a href="../index.html" class="nav-link scrollto"><i class="bx bx-envelope"></i>
@@ -97,71 +97,114 @@
 
             <!-- Introduction -->
             <div>
-                <h3> >> RCR-Stake</h3>
-                <p>Hello WEB3, In this blog series, we embark on a journey through the
-                    RCR-Swap, which is a Decentralized Exchange platform, which works on Constant Product
-                    Automated Market Maker(CPAMM) formula. Any user can interact with the Factory contract and
-                    create a pool with a initial
-                    liquidity locked in pool to avoid Inflation attack. For any two indentical tokens we can create
-                    nearly 200 pools
-                    with different fees receiving for the liquidity providers.
+                <h3> >> RCR-STAKE</h3>
+                <p>Hello WEB3, In this blog series, we are learning how to build a fixed staking pool. It's a very
+                    interesting to say that I have used so make tools and others to build this project with multiple
+                    concepts like stable coin, air drops, chainlink data feeds, automation and Verified Random
+                    Function(VRF). These are the key functionalities in this project.
                 </p>
+
                 <ul>
                     <li>
-                        Liquidity Providers(LP's) can able to add liquidity and remove liquidity and earn the fees
-                        paid by the user while swapping the tokens.
+                        Any user can stake some pool accepted collateral for some fixed number of days and earn the
+                        rewards for staking as Decentralized Stable Coin(DSC).
                     </li>
                     <li>
-                        User select the pool for which two tokens they are swapping. Its a static pool that means if
-                        user wants to swap two tokens then it's mandatory that there have to exist of pool.
+                        These DSC are purchase through the DSCEngine contract also.
                     </li>
                     <li>
-                        I didn't implement Multi Hop swap in this DEX.
+                        DSC tokens are controlled by the DSC Engine contract.
                     </li>
                     <li>
-                        The protocol fees was set at initial creating of pool by the pool creator.
+                        And also user can register for the airdrop from the DSCAirdrop contract and after every certain
+                        period of time chainlink automatically trigger the announce winner function and send the DSC
+                        tokens to that winner.
                     </li>
                     <li>
-                        For any pool creation at first adding liquidity we lock some(1000) liquidity in pool for
-                        permenently to avoid Inflation attack.
+                        During registration for Airdrop protocol takes some amount of registration fess based on the
+                        reward amount of that particiular airdrop.
                     </li>
                     <li>
-                        In this DEX I have introduce a concept called <B>TICK</B>, which is used to swap the tokens
-                        in only certain range of amount.
+                        In fixed staking pool if user stake the collateral for more period he will get more reward rate.
                     </li>
                     <li>
-                        These Tick values is set by the Factory owner.
+                        DCS library helps to make calculation for DSCEngine and the calculations are done in
+                        <b>assembly</b> languague to reduce the gas fee.
                     </li>
                     <li>
-                        I have used ERC-4626 concept to mint and burn shares of LP tokens to Liquidity Providers
-                        while adding and remove liquidity respectively.
+                        Here we used Chainlink data feeds to get the current price of the collateral in the market.
                     </li>
                     <li>
-                        I have used a Pool Library contract to do some calculations reguarding to the pool. By using
-                        a library helps to reduec gas while making transactions on the pool.
+                        <b>Verified Random Function(VRF)</b> is used to generate the random number for the airdrop
+                        winner.
+                    </li>
+                    <Li>
+                        <b>Automation</b> is used to automate the process of airdrop winner announcement.
+                    </Li>
+                    <li>
+                        DSC Engine contract mint the DSC tokens on over collateralization of <b>200%</b> due to avoid
+                        the price inflation attack from the protocol.
                     </li>
                     <li>
-                        I have return all different test like Static, Fuzz, Invariant testing on the RCR-swap.
+                        After completing of staking period of the user, he can able to withdraw the staked and
+                        collateral and earn some reward tokesn as DSC tokens.
                     </li>
                     <li>
-                        I have used static analysis tools like slither to analyze the smart contracts.
+                        I have create the decentralized goverence system to make updates on Fixed Pool contract.
+                    </li>
+                    <li>
+                        The Staker who have goverence tokens have able to propose a transaction and based on the numbers
+                        of votes to execuete the proposal goverence Contract will execute it.
+                    </li>
+                    <li>
+                        A timelock contract is a smart contract mechanism that delays the execution of a transaction for
+                        a predetermined period. This feature is particularly useful in governance contracts for
+                        decentralized autonomous organizations (DAOs).
+                    </li>
+                    <li>
+                        Using a timelock contract in conjunction with a governance contract adds an important layer of
+                        security and transparency. It ensures that there is adequate time for the community to review
+                        and respond to proposed changes, reducing the risk of malicious or hasty decisions and fostering
+                        a more robust and trustworthy governance process.
+                    </li>
+                    <li>
+                        User who stake there collateral will able to get some goverence tokens, which gives the power to
+                        vote and propose a transaction on the Fixed pool.
+                    </li>
+                    <li>
+                        But here I didn't apply the goverence system to the protocol.
+                    </li>
+                    <li>
+                        In fixed pool user can able to take flash loan by implementing FlashLoanReceiver contract.
+                    </li>
+                    <li>
+                        For any flash loan protocol takes 0.3% as fees, these fees are received by the fee receiver
+                        address.
+                    </li>
+                    <li>
+                        To approve the tokens to spend, protocol accepts gas less approvals by making signature.
                     </li>
                 </ul>
+
                 <p>
                     I recommend to go through the ethereum101, solidity 101, solidity 201 modules
                     of the
                     <a href="https://secureum.substack.com/" target="_blank">Secureum
-                        bootcamp</a> and some defi protocols
-                    like <a href="https://uniswap.org/" target="_blank">Uniswap V2</a> Which help us to build
-                    this
-                    DEX.
+                        bootcamp</a> and learn how stable coin works by <a
+                        href="https://www.youtube.com/watch?v=8dRAd-Bzc_E" target="_blank">@patric_collins</a> and
+                    staking maths works on youtube like <a href="https://www.youtube.com/@smartcontractprogrammer"
+                        target="_blank">@smart_contract_programmer</a> and externally it is recommend to learn how
+                    chainlink <a href="https://chain.link/data-feeds" target="_blank">dataFeeds</a>, <a
+                        href="https://chain.link/automation" target="_blank">Automation</a> and <a
+                        href="https://chain.link/vrf" target="_blank">VRF</a> works.
                 </p>
+
                 <br>
                 <span>Clone the repo : </span>
                 <div class="repo">
-                    <span>$ git clone <a href="https://github.com/ramachandrareddy352/rcr-swap/"
-                            target="_blank">https://github.com/ramachandrareddy352/rcr-swap/</a></span><br>
-                    <span>$ cd rcr-swap</span><br>
+                    <span>$ git clone <a href="https://github.com/ramachandrareddy352/rcr-stake/"
+                            target="_blank">https://github.com/ramachandrareddy352/rcr-stake/</a></span><br>
+                    <span>$ cd rcr-stake</span><br>
                     <span>$ forge build</span>
                 </div>
                 <br>
@@ -207,6 +250,157 @@
             </div>
             <hr class="breakLine">
 
+            <!-- Price Oracle -->
+            <div>
+                <h3>>> Price Oracle</h3>
+                <p>
+                    Chainlink Data Feeds provide data that is aggregated from many data sources by a decentralized set
+                    of independent node operators. The Decentralized Data Model describes this in detail. However, there
+                    are some exceptions where data for a feed can come only from a single data source or where data
+                    values are calculated.
+                </p>
+                <p>
+                    To get the price of the collateral we used chainlink price feeds. For different collaterals we use
+                    same AggregatorV3Interface contract and pass the respective price feed address.
+                    If chainlink pricefeeds were hacked we use same interface to return price using Uniswap oracle. So
+                    in this project we get the price of collateral through calling interface of IPriceOracle.sol
+                </p>
+                <P>
+                    Here is the function code which returns the price of collateral.
+                </P>
+                <img src="./blog-images/rcr-stake/stale-price.png" width="800px" height="250px">
+                <p>
+                    We can see that at line 53, 56 we make some checks regarding to whether the oracle is correctly
+                    working or not.
+                </p>
+                <ul>
+                    <li>
+                        At line 53 we check the current roundIds and undated roundIds are correct or not.
+                    </li>
+                    <li>
+                        At line 56 we are checking for stale timeout error.
+                    </li>
+                </ul>
+                <p>
+                    To create a price Orcale using chainlink we have to make subscription and add consumer to that
+                    subscription and make some funds(Link tokens) to the subscriptionId.
+                </p>
+                <p>
+                    Here is the guide to <a href="https://docs.chain.link/data-feeds/using-data-feeds"
+                        target="_blank">price oracle</a> using chainlink.
+                </p>
+            </div>
+            <hr class="breakLine">
+
+            <!-- Chainlink Automation -->
+            <div>
+                <h3>>> Chainlink Automation</h3>
+                <p>
+                    Chainlink Automation is a decentralized automation framework that allows developers to build
+                    Automate your smart contracts using a secure and hyper-reliable decentralized network that uses the
+                    same external network of node operators that secures billions in value. Building on Chainlink
+                    Automation will accelerate your innovation, save you time and money, and help you get to market
+                    faster so you don't have to deal with the setup cost, ongoing maintenance, and risks associated with
+                    a centralized automation stack.
+                </p>
+                <p>
+                    To learn more about how the Chainlink Automation Network automates your smart contracts, visit the
+                    Concepts and <a href="https://docs.chain.link/chainlink-automation/concepts/automation-architecture"
+                        target="_blank">Architecture pages</a>. You can also learn more through our<a
+                        href="https://chain.link/automation#masterclass" target="_blank"> additional Automation
+                        resources</a>.
+                </p>
+                <img src="./blog-images/rcr-stake/automation_2_diagram_v3.png" class="click-to-zoom">
+                <p>
+                    Chainlink Automation will reliably execute smart contract functions using a variety of triggers.
+                    Explore the examples below to see how Chainlink Automation works for each type of trigger. Before
+                    you begin, you will need an active cryptocurrency wallet such as Metamask.
+                <ul>
+                    <li>Time-based trigger: Use a time-based trigger to execute your function according to a time
+                        schedule.</li>
+                    <li>Custom logic trigger: Use a custom logic trigger to provide custom solidity logic that
+                        Automation Nodes evaluate (offchain) to determine when to execute your function onchain.</li>
+                    <li>Log trigger: Use log data as both trigger and input.</li>
+                </ul>
+                </p>
+                <p>
+                    You can go through to set up for <a
+                        href="https://docs.chain.link/chainlink-automation/overview/getting-started"
+                        target="_blank">Automation</a> contract.
+                </p>
+            </div>
+
+            <!-- Chainlink VRF -->
+            <div>
+                <h3>>> Chainlink VRF</h3>
+                <p>
+                    Chainlink VRF (Verifiable Random Function) is a provably fair and verifiable random number generator
+                    (RNG) that enables smart contracts to access random values without compromising security or
+                    usability. For each request, Chainlink VRF generates one or more random values and cryptographic
+                    proof of how those values were determined. The proof is published and verified onchain before any
+                    consuming applications can use it. This process ensures that results cannot be tampered with or
+                    manipulated by any single entity including oracle operators, miners, users, or smart contract
+                    developers.
+                </p>
+                <p>
+                    Use Chainlink VRF to build reliable smart contracts for any applications that rely on unpredictable
+                    outcomes:
+                <ul>
+                    <li>Building blockchain games and NFTs.</li>
+                    <li>Random assignment of duties and resources. For example, randomly assigning judges to cases.</li>
+                    <li>Choosing a representative sample for consensus mechanisms.</li>
+                </ul>
+                </p>
+
+                <h5>>> Two methods to request randomness</h5>
+                <ul>
+                    <li>
+                        <b>Subscription</b>: Create a subscription account and fund its balance with either native
+                        tokens
+                        or LINK. You can then connect multiple consuming contracts to the subscription account. When
+                        the consuming contracts request randomness, the transaction costs are calculated after the
+                        randomness requests are fulfilled and the subscription balance is deducted accordingly. This
+                        method allows you to fund requests for multiple consumer contracts from a single
+                        subscription.
+                    </li>
+                    <li>
+                        <b>Direct funding</b>: Consuming contracts directly pay with either native tokens or LINK
+                        when they
+                        request random values. You must directly fund your consumer contracts and ensure that there
+                        are enough funds to pay for randomness requests.
+                    </li>
+                </ul>
+
+                <p>
+                    In our project we used Subscription method to generate secure random numbers.
+                </p>
+            </div>
+            <hr class="breakLine">
+
+            <!-- Libraries -->
+            <div>
+                <h3>>> DCSLibrary</h3>
+            </div>
+            <hr class="breakLine">
+
+            <!-- Decentralized Stable Coin(DSC) -->
+            <div>
+                <h3>>> Decentralized Stable Coin(DSC)</h3>
+            </div>
+            <hr class="breakLine">
+
+            <!-- Fixed Pool -->
+            <div>
+                <h3>>> Fixed Pool</h3>
+            </div>
+            <hr class="breakLine">
+
+            <!-- Security considerations -->
+            <div>
+                <h3>>> Security Considerations</h3>
+            </div>
+            <hr class="breakLine">
+
         </div>
 
         <!-- References -->
@@ -222,10 +416,26 @@
                         target="_blank">Flash loan docs</a>
                 </li>
                 <li>
+                    <a href="https://www.coindesk.com/learn/whats-the-point-of-stablecoins-understanding-why-they-exist/"
+                        target="_blank">Stable coin guide</a>
+                </li>
+                <li>
                     <a href="https://github.com/x676f64/secureum-mind_map" target="_blank">Secureum mind map</a>
                 </li>
                 <li>
                     <a href="https://book.getfoundry.sh/" target="_blank">Foundry book</a>
+                </li>
+                <li>
+                    <a href="https://chain.link/data-feeds" target="_blank">Chainlink Data Feeds</a>
+                </li>
+                <li>
+                    <a href="https://chain.link/automation" target="_blank">Chainlink Automation</a>
+                </li>
+                <li>
+                    <a href="https://chain.link/vrf" target="_blank">Chainlink VRF</a>
+                </li>
+                <li>
+                    <a href="https://docs.aave.com/hub" target="_blank">Aave docs</a>
                 </li>
                 <li>
                     <a href="https://medium.com/web-3-digitals/smart-contract-testing-the-foundry-way-d86fcc5ca33e"
@@ -234,17 +444,6 @@
                 <li>
                     <a href="https://www.cyfrin.io/blog/smart-contract-fuzz-testing-using-foundry"
                         target="_blank">Cyfrin Fuzz test guide</a>
-                </li>
-                <li>
-                    <a href="https://blog.trailofbits.com/2019/05/27/slither-the-leading-static-analyzer-for-smart-contracts/"
-                        target="_blank">Learn Slither</a>
-                </li>
-                <li>
-                    <a href="https://github.com/Quillhash/Solidity-Attack-Vectors" target="_blank">Solidity
-                        attack vecors</a>
-                </li>
-                <li>
-                    <a href="https://docs.aave.com/hub" target="_blank">Aave docs</a>
                 </li>
             </ul>
 
