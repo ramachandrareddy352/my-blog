@@ -371,52 +371,108 @@
             <!-- Decentralized Stable Coin(DSC) -->
             <div>
                 <h3>>> Decentralized Stable Coin(DSC)</h3>
-                <p>
-                    Stablecoins are a type of cryptocurrency designed to maintain a stable value relative to a specific
-                    asset, typically a fiat currency like the US dollar or a commodity like gold. They aim to combine
-                    the benefits of cryptocurrencies (such as decentralization and security) with the stability of
-                    traditional financial assets
-                </p>
-                <h4>>> How do stablecoins work?</h4>
-                <p>
-                    Stablecoins generally work the same across the board: They are cryptocurrencies minted on a
-                    blockchain that users can buy, sell and trade on an exchange just like any other crypto coin. People
-                    can store stablecoins in their hot wallets and/or cold storage devices like they would bitcoin or
-                    any altcoin.
-                </p>
-                <p>
-                    In order to have integrity, most stablecoins are linked to a reserve of external assets of some
-                    kind, whether it be a stash of fiat currency, commodities like gold or debt instruments like
-                    commercial paper. In most cases, the company or entity that develops the stablecoin owns reserves
-                    equal to the amount of stablecoins it has in circulation. This is such that any stablecoin holder
-                    should be able to redeem one stablecoin token for one dollar at any time.
-                </p>
+                <div>
+                    <p>
+                        Stablecoins are a type of cryptocurrency designed to maintain a stable value relative to a
+                        specific
+                        asset, typically a fiat currency like the US dollar or a commodity like gold. They aim to
+                        combine
+                        the benefits of cryptocurrencies (such as decentralization and security) with the stability of
+                        traditional financial assets
+                    </p>
+                    <h4>>> How do stablecoins work?</h4>
+                    <p>
+                        Stablecoins generally work the same across the board: They are cryptocurrencies minted on a
+                        blockchain that users can buy, sell and trade on an exchange just like any other crypto coin.
+                        People
+                        can store stablecoins in their hot wallets and/or cold storage devices like they would bitcoin
+                        or
+                        any altcoin.
+                    </p>
+                    <p>
+                        In order to have integrity, most stablecoins are linked to a reserve of external assets of some
+                        kind, whether it be a stash of fiat currency, commodities like gold or debt instruments like
+                        commercial paper. In most cases, the company or entity that develops the stablecoin owns
+                        reserves
+                        equal to the amount of stablecoins it has in circulation. This is such that any stablecoin
+                        holder
+                        should be able to redeem one stablecoin token for one dollar at any time.
+                    </p>
 
-                <h4>>> The four types of stablecoins</h4>
-                <p>
-                    There are four different types of stablecoins, each with its own way of fixing the value of the
-                    tokens to a stable figure.
-                </p>
-                <ol>
-                    <li>Fiat-backed</li>
-                    <li>Cryptocurrency-backed</li>
-                    <li>Commodity-backed</li>
-                    <li>Algorithmic</li>
-                </ol>
+                    <h4>>> The four types of stablecoins</h4>
+                    <p>
+                        There are four different types of stablecoins, each with its own way of fixing the value of the
+                        tokens to a stable figure.
+                    </p>
+                    <ol>
+                        <li>Fiat-backed</li>
+                        <li>Cryptocurrency-backed</li>
+                        <li>Commodity-backed</li>
+                        <li>Algorithmic</li>
+                    </ol>
 
-                <p>
-                    In this project we used Algorithmic Stable coin, this category of stablecoins uses algorithms to
-                    modulate the supply based on its market demand. In short, these algorithms automatically burn
-                    (permanently remove coins from circulation) or mint new coins based on the fluctuating demand for
-                    the stablecoin at any given time.
-                </p>
-                <p>
-                    You can read more <a
-                        href="https://www.coindesk.com/learn/algorithmic-stablecoins-what-they-are-and-how-they-can-go-terribly-wrong/"
-                        target="_blank"> Algorithmic Stable coin</a> and <a
-                        href="https://www.coindesk.com/learn/whats-the-point-of-stablecoins-understanding-why-they-exist/"
-                        target="_blank">What are stable coins</a>.
-                </p>
+                    <p>
+                        In this project we used Algorithmic Stable coin, this category of stablecoins uses algorithms to
+                        modulate the supply based on its market demand. In short, these algorithms automatically burn
+                        (permanently remove coins from circulation) or mint new coins based on the fluctuating demand
+                        for
+                        the stablecoin at any given time.
+                    </p>
+                    <p>
+                        You can read more <a
+                            href="https://www.coindesk.com/learn/algorithmic-stablecoins-what-they-are-and-how-they-can-go-terribly-wrong/"
+                            target="_blank"> Algorithmic Stable coin</a> and <a
+                            href="https://www.coindesk.com/learn/whats-the-point-of-stablecoins-understanding-why-they-exist/"
+                            target="_blank">What are stable coins</a>.
+                    </p>
+                </div>
+            </div>
+            <hr class="breakLine">
+
+            <!-- Stable coin contracts -->
+            <div>
+                <h3>>> Stable Coin Contracts</h3>
+                <h4>>> DSC.sol</h4>
+                <div>
+                    <p>DSC contract is the ERC-20 token contract. The minting and burning of tokens are controlled
+                        by the DSCEngine logic. DSC.sol implements Ownable contract and the owner of DSC contract is
+                        DSCEngine contract.</p>
+                    <P>
+                        The DSC contract has the following functions:
+                    <uL>
+                        <li>mint() : This function is called to mint the DSC tokens.</li>
+                        <li>burn() : This function is used to burn the DSC Tokens.</li>
+                    </uL>
+                    The two function are only called by the DSCEngine contract only.
+                    </P>
+                </div>
+
+                <h4>>> DSCEngine.sol</h4>
+                <div>
+                    <P>
+                        DSCEngine contract is the logic contract that controls the minting and burning of DSC tokens. In
+                        this Engine contract we used Algorithmic Stable coin login to mint and burn DSC by depositing of
+                        collateral by maintaining a health factor of over collateralization of 200%.
+                    </P>
+                    <p>
+                        DSCEngine contract is Pausable and Re-entrancy protected contract.
+                    </p>
+                </div>
+
+                <h4>>> DSCAirdrop.sol</h4>
+                <div>
+                    <p>
+                        DSCAirdrop refer to the distribution of DSC Tokens to a large number of wallet
+                        addresses. This is typically done to promote the DCS tokens.
+                    </p>
+                    <p>
+                        In DSCAirdrop user will register for the airdrop with entry fees set by the owner. After
+                        completing of time period of airdrop the chainlink-automation calls automatically from the
+                        oracle and oracle callback the performUpkeep() function, inside this function we generate a
+                        secure random number using chainlink VRF and fulfillRandomWords() announce the winner after
+                        calling of requestRandomWords() function.
+                    </p>
+                </div>
             </div>
             <hr class="breakLine">
 
@@ -514,15 +570,17 @@ event WithdrawRewards(address indexed user, address indexed dscReceiver, uint256
                     <h5>>> Owner callable functions</h5>
                     <dt>changeFeeReceiver()</dt>
                     <p>
-                        This is function is used to set the fees receiver address.
+                        This is function is used to set the fees receiver address. Where the fees is collected from
+                        flash-loan.
                     </p>
                     <dt>addCollateral()</dt>
                     <P>
-                        This function is used to add a new collateral token to the pool.
+                        This function is used to add a new collateral token to the pool to accept for staking.
                     </P>
                     <dt>removeCollateral()</dt>
                     <P>
-                        This function is used to remove a collateral token from the pool.
+                        This function is used to remove a collateral token from the pool. After removing collateral no
+                        longer the pool accept the collateral to stake.
                     </P>
                     <dt>updateFixedRewardRate()</dt>
                     <P>
@@ -530,7 +588,8 @@ event WithdrawRewards(address indexed user, address indexed dscReceiver, uint256
                     </P>
                     <dt>pause()</dt>
                     <P>
-                        This function is used to pause the pool when any hacks occured on pool.
+                        This function is used to pause the pool when any hacks occured on pool. It pause all the user
+                        callable functions.
                     </P>
                     <dt>unpause()</dt>
                     <P>
@@ -544,29 +603,53 @@ event WithdrawRewards(address indexed user, address indexed dscReceiver, uint256
                     </P>
                     <dt>getUserStakingData()</dt>
                     <P>
-                        This function is used to get the staking data of the user through the stakingId.
+                        This function is used to get the staking data of the user through his stakingId.
                     </P>
 
                     <h5>>> User/Stakerr callable functions</h5>
                     <dt>getFlashLoan()</dt>
                     <P>
-                        This function is used to get the flash loan of the user.
+                        This function is used to get the flash loan for the user.
                         <img src="./blog-images/rcr-stake/flash-loan.png" width="1000px" height="500px"><br>
                     <ul>
-                        <li>User can take the flash loan upto the maximum balance of the pool.</li>
-                        <li>At line 197</li>
+                        <li>At first we have to check whether the loan receiver is a smart contract or not . We have to
+                            accept only smart contracts to accept the loan amount to receive.</li>
+                        <li>User can take the flash loan upto the maximum balance of collateral in this pool.</li>
+                        <li>At line 197 We send the amount of tokens that the user want to take as flash loan.</li>
+                        <li>After sending tokens we are checking the call back <b>(keccak256(
+                                abi.encodePacked("onFlashLoan(address _caller, address _collateral, uint256 _amount,
+                                bytes
+                                memory _payload)")
+                                );)</b> whether the function is called successfully or not, At line 200.</li>
+                        <li>After that at line 204, 205 pool recollect the sended tokens with fee of 0.3%, The fee is
+                            send to fee receive adddress and flash-loan amount is sended to pool.</li>
                     </ul>
                     </P>
                     <dt>_stake()</dt>
-                    <P></P>
+                    <p>
+                        The core logic of staking tokens is executed inside the _stake function. Here is the code :
+                        <img src="./blog-images/rcr-stake/_stake.png" width="1000px" height="500px">
+                    </p>
                     <dt>stake()</dt>
-                    <P></P>
+                    <P>
+                        This function is used to stake the tokens by making another transaction for approving the tokens
+                        to spend.
+                    </P>
                     <dt>stakeWithPermit()</dt>
-                    <P></P>
+                    <P>
+                        In this function we can make a single transaction for approving and staking by making signature
+                        to send tokens for the pool.
+                    </P>
                     <dt>redeemCollateral()</dt>
-                    <P></P>
+                    <P>
+                        This function is used to redeem the collateral from the pool. This is called only after
+                        completing after that staking period and after that isRedeemed state is updated to true.
+                    </P>
                     <dt>withdrawRewards()</dt>
-                    <P></P>
+                    <P>
+                        This function is used to withdraw the rewards from the pool. The reward tokens are the DSC
+                        tokens.
+                    </P>
                 </div>
             </div>
             <hr class="breakLine">
@@ -574,6 +657,55 @@ event WithdrawRewards(address indexed user, address indexed dscReceiver, uint256
             <!-- Security considerations -->
             <div>
                 <h3>>> Security Considerations</h3>
+                <ul>
+                    <li>
+                        <i>Ownership and Permissions:</i> Implement robust ownership and permission mechanisms to
+                        control who can interact with the contract’s critical functions.
+                    </li>
+                    <li>
+                        <i>Reentrancy Guards:</i> Implement reentrancy guards using techniques such as the
+                        checks-effects-interactions pattern or the ReentrancyGuard contract from OpenZeppelin.
+                    </li>
+                    <li>
+                        <i>Parameter Checks:</i> Validate and sanitize all input parameters to prevent attacks such as
+                        integer overflow/underflow, and invalid addresses.
+                    </li>
+                    <li>
+                        <i>Flash Loan Attacks:</i> Protect against flash loan attacks by designing the protocol to
+                        handle sudden and large volume changes.
+                    </li>
+                    <li>
+                        <i>Event Emission: </i>Emit events for critical operations to provide transparency and
+                        traceability.
+                    </li>
+                    <li>
+                        <i>Pausable Contract:</i> Implement a Pausable mechanism to halt contract operations in case of
+                        an emergency.
+                    </li>
+                    <li>
+                        <i>Chainlink-automation</i> : Implement chainlink-automation for calling functions automatically
+                        using chainlink oracles.
+                    </li>
+                    <li>
+                        <i>chainlink VRF</i> : Implementing chainlink Verifiable random function to generate a secure
+                        random function.
+                    </li>
+                    <li>
+                        <i>Chainlink Price Feeds</i> : Implementing chainlink price feeds to get the collateral price in
+                        market using chainlink oracles.
+                    </li>
+                    <li>
+                        <i>Stale price manipulated</i> : Even if the chainlink price feed oracle is manipulated we can
+                        stop the transactions to get data from chainlink.
+                    </li>
+                    <li>
+                        <i>Assembly maths : </i>Writing secure assembly to calculate the output for maths functions.
+                    </li>
+                    <li>
+                        <i>Collateral Management:</i> Implemented mechanisms to handle collateral volatility and ensure
+                        over-collateralization.
+                    </li>
+                </ul>
             </div>
             <hr class="breakLine">
 
