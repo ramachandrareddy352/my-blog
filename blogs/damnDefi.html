@@ -343,7 +343,7 @@ contract DamnValuableTokenSnapshot is ERC20Snapshot {
                                     <li>address(asset) != _token</li>
                                     <Li>convertToShares(totalSupply) != balanceBefore</Li>
                                     <li>receiver.onFlashLoan(msg.sender, address(asset), amount, fee, data) !=
-                                        keccak256("IERC3156FlashBorrower.onFlashLoan")</li>
+                                        keccak256( "IERC3156FlashBorrower .onFlashLoan")</li>
                                 </ul>
                             </li>
                             <li>From above checks we can change to value of <b>convertToShares(totalSupply)</b> by
@@ -2011,7 +2011,7 @@ describe('[Challenge] Puppet', function () {
                                 depositing three times the value of the borrowed tokens in WETH
                             </Li>
                             <li>
-                                <b>calculateDepositOfWETHRequired(uint256 tokenAmount)</b> used to calculate the amount
+                                <b>calculateDepositOfWETHRequired (uint256 tokenAmount)</b> used to calculate the amount
                                 of WETH
                                 required to borrow a given amount of the specified token. This calculation takes into
                                 account a deposit factor of <b>3</b> and fetches the price ratio between WETH and the
@@ -3258,13 +3258,13 @@ describe("[Challenge] Climber", function () {
                             </li>
                             <li>
                                 The deployer contract only works with the official Gnosis Safe factory at
-                                0x76E2cFc1F5Fa8F6a5b3fC4c8F4788F0116861F9B and corresponding master copy at
-                                0x34CfAC646f301356fAa8B21e94227e3583Fe3F5F. Not sure how it’s supposed to work though -
+                                0x76E2cFc1F5Fa8F6a 5b3fC4c8F4788F0116861F9B and corresponding master copy at
+                                0x34CfAC646f301356 fAa8B21e94227e3583Fe3F5F. Not sure how it’s supposed to work though -
                                 those contracts haven’t been deployed to this chain yet.
                             </li>
                             <li>
                                 In the meantime, it seems somebody transferred 20 million DVT tokens to
-                                0x9b6fb606a9f5789444c17768c6dfcf2f83563801. Which has been assigned to a ward in the
+                                0x9b6fb606a9f57894 44c17768c6dfcf2f83563801. Which has been assigned to a ward in the
                                 authorization contract. Strange, because this address is empty as well.
                             </li>
                             <li>
@@ -3467,7 +3467,8 @@ describe('[Challenge] Wallet mining', function () {
                                 that WETH and the borrowed token have the same number of decimals.
                             </li>
                             <li>
-                                <b>calculateDepositOfWETHRequired()</b> returns the amount of WETH we have to deposit to
+                                <b>calculateDepositOfWETHRequired ()</b> returns the amount of WETH we have to deposit
+                                to
                                 get the DVT tokens for borrowing.
                             </li>
                             <li>

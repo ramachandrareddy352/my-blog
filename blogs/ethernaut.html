@@ -1834,7 +1834,7 @@ contract GatekeeperOne {
                                         Now we just have to apply that mask to our <b>tx.origin cast to a bytes8</b> (an
                                         address is a 20 bytes type).
                                         The key to solve this third gate will be equal to
-                                        <b>bytes8(uint64(uint160(address(player)))) & 0xFFFFFFFF0000FFFF</b>.
+                                        <b>bytes8(uint64(uint160( address(player)))) & 0xFFFFFFFF0000FFFF</b>.
                                     </li>
                                 </ul>
                             </li>
@@ -1985,7 +1985,7 @@ contract GatekeeperTwo {
                             <li>
                                 So, to make <b>a ^ b = type(uint64).max</b> (all are 1's), b must be the <b>inverse</b>
                                 of a. The correct gateKey by executing
-                                <b>type(uint64).max ^ uint64(bytes8(keccak256(abi.encodePacked(address(this)))))</b>
+                                <b>type(uint64).max ^ uint64(bytes8 (keccak256(abi.encodePacked( address(this)))))</b>
                             </li>
                         </ul>
                     </div>
@@ -2437,7 +2437,7 @@ contract SimpleToken {
                             </li>
                             <li>
                                 To get the contrcat address we use
-                                <b>address(uint160(uint256(keccak256(abi.encodePacked(bytes1(0xd6), bytes1(0x94),
+                                <b>address(uint160(uint256( keccak256(abi.encodePacked( bytes1(0xd6), bytes1(0x94),
                                     address(_creator), bytes1(0x01))))))</b> formula which was published in <b>Yellow
                                     paper</b>
                             </li>
@@ -2753,7 +2753,7 @@ contract AlienCodex is Ownable {
                             </li>
                             <li>
                                 For this we need to find the index of the slot 0. Dynamic arrays finds the elements
-                                starting from the slot number <b>uint(keccak256(SLOT_NUMBER_OF_LENGTH))</b>. So, the
+                                starting from the slot number <b>uint(keccak256( SLOT_NUMBER_OF_LENGTH))</b>. So, the
                                 codex
                                 array elements starts from the slot <b>uint(keccak256(1))</b>.
                             </li>
@@ -3797,7 +3797,7 @@ contract PuzzleWallet {
                             <li>
                                 After the execute we have successfully removed all the ether balance from the contract
                                 (and gained 0.001 free ether) and we can call
-                                <b>puzzleWallet.setMaxBalance(uint256(player))</b>;
+                                <b>puzzleWallet.setMaxBalance( uint256(player))</b>;
                             </li>
                         </ul>
                     </div>

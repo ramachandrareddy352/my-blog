@@ -1213,6 +1213,10 @@ section {
   .breadcrumbs ol li {
       display: inline-block;
   }
+
+  iframe {
+    height: 400px;
+  }
 }
 
 /*--------------------------------------------------------------
