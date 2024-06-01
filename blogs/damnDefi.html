@@ -342,7 +342,7 @@ contract DamnValuableTokenSnapshot is ERC20Snapshot {
                                     <li>amount == 0</li>
                                     <li>address(asset) != _token</li>
                                     <Li>convertToShares(totalSupply) != balanceBefore</Li>
-                                    <li>receiver.onFlashLoan(msg.sender, address(asset), amount, fee, data) !=
+                                    <li>receiver.onFlashLoan( msg.sender, address(asset), amount, fee, data) !=
                                         keccak256( "IERC3156FlashBorrower .onFlashLoan")</li>
                                 </ul>
                             </li>

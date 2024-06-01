@@ -422,17 +422,17 @@ event Swap(address indexed from, address indexed to, uint256 amountIn, uint256 a
                 <p>
                     The function uses the low-level call function to perform the token transfer. This is a lower-level
                     operation compared to directly calling the token's transfer function.
-                    abi.encodeWithSelector(TRANSFER_SELECTOR, to, value) encodes the function selector for the transfer
+                    abi.encodeWithSelector( TRANSFER_SELECTOR, to, value) encodes the function selector for the transfer
                     function, along with the arguments to and value. The TRANSFER_SELECTOR is typically defined as
-                    bytes4(keccak256("transfer(address,uint256)"))
+                    bytes4(keccak256( "transfer(address,uint256)"))
                 </p>
                 <dt>_safeTransferFrom()</dt>
                 <p>
                     The function uses the low-level call function to perform the token transferFrom. This is a
                     lower-level operation compared to directly calling the token's transferFrom function.
-                    abi.encodeWithSelector(TRANSFER_FROM_SELECTOR, from, to, value) encodes the function selector for
+                    abi.encodeWithSelector( TRANSFER_FROM_SELECTOR, from, to, value) encodes the function selector for
                     the transferFrom function, along with the arguments to and value. The TRANSFER_FROM_SELECTOR is
-                    typically defined as bytes4(keccak256("transferFrom(address,address,uint256)"))
+                    typically defined as bytes4(keccak256( "transferFrom(address,address,uint256)"))
                 </p>
                 <dt>_addLiquidity()</dt>
                 <p>
