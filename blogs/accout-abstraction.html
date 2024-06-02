@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>acount-abstraction</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Favicons -->
+    <link href="../assets/img/favicon.jpg" rel="icon">
+    <link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+        rel="stylesheet">
+    <script src="https://kit.fontawesome.com/67ced9e5a8.js" crossorigin="anonymous"></script>
+
+
+    <!-- Vendor CSS Files -->
+    <link href="../assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="../assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="../assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="../assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+    <!-- Template Main CSS File -->
+    <link href="../assets/css/style.css" rel="stylesheet">
+    <link href="./css/blogStyle.css" rel="stylesheet">
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tomorrow-night-blue.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+    <!-- and it's easy to individually load additional languages -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script> -->
+
+    <script>hljs.highlightAll();</script>
+
+</head>
+
+<body>
+    <i class="bi bi-list mobile-nav-toggle d-xl-none"></i>
+
+    <!-- ======= Header ======= -->
+    <header id="header">
+        <div class="d-flex flex-column">
+
+            <div class="profile">
+                <img src="../assets/img/profile-img.jpg" alt="" class="img-fluid rounded-circle">
+                <center>
+                    <h4 class="text-light">@rama_eth</h4>
+                </center>
+                <div class="social-links mt-3 text-center">
+                    <a href="https://twitter.com/TavanamRama" class="twitter" target="_blank"><i
+                            class="bx bxl-twitter"></i></a>
+                    <a href="https://github.com/ramachandrareddy352" class="instagram" target="_blank"><i
+                            class="bx bxl-github"></i></a>
+                    <a href="https://www.instagram.com/rama_chandra_reddy_tavanam/" class="instagram" target="_blank"><i
+                            class="bx bxl-instagram"></i></a>
+                    <a href="https://www.linkedin.com/in/ramachandratavanam/" class="linkedin" target="_blank"><i
+                            class="bx bxl-linkedin"></i></a>
+                </div>
+            </div>
+
+            <nav id="navbar" class="nav-menu navbar">
+                <ul>
+                    <li><a href="../index.html" class="nav-link scrollto"><i class="bx bx-home"></i>
+                            <span>Home</span></a></li>
+                    <li><a href="../index.html" class="nav-link scrollto"><i class="bx bx-user"></i>
+                            <span>About</span></a>
+                    </li>
+                    <li><a href="../index.html" class="nav-link scrollto"><i class="bx bx-file-blank"></i>
+                            <span>Resume</span></a></li>
+                    <li><a href="../index.html" class="nav-link scrollto"><i class="bx bx-share-alt"></i>
+                            <span>Portfolio</span></a></li>
+                    <li><a href="../index.html" class="nav-link scrollto active"><i class="bx bx-book-content"></i>
+                            <span>Blogs/Acount-Abstraction</span></a></li>
+                    <li><a href="../index.html" class="nav-link scrollto"><i class="bx bx-server"></i>
+                            <span>Services</span></a></li>
+                    <li><a href="../index.html" class="nav-link scrollto"><i class="bx bx-envelope"></i>
+                            <span>Contact</span></a></li>
+                </ul>
+            </nav>
+            <!-- .nav-menu -->
+        </div>
+    </header>
+
+    <main id="main">
+
+        <!-- ======= Blog data Section ======= -->
+        <div class="container" id="blog">
+
+            <!-- Introduction -->
+            <div>
+                <h3> >> Uniswap Overview</h3>
+                <p>Hello WEB3, In this blog series, we are learning how to build a fixed staking pool. It's a very
+                    interesting to say that I have used so make tools and others to build this project with multiple
+                    concepts like stable coin, air drops, chainlink data feeds, automation and Verified Random
+                    Function(VRF). These are the key functionalities in this project.
+                </p>
+
+                <ul>
+                    <li>
+                        Any user can stake some pool accepted collateral for some fixed number of days and earn the
+                        rewards for staking as Decentralized Stable Coin(DSC).
+                    </li>
+                    <li>
+                        These DSC are purchase through the DSCEngine contract also.
+                    </li>
+                    <li>
+                        DSC tokens are controlled by the DSC Engine contract.
+                    </li>
+                    <li>
+                        And also user can register for the airdrop from the DSCAirdrop contract and after every certain
+                        period of time chainlink automatically trigger the announce winner function and send the DSC
+                        tokens to that winner.
+                    </li>
+                    <li>
+                        During registration for Airdrop protocol takes some amount of registration fess based on the
+                        reward amount of that particiular airdrop.
+                    </li>
+                    <li>
+                        In fixed staking pool if user stake the collateral for more period he will get more reward rate.
+                    </li>
+                    <li>
+                        DCS library helps to make calculation for DSCEngine and the calculations are done in
+                        <b>assembly</b> languague to reduce the gas fee.
+                    </li>
+                    <li>
+                        Here we used Chainlink data feeds to get the current price of the collateral in the market.
+                    </li>
+                    <li>
+                        <b>Verified Random Function(VRF)</b> is used to generate the random number for the airdrop
+                        winner.
+                    </li>
+                    <Li>
+                        <b>Automation</b> is used to automate the process of airdrop winner announcement.
+                    </Li>
+                    <li>
+                        DSC Engine contract mint the DSC tokens on over collateralization of <b>200%</b> due to avoid
+                        the price inflation attack from the protocol.
+                    </li>
+                    <li>
+                        After completing of staking period of the user, he can able to withdraw the staked and
+                        collateral and earn some reward tokesn as DSC tokens.
+                    </li>
+                    <li>
+                        In fixed pool user can able to take flash loan by implementing FlashLoanReceiver contract.
+                    </li>
+                    <li>
+                        For any flash loan protocol takes 0.3% as fees, these fees are received by the fee receiver
+                        address.
+                    </li>
+                    <li>
+                        To approve the tokens to spend, protocol accepts gas less approvals by making signature.
+                    </li>
+                </ul>
+
+                <p>
+                    I recommend to go through the ethereum101, solidity 101, solidity 201 modules
+                    of the
+                    <a href="https://secureum.substack.com/" target="_blank">Secureum
+                        bootcamp</a> and learn how stable coin works by <a
+                        href="https://www.youtube.com/watch?v=8dRAd-Bzc_E" target="_blank">@patric_collins</a> and
+                    staking maths works on youtube like <a href="https://www.youtube.com/@smartcontractprogrammer"
+                        target="_blank">@smart_contract_programmer</a> and externally it is recommend to learn how
+                    chainlink <a href="https://chain.link/data-feeds" target="_blank">dataFeeds</a>, <a
+                        href="https://chain.link/automation" target="_blank">Automation</a> and <a
+                        href="https://chain.link/vrf" target="_blank">VRF</a> works.
+                </p>
+
+                <br>
+                <span>Clone the repo : </span>
+                <div class="repo">
+                    <span>$ git clone <a href="https://github.com/ramachandrareddy352/rcr-stake/"
+                            target="_blank">https://github.com/ramachandrareddy352/rcr-stake/</a></span><br>
+                    <span>$ cd rcr-stake</span><br>
+                    <span>$ forge build</span>
+                </div>
+                <br>
+            </div>
+            <hr class="breakLine">
+
+        </div>
+
+        <!-- References -->
+        <div class="container">
+            <h3>>> Reference</h3>
+            <ul>
+                <li>
+                    <a href="https://docs.uniswap.org/" target="_blank">Uniswap documentation</a>
+                </li>
+            </ul>
+
+        </div>
+
+        <!-- Footer -->
+        <footer id="footer">
+            <div class="container">
+                <div class="copyright">
+                    <strong><span>Fund Me</span></strong>
+                </div>
+                <div class="credits">
+                    <a href="#" style="font-size: 10px;">0xd0509B83468409A75De2771C1Ae7bE1026A69927</a>
+                </div>
+            </div>
+        </footer>
+
+        <!-- Scripts imports -->
+        <div>
+            <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+                    class="bi bi-arrow-up-short"></i></a>
+
+            <!-- Vendor JS Files -->
+            <script src="../assets/vendor/purecounter/purecounter_vanilla.js"></script>
+            <script src="../assets/vendor/aos/aos.js"></script>
+            <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+            <script src="../assets/vendor/glightbox/js/glightbox.min.js"></script>
+            <script src="../assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+            <script src="../assets/vendor/swiper/swiper-bundle.min.js"></script>
+            <script src="../assets/vendor/typed.js/typed.umd.js"></script>
+            <script src="../assets/vendor/waypoints/noframework.waypoints.js"></script>
+            <script src="../assets/vendor/php-email-form/validate.js"></script>
+
+            <!-- Template Main JS File -->
+            <script src="../assets/js/main.js"></script>
+        </div>
+</body>
+
+</html>
