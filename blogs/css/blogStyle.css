@@ -82,6 +82,13 @@ img {
   display: block;
 }
 
+td {
+  border: 1px solid black;
+}
+
+th {
+  border: 1px solid black;
+}
 @media (max-width: 768px) {
   
 }
