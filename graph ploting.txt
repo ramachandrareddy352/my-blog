@@ -1,0 +1,273 @@
+1)Largest number in array
+.MODEL SMALL
+.STACK 1001
+.DATA
+ARRAY DB 55,32,8,10
+LARGEST DB ?
+.CODE
+MAIN PROC
+ MOV AX,@DATA
+ MOV DS,AX,BX
+ MOV AL,ARRAY[BX]
+ MOV LARGEST,AL
+ COMPARE:
+ INC BX
+ CMP BX,1
+ JE EXIT
+ MOV AL,ARRAY[BX]
+ CMP AL,LARGEST
+ JG UPDATE_LARGEST
+ JMP COMPARE
+ UPDATE_LARGEST:
+ MOV LARGEST,AL
+ JMP COMPARE
+ EXIT:
+ MAIN ENDP
+END MAIN
+
+2) Smallest number in array
+org 100h
+include 'emu8086.inc'
+.model small
+.stack 100h
+.data
+array db 7,3,4,6,5
+.code
+main proc
+ mov ax,@data
+ mov ds,ax
+ mov si,offset array
+ mov cx,5
+ mov bl,[si]
+ Loopx:
+ cmp [si],bl
+ jle update
+ resume:
+ inc si
+ loop loopx
+ print "smallest value from array:"
+ add bl,48
+ mov dl,bl
+ mov ah,02h
+ int 21h
+ update:
+ mov bl,[si]
+ jmp resume
+ main endp
+end main
+Ret
+
+3) Add two array numbers
+org 100h
+jmp start
+vec1 db 1,2,4,6
+vec2 db 3,5,6,2
+vec3 db ?,?,?,?
+start:
+lea si,vec1
+lea bx,vec2
+lea di,vec3
+mov cx,4
+sum:
+mov al,[si]
+add al,[bx]
+mov [di],al
+inc si
+inc bx
+inc di
+loop sum
+ret
+
+4) separate even and odd numbers from an array
+ORG 100H
+.MODEL SMALL
+.STACK 100H
+.DATA
+ARRAY DB 1,2,3,4,5,6,7,8,9,10
+EVEN_NUMS DB 10 DUP(?)
+ODD_NUMS DB 10 DUP(?)
+.CODE
+MAIN PROC
+MOV AX, @DATA
+MOV DS, AX
+MOV CX,10
+MOV SI,0
+MOV DI,0
+MOV BX,0
+SEPERATE_LOOP:
+MOV AL, ARRAY[SI]
+TEST AL,1
+JZ IS_EVEN
+MOV ODD_NUMS[BX], AL;
+INC BX;
+JMP NEXT_ITERATION;
+IS_EVEN:
+MOV EVEN_NUMS[DI], AL;
+INC DI;
+NEXT_ITERATION:
+INC SI;
+LOOP SEPERATE_LOOP;
+EXIT:
+MAIN ENDP
+END MAIN
+RET
+
+5) prime numbers in given range
+org 100h
+.model small
+.stack
+.code
+main proc
+ mov ax,@data
+ mov ds,ax
+ mov dl,1
+ mov cx,10
+ mov si,offset primenum
+ l1:
+ mov bl,2
+ add dl,1
+ cmp dl,2
+ je insert
+ logic:
+ mov ah,0
+ mov al,dl
+ div bl
+ cmp ah,0
+ je l1
+ add bl,1
+ cmp bl,al
+ jb logic
+ jmp insert
+ insert:
+ mov [si],dl
+ inc si
+ loop l1
+ mov ah,4ch
+ int 21h
+ main endp
+.data
+primenum db 10 dup(?)
+end
+ret
+
+6) Factorial of number
+ORG 100H
+.DATA
+ANS DB ?
+.CODE
+MAIN PROC
+MOV AX, @DATA
+MOV DS, AX
+MOV AL,5
+MOV CL,4
+MOV BL, AL
+SUB BL, AL
+SUB BL,1
+L:
+MUL BL
+SUB BL,1
+LOOP L
+MOV ANS, AL
+END MAIN
+RET
+
+7)LCM of two numbers
+DATA SEGMENT
+ NUM1 DW 6
+ NUM2 DW 10
+ LCM DW 2 DUP(?)
+ DATA ENDS
+CODE SEGMENT
+ ASSUME CS:CODE,DS:DATA
+ START:
+ MOV AX,DATA
+ MOV DS,AX
+ MOV DX,0H
+ MOV AX,NUM1
+ MOV BX,NUM2
+ UP:
+ PUSH AX
+ PUSH DX
+ DIV BX
+ CMP DX,0
+ JE EXIT
+ POP DX
+ POP AX
+ ADD AX,NUM1
+ JNC DOWN
+ INC DX
+ DOWN:
+ JMP UP
+ EXIT:
+ POP LCM+2
+ POP LCM
+ MOV AH,4CH
+ CODE ENDS
+END START
+
+8) GCD of two numbers
+DATA SEGMENT
+ NUM1 DW 20
+ NUM2 DW 5
+ GCD DW ?
+ DATA ENDS
+CODE SEGMENT
+ ASSUME CS:CODE,DS:DATA
+ START:
+ MOV AX,DATA
+ MOV DS,AX
+ MOV AX,NUM1
+ MOV BX,NUM2
+ UP:
+ CMP AX,BX
+ JE EXIT
+ JB EXCG
+ UP1:
+ MOV DX,0H
+ DIV BX
+ CMP DX,0
+ JE EXIT
+ MOV AX,DX
+ JMP UP
+ EXCG:
+ XCHG AX,BX
+ JMP UP1
+ EXIT:    
+ MOV GCD,BX
+ MOV AH,4CH
+ INT 21H
+ CODE ENDS
+END START
+
+9) Linear search
+.MODEL SMALL
+.DATA
+NUM DB 11,44,65,5,30
+MSG1 DB "ELEMENT IS FOUND IN MY ARRAY $"
+MSG2 DB "ELEMENT IS NOT FOUND IN MY ARRAY $"
+KEY DB 44
+PRINT MACRO MSG
+MOV AH,09H
+LEA DX, MSG
+INT 21H
+ENDM
+.CODE
+MOV AX, @DATA
+MOV DS, AX
+LEA SI, NUM
+MOV CX,5
+MOV AL, KEY
+HERE:
+MOV BL, [SI]
+CMP AL, BL
+JZ FOUND
+INC SI
+LOOP HERE
+PRINT MSG2
+JMP EXIT
+FOUND:
+PRINT MSG1
+EXIT:
+MOV AH,4CH
+INT 21H
+.EXIT
