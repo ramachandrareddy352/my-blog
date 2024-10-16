@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>acount-abstraction</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Favicons -->
+    <link href="../assets/img/favicon.jpg" rel="icon">
+    <link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+        rel="stylesheet">
+    <script src="https://kit.fontawesome.com/67ced9e5a8.js" crossorigin="anonymous"></script>
+
+
+    <!-- Vendor CSS Files -->
+    <link href="../assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="../assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="../assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="../assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+    <!-- Template Main CSS File -->
+    <link href="../assets/css/style.css" rel="stylesheet">
+    <link href="./css/blogStyle.css" rel="stylesheet">
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tomorrow-night-blue.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+    <!-- and it's easy to individually load additional languages -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script> -->
+
+    <script>hljs.highlightAll();</script>
+
+</head>
+
+<body>
+    <i class="bi bi-list mobile-nav-toggle d-xl-none"></i>
+
+    <!-- ======= Header ======= -->
+    <header id="header">
+        <div class="d-flex flex-column">
+
+            <div class="profile">
+                <img src="../assets/img/profile-img.jpg" alt="" class="img-fluid rounded-circle">
+                <center>
+                    <h4 class="text-light">@rama_eth</h4>
+                </center>
+                <div class="social-links mt-3 text-center">
+                    <a href="https://twitter.com/TavanamRama" class="twitter" target="_blank"><i
+                            class="bx bxl-twitter"></i></a>
+                    <a href="https://github.com/ramachandrareddy352" class="instagram" target="_blank"><i
+                            class="bx bxl-github"></i></a>
+                    <a href="https://www.instagram.com/rama_chandra_reddy_tavanam/" class="instagram" target="_blank"><i
+                            class="bx bxl-instagram"></i></a>
+                    <a href="https://www.linkedin.com/in/ramachandratavanam/" class="linkedin" target="_blank"><i
+                            class="bx bxl-linkedin"></i></a>
+                </div>
+            </div>
+
+            <nav id="navbar" class="nav-menu navbar">
+                <ul>
+                    <li><a href="../index.html" class="nav-link scrollto"><i class="bx bx-home"></i>
+                            <span>Home</span></a></li>
+                    <li><a href="../index.html" class="nav-link scrollto"><i class="bx bx-user"></i>
+                            <span>About</span></a>
+                    </li>
+                    <li><a href="../index.html" class="nav-link scrollto"><i class="bx bx-file-blank"></i>
+                            <span>Resume</span></a></li>
+                    <li><a href="../index.html" class="nav-link scrollto"><i class="bx bx-share-alt"></i>
+                            <span>Portfolio</span></a></li>
+                    <li><a href="../index.html#blogs" class="nav-link scrollto active"><i
+                                class="bx bx-book-content"></i>
+                            <span>Blogs/Acount-Abstraction</span></a></li>
+                    <li><a href="../index.html" class="nav-link scrollto"><i class="bx bx-server"></i>
+                            <span>Services</span></a></li>
+                    <li><a href="../index.html" class="nav-link scrollto"><i class="bx bx-envelope"></i>
+                            <span>Contact</span></a></li>
+                </ul>
+            </nav>
+            <!-- .nav-menu -->
+        </div>
+    </header>
+
+    <main id="main">
+
+        <!-- ======= Blog data Section ======= -->
+        <div class="container" id="blog">
+
+            <!-- Introduction -->
+            <div>
+                <h3> >> Account Abstraction</h3>
+                <p>Hello WEB3, learning Account abstraction is a transformative approach in blockchain technology that
+                    enhances security, user experience, flexibility, scalability, interoperability, and compliance. By
+                    enabling custom logic for account management and transaction handling, it opens up new possibilities
+                    for innovation and efficiency in the decentralized ecosystem. This makes blockchain technology more
+                    accessible, secure, and versatile for both developers and users, driving the adoption and growth of
+                    decentralized applications and services.
+                </p>
+                <p>
+                    In this blog post, we will compare account abstraction to traditional account setups, we will
+                    introduce you to some of the more exciting new use cases enabled by this technology and we will
+                    explain how you, as a web3 developer, could take advantage of this new paradigm
+                </p>
+                <img src="./blog-images/account-abstraction/account-abstraction-diagram.avif">
+                <br>
+                <span>Clone the repo : </span>
+                <div class="repo">
+                    <span>$ git clone <a href="https://github.com/ramachandrareddy352/account-abstraction/"
+                            target="_blank">https://github.com/ramachandrareddy352/account-abstraction/</a></span><br>
+                    <span>$ cd account-abstraction</span><br>
+                    <span>$ npm install</span>
+                </div>
+            </div>
+
+            <!-- What are the key concepts of Account Abstraction? -->
+            <div>
+                <br>
+                <h3>>> What are the key concepts of Account Abstraction?</h3>
+                <p>
+                    The key concepts of Account Abstraction are UserOperation, Bundler, Sender, EntryPoint, Paymaster,
+                    and Aggregator. In combination, these concepts work together to enable web3 developers to build
+                    smart contract wallets and make dapps compatible with SCWs.
+                </p>
+                <h5>1. UserOperation</h5>
+                <p>
+                    A user operation is a “pseudo-transaction object” representing a user’s transaction intent. Any user
+                    operation can contain multiple instructions and additional data to execute smart contract calls
+                    initiated by the Smart Contract Account. UserOperations begin the 4337 transaction flow.
+                </p>
+
+                <h5>>> What is the difference between a UserOperation and traditional transaction?</h5>
+                Three key differences between a UserOperation and regular transaction are:
+                <ol>
+                    <li>
+                        Additional fields - UserOperations include new fields in the transaction structure (e.g.,
+                        EntryPoint, Bundler and Aggregator)
+                    </li>
+                    <li>
+                        Alternate mempool - UserOperations are sent to a separate mempool, where bundlers can package
+                        them into transactions which get included in a block
+                    </li>
+                    <li>
+                        Authentication - for a transaction, authentication is always done via a signature from a single
+                        private key that can never change for a given sender. In a user op, authentication is
+                        programmable.‍
+                    </li>
+                </ol>
+
+                <h5>2. Bundler</h5>
+                <p>
+                    A bundler monitors an alternative mempool specifically built for user operations. The bundler
+                    bundles
+                    multiple user operations into a single transaction and submits that transaction to the entry point
+                    contract. Bundlers are compensated for doing this by taking a portion of the gas fees.
+                </p>
+                <p>
+                    Bundlers are a critical piece of infrastructure to actualize ERC-4337 because all Ethereum
+                    transactions
+                    need to be initiated by an Externally Owned Account (EOA). Bundlers have EOAs, and in an account
+                    abstracted ecosystem they are the only participants that need EOAs. One of the main goals of
+                    ERC-4337 is
+                    to abstract away the need for everyone in web3 to have their own EOA wallet.
+                </p>
+
+                <h5>3. EntryPoint</h5>
+                <p>
+                    The EntryPoint is a singleton smart contract that receives transactions from Bundlers, then verifies
+                    and
+                    executes UserOperations.
+                </p>
+                <h5>>> How does the EntryPoint verification process work?</h5>
+                <p>
+                    The smart contract account gets to define its own verification and therefore its own authentication.
+                    During the verification process the EntryPoint contract checks to see if the wallet has enough funds
+                    to
+                    pay the maximum amount of gas it might possibly use, which is based on the gas fields in the
+                    UserOperation. If the wallet does not have enough funds, the EntryPoint contract rejects the
+                    transaction.
+                </p>
+                <h5>>> How does the EntryPoint execution process work?</h5>
+                <P>
+                    During the execution process the EntryPoint contract executes the user operation by calling the
+                    account
+                    using the calldata specified in the user operation, and taking money from the Smart Contract Account
+                    to
+                    reimburse the Bundler with the right amount of ETH to pay for the gas.
+                </P>
+
+                <h5>4. Paymaster</h5>
+                <p>
+                    The Paymaster is an ERC-4337 defined smart contract that handles the implementation of gas payment
+                    policies. These gas policies create flexibility for how gas is paid (e.g. in what currency) and by
+                    whom,
+                    which removes the prerequisite for users to hold native blockchain tokens to interact with the
+                    blockchain.
+                </p>
+                <p>
+                    For example, the native blockchain token for Ethereum is ETH and the native blockchain token for
+                    Polygon
+                    is MATIC. Therefore, instead of paying gas for Ethereum transactions in the native token (e.g. ETH),
+                    users can pay for gas fees with any ERC20 token like USD Coin (USDC) or Tether (USDT).
+                </p>
+
+                <h5>>> Paymasters allow application developers to: </h5>
+                <ul>
+                    <li>Sponsor gas fees for their users </li>
+                    <li>Enable gas payments in stablecoins </li>
+                    <li>Enable gas payments in other ERC-20 tokens</li>
+                </ul>
+
+                <h5>5. Aggregator</h5>
+                <p>
+                    An Aggregator is a smart contract that implements a signature scheme that supports aggregation (i.e.
+                    a contract that can verify aggregated signatures.
+                    If multiple messages are signed with different keys, then a single combined signature can be
+                    generated that verifies the combined signature, and implies that all the constituent signatures are
+                    also valid.
+                </p>
+                <p>
+                    By combining multiple signatures into a single signature, aggregators help save on calldata costs,
+                    with multiple bundled UserOperations validated in a single step.
+                </p>
+            </div>
+
+            <!-- New Use Cases Enabled by Account Abstraction -->
+            <div>
+                <br>
+                <h3>>> New Use Cases Enabled by Account Abstraction</h3>
+                <h5>1. Enabling authorization over assets inside a wallet</h5>
+                <p>
+                    Because of how the conventional EOA model works, if someone knows the private key for an EOA, they
+                    have complete control over all the assets the account holds. With account abstraction, on the other
+                    hand, because it's programmable, it's now possible to enforce rules about what a given private key
+                    can do. You can now enforce custom rules of any level of complexity, like multi-signature
+                    requirements, time-lock conditions and limits on transfer amounts and frequency. You can even
+                    restrict what smart contracts the account can interact with.
+                </p>
+                <h5>2. Facilitating fee sponsorship</h5>
+                <p>
+                    Currently, for a user to be able to transact on the blockchain, they need to have at least a small
+                    amount of the chain's native token in their EOA to cover gas fees. This introduces a significant
+                    friction point for the end user, as funding an EOA for the first time could be a challenging task
+                    involving CEXes, KYC and AML requirements.
+                </p>
+                <p>
+                    ERC-4337 introduces the concept of a "paymaster", an entity that can cover the transaction fees on
+                    behalf of the user. Instead of the user having to pre-fund their own SCA, a sponsoring dapp will
+                    connect the user's SCA to their paymaster. This way, the SCA creation process as well as future
+                    transactions will have no cost for the user.
+                </p>
+                <h5>3. Enhancing transaction fee payments</h5>
+                <p>
+                    As mentioned before, ERC-4337 doesn't require any protocol-level changes which means that
+                    transaction fees need to be paid in ETH. However, thanks to the programmability of SCAs and the
+                    introduction of paymasters, it's now possible to enable the user to pay for fees using any ERC-20
+                    token they like, for example a stablecoin or a dapp’s native token (AAVE, UNI, COMP, etc).
+                </p>
+                <h5>4. Account automation and pull transactions</h5>
+                <p>
+                    In the conventional world of web2 many financial transactions inherently operate on a pull basis.
+                    For example, when paying for a subscription you don't actually need to take any action every month
+                    to pay for it, but instead the funds are pulled automatically from your payment method. Right now,
+                    for Ethereum and other EVM-based chains, the only type of transaction that exists is the push
+                    transaction, where the account owner needs to actively execute an action to send funds to a third
+                    party.
+                </p>
+                <p>
+                    With account abstraction, on the other hand, it's now possible to grant access to a third-party to
+                    pull funds from your SCA automatically for a specified amount and with a specified periodicity. This
+                    allows for web2-like functionality in web3 applications, such as automatic payments and
+                    subscriptions.
+                </p>
+                <h5>5. Batch transactions</h5>
+                <p>
+                    One of the hindrances with current dapps is having to approve multiple independent transactions to
+                    accomplish a single task. For example, when swapping USDC for ETH on Uniswap, you first have to sign
+                    a transaction approving the spending of USDC and then sign another one approving the actual swap.
+                    With account abstraction, you can now batch these two transactions into a single approval flow,
+                    which significantly improves the user experience.
+                </p>
+                <h5>6. Improved recovery mechanisms</h5>
+                <p>
+                    Wallet security is one of the biggest problems web3 is facing right now. Unfortunately, self-custody
+                    is too complex for the average user, and relying solely on centralized custodians has its own set of
+                    risks. Account abstraction can enable more flexible account recovery options, such as social
+                    recovery methods. Social recovery, a method for securing a wallet introduced by Vitalik Buterin,
+                    allows for the recovery of the wallet with the help of a user's social network.
+                </p>
+            </div>
+
+            <!-- Differences Between Traditional Wallets and AA Wallets -->
+            <div>
+                <br>
+                <h3>>> Differences Between Traditional Wallets and AA Wallets</h3>
+                <p>
+                    In a traditional wallet, a user owns a private key that controls an EOA and every interaction with a
+                    dapp requires the user's approval. From the developer's perspective, this means the wallet requires
+                    a signed transaction from the user that is then sent to a node to be included in the transaction
+                    mempool.
+                </p>
+                <p>
+                    The ERC-4337 standard for Account Abstraction stipulates that transactions are initiated by a SCA
+                    acting on behalf of the user, instead of being initiated by an EOA as is typically the case.
+                    However, the user must first signal their intention to execute a transaction before the SCA can send
+                    it. This is done by issuing a specific message known as a "user operation", or userOp.
+                </p>
+                <p>
+                    Just as Ethereum transactions need to be signed by the account owner, userOps also need to be signed
+                    by the user. However, the signature here is more flexible compared to a traditional transaction. In
+                    Ethereum and other EVM-based chains, the only method allowed for signing transactions is the ECDSA
+                    algorithm. According to the ERC-4337 standard, a SCA could use other methods as well, such as BLS
+                    signatures.
+                </p>
+                <p>
+                    Once the userOp has been signed, it's ready to be sent to the network, but its journey is slightly
+                    different than that of a traditional transaction. Rather than being sent directly to a node, userOps
+                    are sent off chain to a "Bundler". Since only EOAs can initiate transactions, this Bundler acts as
+                    an EOA, aggregating multiple userOps together and sending them to the user's SCA via a special smart
+                    contract called the "Entry Point".
+                </p>
+                <table>
+                    <tr>
+                        <th><strong>Traditional EOAs</strong></th>
+                        <th><strong>Account Abstraction</strong></th>
+                    </tr>
+                    <tr>
+                        <td>The basic unit of execution is called a transaction.</td>
+                        <td>The basic unit of execution is called a user operation or userOp.</td>
+                    </tr>
+                    <tr>
+                        <td>Transactions are signed using the end user's private key</td>
+                        <td>UserOps are signed by the end-user using any method supported by the SCA.</td>
+                    </tr>
+                    <tr>
+                        <td>Transactions are sent to an Ethereum node through an RPC call</td>
+                        <td>UserOps are sent to a bundler through an RPC call</td>
+                    </tr>
+                    <tr>
+                        <td>Transactions are eventually packaged into a block and added to the blockchain</td>
+                        <td>UserOps enter a userOp mempool and are eventually picked up and sent to the Entry Point
+                            for processing.</td>
+                    </tr>
+                    <tr>
+                        <td>The calldata for the transaction is processed by the target smart contract.</td>
+                        <td>The calldata for the userOp is processed by the SCA. Although this calldata could
+                            potentially invoke any function within the SCA, it typically aims to execute a specific
+                            function within a target smart contract.</td>
+                    </tr>
+                </table>
+                <br>
+                <p>
+                    Within the context of Account Abstraction, "account creation" doesn't actually refer to the creation
+                    of the SCA. Rather, it's about calculating the SCA's address. The actual deployment of the SCA only
+                    occurs when the user sends their first userOp to a bundler.
+                </p>
+                <p>
+                    Secondly, the approach to sending transactions to the network changes under Account Abstraction.
+                    Instead of sending a transaction from an EOA, the user's wallet constructs a userOp that is then
+                    sent to a bundler. Just as in traditional Ethereum programming, there are numerous ways to
+                    accomplish this, ranging from manual, low-level coding where you personally create the userOp, fill
+                    in all the fields, and then sign it, to more convenient methods utilizing third-party tools like
+                    Alchemy's AA SDK.
+                </p>
+            </div>
+
+            <!-- Understanding the Structure of a UserOp -->
+            <div>
+                <br>
+                <h3>>> Understanding the Structure of a UserOp</h3>
+                <p>
+                    To enhance our understanding of what a userOp does, let's take a closer look at its components. A
+                    userOp
+                    is represented as a **struct, defined as follows:
+                </p>
+                <img src="./blog-images/account-abstraction/user-operation.png">
+                <ul>
+                    <li>sender: This refers to the SCA’s address.</li>
+                    <li>nonce: A unique value used by the sender to prevent replay attacks.</li>
+                    <li>initCode: If supplied, this code will be responsible for the creation of the SCA. Further
+                        details on
+                        this process are explained in the sections below.</li>
+                    <li>callData: This represents the method call that will be executed on the SCA.</li>
+                    <li>signature: This is a sender-verified signature over the entire userOp.</li>
+                </ul>
+                <p>
+                    The sender, nonce, and signature fields in a userOp align closely with their counterparts in a
+                    traditional transaction.
+                </p>
+
+                <b>initCode</b>
+                <p>
+                    As it's mentioned in the original ERC-4337 proposal, one of the cornerstones of Account Abstraction
+                    is
+                    retaining the ability of users to locally create their wallet and immediately start accepting funds,
+                    a
+                    feature inherent to Externally Owned Accounts (EOAs).
+                </p>
+                <p>
+                    In order to achieve this, the standard proposes a factory contract equipped with a method to create
+                    an
+                    account, that is triggered the first time a user sends a userOp, creating a new SCA for the user.
+                    The factory contract address, the function that creates the SCA (usually called **createAccount),
+                    and
+                    its parameters are all contained within the initCode field. The parameters are the owner account
+                    address
+                    and a salt, all encoded in the form of a calldata field.
+                </p>
+                <b>callData</b>
+                <p>
+                    While the callData field also exists in traditional transactions, its function within Account
+                    Abstraction differs. Here, callData refers to the code the SCA will execute. The specific function
+                    inside the SCA that this field calls is determined by the intended use of the SCA, and can therefore
+                    vary.
+                </p>
+            </div>
+
+            <!-- Steps to execution of a User operation-->
+            <div>
+                <br>
+                <h3>>> Steps to execution of a User operation</h3>
+                <h5>1. User Initiates Operation</h5>
+                <p>
+                    The user initiates an operation, such as a transaction, through their interface (e.g., a
+                    decentralized application (dApp) or wallet interface).
+                    Example: A user wants to transfer tokens to another address.
+                </p>
+                <h5>2. Create User Operation Object</h5>
+                <p>
+                    The interface creates a user operation object that contains the details of the operation.
+                    Fields might include: sender, recipient, value, data (call data), gas limit, gas price, nonce, and
+                    any custom logic or conditions.
+                </p>
+                <h5>3. Validate User Operation</h5>
+                <p>
+                    The user operation is passed to the user's smart contract wallet, which validates the operation
+                    according to custom rules defined in the wallet's smart contract.
+                    This validation could include checking the user’s balance, verifying signatures, ensuring nonce
+                    correctness, and applying any other custom logic.
+                </p>
+                <h5>4. Meta-Transaction (Optional)</h5>
+                <p>
+                    If the user does not have enough native cryptocurrency to pay for gas, a meta-transaction can be
+                    used. The operation is signed by the user but submitted to the blockchain by a relayer.
+                    The relayer might be compensated through alternative means or later reimbursed by the user.
+                </p>
+                <h5>5. Submit Operation to Blockchain</h5>
+                <p>
+                    The validated user operation is submitted to the blockchain as a transaction. This can be done
+                    directly by the user or via a relayer in the case of a meta-transaction.
+                </p>
+                <h5>6. Smart Contract Wallet Executes Operation</h5>
+                <p>
+                    The smart contract wallet on the blockchain receives the transaction and executes the operation. The
+                    smart contract logic processes the transaction based on the details provided and any custom rules.
+                    Example: The wallet transfers tokens to the specified recipient after ensuring all conditions are
+                    met.
+                </p>
+                <h5>7. Custom Logic and Hooks</h5>
+                <p>
+                    During the execution, custom hooks or logic defined in the smart contract can be triggered. These
+                    hooks might perform additional checks, modify the operation, or execute supplementary tasks.
+                    Example: A pre-transfer hook checks if the user has met certain criteria before allowing the
+                    transfer.
+                </p>
+                <h5>8. Handle Gas Fees</h5>
+                <p>
+                    The transaction's gas fees are handled according to the predefined method. If a relayer is used,
+                    they pay the gas fees, and if not, the fees are deducted from the user’s balance or managed by the
+                    smart contract.
+                </p>
+                <h5>9. Operation Confirmation</h5>
+                <p>
+                    Once the operation is successfully executed, it is confirmed on the blockchain. The user’s interface
+                    is updated to reflect the successful transaction.
+                    The user is notified of the successful completion, and the blockchain state is updated accordingly.
+                </p>
+            </div>
+
+            <!-- Potential Drawbacks for Account Abstraction -->
+            <div>
+                <br>
+                <h3>>> Potential Drawbacks for Account Abstraction</h3>
+                <p>
+                    We already covered how Account Abstraction and the ERC-4337 proposal could offer many potential
+                    benefits to web3. We will now examine some potential challenges and drawbacks of Account
+                    Abstraction:
+                </p>
+                <ul>
+                    <li><i>Learning curve</i>: There is a steep learning curve associated with understanding the new
+                        concepts introduced by the proposal, as well as how to implement those concepts in practice.
+                        This increased complexity could slow down developer adoption in the short term.</li>
+                    <li><i>Security risks</i>: The proposal introduces new participants, such as the bundlers and the
+                        paypasters, which could potentially be exploited if not properly secured. Replay attacks are
+                        also a concern, as the way signatures and nonces are used is not specified in the standard, but
+                        left for the developer to implement them as they see fit.</li>
+                    <li><i>Potential for centralization</i>: While the proposal is aligned with Ethereum's
+                        decentralization ethos (for example by allowing anyone to run a bundler or a paymaster) it's
+                        still possible that if a few entities dominate these roles it could potentially lead to
+                        centralization.</li>
+                    <li><i>Maintenance Challenges</i>: The introduction of new elements in the ecosystem could make the
+                        network and the applications more difficult to maintain and monitor.</li>
+                    <li><i>Is more expensive</i>: Performing an action on-chain using a userOp is typically more
+                        expensive compared to sending a transaction from an EOA. That's because of all the overhead that
+                        makes AA possible, like, for example, the bundler that needs to be paid for its services and the
+                        validation of the userOps by the Entry Point.</li>
+                </ul>
+            </div>
+
+        </div>
+
+        <!-- References -->
+        <div class="container">
+            <br>
+            <h3>>> Reference</h3>
+            <ul>
+                <li>
+                    <a href="https://eips.ethereum.org/EIPS/eip-4337" target="_blank">EIP 4337</a>
+                </li>
+                <li>
+                    <a href="https://docs.alchemy.com/docs/introduction-to-account-abstraction"
+                        target="_blank">Introduction to account-abstraction</a>
+                </li>
+                <li>
+                    <a href="https://www.youtube.com/playlist?list=PLMj8NvODurfE9yPZ2beXSjuEgVtVcY1a6"
+                        target="_blank">Alchemy Youtube explanation</a>
+                </li>
+                <li>
+                    <a href="https://docs.alchemy.com/docs/how-to-create-a-modular-smart-contract-account-and-send-userops-with-account-kit"
+                        target="_blank">How to create userOps</a>
+                </li>
+                <li>
+                    <a href="https://docs.alchemy.com/docs/how-to-sponsor-userops-using-aa-sdk-and-gas-manager"
+                        target="_blank"> Sponsor userOps and Gas manager</a>
+                </li>
+                <li>
+                    <a href="https://medium.com/@0xasdf_eth/a-complete-guide-on-account-abstraction-b885542e7552"
+                        target="_blank">Overall guide</a>
+                </li>
+            </ul>
+
+        </div>
+
+        <!-- Footer -->
+        <footer id="footer">
+            <div class="container">
+                <div class="copyright">
+                    <strong><span>Fund Me</span></strong>
+                </div>
+                <div class="credits">
+                    <a href="#" style="font-size: 10px;">0xd0509B83468409A75De2771C1Ae7bE1026A69927</a>
+                </div>
+            </div>
+        </footer>
+
+        <!-- Scripts imports -->
+        <div>
+            <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+                    class="bi bi-arrow-up-short"></i></a>
+
+            <!-- Vendor JS Files -->
+            <script src="../assets/vendor/purecounter/purecounter_vanilla.js"></script>
+            <script src="../assets/vendor/aos/aos.js"></script>
+            <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+            <script src="../assets/vendor/glightbox/js/glightbox.min.js"></script>
+            <script src="../assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+            <script src="../assets/vendor/swiper/swiper-bundle.min.js"></script>
+            <script src="../assets/vendor/typed.js/typed.umd.js"></script>
+            <script src="../assets/vendor/waypoints/noframework.waypoints.js"></script>
+            <script src="../assets/vendor/php-email-form/validate.js"></script>
+
+            <!-- Template Main JS File -->
+            <script src="../assets/js/main.js"></script>
+        </div>
+</body>
+
+</html>

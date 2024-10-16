@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>rcr-stake</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Favicons -->
+    <link href="../assets/img/favicon.jpg" rel="icon">
+    <link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+        rel="stylesheet">
+    <script src="https://kit.fontawesome.com/67ced9e5a8.js" crossorigin="anonymous"></script>
+
+
+    <!-- Vendor CSS Files -->
+    <link href="../assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="../assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="../assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="../assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+    <!-- Template Main CSS File -->
+    <link href="../assets/css/style.css" rel="stylesheet">
+    <link href="./css/blogStyle.css" rel="stylesheet">
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tomorrow-night-blue.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+    <!-- and it's easy to individually load additional languages -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script> -->
+
+    <script>hljs.highlightAll();</script>
+
+</head>
+
+<body>
+    <i class="bi bi-list mobile-nav-toggle d-xl-none"></i>
+
+    <!-- ======= Header ======= -->
+    <header id="header">
+        <div class="d-flex flex-column">
+
+            <div class="profile">
+                <img src="../assets/img/profile-img.jpg" alt="" class="img-fluid rounded-circle">
+                <center>
+                    <h4 class="text-light">@rama_eth</h4>
+                </center>
+                <div class="social-links mt-3 text-center">
+                    <a href="https://twitter.com/TavanamRama" class="twitter" target="_blank"><i
+                            class="bx bxl-twitter"></i></a>
+                    <a href="https://github.com/ramachandrareddy352" class="instagram" target="_blank"><i
+                            class="bx bxl-github"></i></a>
+                    <a href="https://www.instagram.com/rama_chandra_reddy_tavanam/" class="instagram" target="_blank"><i
+                            class="bx bxl-instagram"></i></a>
+                    <a href="https://www.linkedin.com/in/ramachandratavanam/" class="linkedin" target="_blank"><i
+                            class="bx bxl-linkedin"></i></a>
+                </div>
+            </div>
+
+            <nav id="navbar" class="nav-menu navbar">
+                <ul>
+                    <li><a href="../index.html" class="nav-link scrollto"><i class="bx bx-home"></i>
+                            <span>Home</span></a></li>
+                    <li><a href="../index.html" class="nav-link scrollto"><i class="bx bx-user"></i>
+                            <span>About</span></a>
+                    </li>
+                    <li><a href="../index.html" class="nav-link scrollto"><i class="bx bx-file-blank"></i>
+                            <span>Resume</span></a></li>
+                    <li><a href="../index.html" class="nav-link scrollto"><i class="bx bx-share-alt"></i>
+                            <span>Portfolio</span></a></li>
+                    <li><a href="../index.html" class="nav-link scrollto active"><i class="bx bx-book-content"></i>
+                            <span>Blogs/rcr-stake</span></a></li>
+                    <li><a href="../index.html" class="nav-link scrollto"><i class="bx bx-server"></i>
+                            <span>Services</span></a></li>
+                    <li><a href="../index.html" class="nav-link scrollto"><i class="bx bx-envelope"></i>
+                            <span>Contact</span></a></li>
+                </ul>
+            </nav>
+            <!-- .nav-menu -->
+        </div>
+    </header>
+
+    <main id="main">
+
+        <!-- ======= Blog data Section ======= -->
+        <div class="container" id="blog">
+
+            <!-- Introduction -->
+            <div>
+                <h3> >> RCR-STAKE</h3>
+                <p>Hello WEB3, In this blog series, we are learning how to build a fixed staking pool. It's a very
+                    interesting to say that I have used so make tools and others to build this project with multiple
+                    concepts like stable coin, air drops, chainlink data feeds, automation and Verified Random
+                    Function(VRF). These are the key functionalities in this project.
+                </p>
+
+                <ul>
+                    <li>
+                        Any user can stake some pool accepted collateral for some fixed number of days and earn the
+                        rewards for staking as Decentralized Stable Coin(DSC).
+                    </li>
+                    <li>
+                        These DSC are purchase through the DSCEngine contract also.
+                    </li>
+                    <li>
+                        DSC tokens are controlled by the DSC Engine contract.
+                    </li>
+                    <li>
+                        And also user can register for the airdrop from the DSCAirdrop contract and after every certain
+                        period of time chainlink automatically trigger the announce winner function and send the DSC
+                        tokens to that winner.
+                    </li>
+                    <li>
+                        During registration for Airdrop protocol takes some amount of registration fess based on the
+                        reward amount of that particiular airdrop.
+                    </li>
+                    <li>
+                        In fixed staking pool if user stake the collateral for more period he will get more reward rate.
+                    </li>
+                    <li>
+                        DCS library helps to make calculation for DSCEngine and the calculations are done in
+                        <b>assembly</b> languague to reduce the gas fee.
+                    </li>
+                    <li>
+                        Here we used Chainlink data feeds to get the current price of the collateral in the market.
+                    </li>
+                    <li>
+                        <b>Verified Random Function(VRF)</b> is used to generate the random number for the airdrop
+                        winner.
+                    </li>
+                    <Li>
+                        <b>Automation</b> is used to automate the process of airdrop winner announcement.
+                    </Li>
+                    <li>
+                        DSC Engine contract mint the DSC tokens on over collateralization of <b>200%</b> due to avoid
+                        the price inflation attack from the protocol.
+                    </li>
+                    <li>
+                        After completing of staking period of the user, he can able to withdraw the staked and
+                        collateral and earn some reward tokesn as DSC tokens.
+                    </li>
+                    <li>
+                        In fixed pool user can able to take flash loan by implementing FlashLoanReceiver contract.
+                    </li>
+                    <li>
+                        For any flash loan protocol takes 0.3% as fees, these fees are received by the fee receiver
+                        address.
+                    </li>
+                    <li>
+                        To approve the tokens to spend, protocol accepts gas less approvals by making signature.
+                    </li>
+                </ul>
+
+                <p>
+                    I recommend to go through the ethereum101, solidity 101, solidity 201 modules
+                    of the
+                    <a href="https://secureum.substack.com/" target="_blank">Secureum
+                        bootcamp</a> and learn how stable coin works by <a
+                        href="https://www.youtube.com/watch?v=8dRAd-Bzc_E" target="_blank">@patric_collins</a> and
+                    staking maths works on youtube like <a href="https://www.youtube.com/@smartcontractprogrammer"
+                        target="_blank">@smart_contract_programmer</a> and externally it is recommend to learn how
+                    chainlink <a href="https://chain.link/data-feeds" target="_blank">dataFeeds</a>, <a
+                        href="https://chain.link/automation" target="_blank">Automation</a> and <a
+                        href="https://chain.link/vrf" target="_blank">VRF</a> works.
+                </p>
+
+                <br>
+                <span>Clone the repo : </span>
+                <div class="repo">
+                    <span>$ git clone <a href="https://github.com/ramachandrareddy352/rcr-stake/"
+                            target="_blank">https://github.com/ramachandrareddy352/rcr-stake/</a></span><br>
+                    <span>$ cd rcr-stake</span><br>
+                    <span>$ forge build</span>
+                </div>
+                <br>
+            </div>
+            <hr class="breakLine">
+
+            <!-- Repository Structure -->
+            <div>
+                <h3>>> Repository Structure</h3>
+                <ul>
+                    <li>intrefaces</li>
+                    <ul>
+                        <li>AggregatorV3Interface.sol</li>
+                        <li>FlashLoanReceiver.sol</li>
+                        <li>IDSCEngine.sol</li>
+                        <li>IPriceOracle.sol</li>
+                    </ul>
+                    <li>libraries</li>
+                    <ul>
+                        <li>DCSLibrary.sol</li>
+                    </ul>
+                    <li>stablecoin</li>
+                    <ul>
+                        <li>DSC.sol</li>
+                        <li>DSCAirdrop.sol</li>
+                        <li>DSCEngine.sol</li>
+                    </ul>
+                    <li>staking</li>
+                    <ul>
+                        <li>FixedPool.sol</li>
+                    </ul>
+                    <li>utils</li>
+                    <ul>
+                        <li>PriceOracle.sol</li>
+                    </ul>
+                </ul>
+            </div>
+            <hr class="breakLine">
+
+            <!-- Price Oracle -->
+            <div>
+                <h3>>> Price Oracle</h3>
+                <p>
+                    Chainlink Data Feeds provide data that is aggregated from many data sources by a decentralized set
+                    of independent node operators. The Decentralized Data Model describes this in detail. However, there
+                    are some exceptions where data for a feed can come only from a single data source or where data
+                    values are calculated.
+                </p>
+                <p>
+                    To get the price of the collateral we used chainlink price feeds. For different collaterals we use
+                    same AggregatorV3Interface contract and pass the respective price feed address.
+                    If chainlink pricefeeds were hacked we use same interface to return price using Uniswap oracle. So
+                    in this project we get the price of collateral through calling interface of IPriceOracle.sol
+                </p>
+                <P>
+                    Here is the function code which returns the price of collateral.
+                </P>
+                <img src="./blog-images/rcr-stake/stale-price.png" width="800px" height="250px">
+                <p>
+                    We can see that at line 53, 56 we make some checks regarding to whether the oracle is correctly
+                    working or not.
+                </p>
+                <ul>
+                    <li>
+                        At line 53 we check the current roundIds and undated roundIds are correct or not.
+                    </li>
+                    <li>
+                        At line 56 we are checking for stale timeout error.
+                    </li>
+                </ul>
+                <p>
+                    To create a price Orcale using chainlink we have to make subscription and add consumer to that
+                    subscription and make some funds(Link tokens) to the subscriptionId.
+                </p>
+                <p>
+                    Here is the guide to <a href="https://docs.chain.link/data-feeds/using-data-feeds"
+                        target="_blank">price oracle</a> using chainlink.
+                </p>
+            </div>
+            <hr class="breakLine">
+
+            <!-- Chainlink Automation -->
+            <div>
+                <h3>>> Chainlink Automation</h3>
+                <p>
+                    Chainlink Automation is a decentralized automation framework that allows developers to build
+                    Automate your smart contracts using a secure and hyper-reliable decentralized network that uses the
+                    same external network of node operators that secures billions in value. Building on Chainlink
+                    Automation will accelerate your innovation, save you time and money, and help you get to market
+                    faster so you don't have to deal with the setup cost, ongoing maintenance, and risks associated with
+                    a centralized automation stack.
+                </p>
+                <p>
+                    To learn more about how the Chainlink Automation Network automates your smart contracts, visit the
+                    Concepts and <a href="https://docs.chain.link/chainlink-automation/concepts/automation-architecture"
+                        target="_blank">Architecture pages</a>. You can also learn more through our<a
+                        href="https://chain.link/automation#masterclass" target="_blank"> additional Automation
+                        resources</a>.
+                </p>
+                <img src="./blog-images/rcr-stake/automation_2_diagram_v3.png" class="click-to-zoom">
+                <p>
+                    Chainlink Automation will reliably execute smart contract functions using a variety of triggers.
+                    Explore the examples below to see how Chainlink Automation works for each type of trigger. Before
+                    you begin, you will need an active cryptocurrency wallet such as Metamask.
+                <ul>
+                    <li>Time-based trigger: Use a time-based trigger to execute your function according to a time
+                        schedule.</li>
+                    <li>Custom logic trigger: Use a custom logic trigger to provide custom solidity logic that
+                        Automation Nodes evaluate (offchain) to determine when to execute your function onchain.</li>
+                    <li>Log trigger: Use log data as both trigger and input.</li>
+                </ul>
+                </p>
+                <p>
+                    You can go through to set up for <a
+                        href="https://docs.chain.link/chainlink-automation/overview/getting-started"
+                        target="_blank">Automation</a> contract.
+                </p>
+            </div>
+
+            <!-- Chainlink VRF -->
+            <div>
+                <h3>>> Chainlink VRF</h3>
+                <p>
+                    Chainlink VRF (Verifiable Random Function) is a provably fair and verifiable random number generator
+                    (RNG) that enables smart contracts to access random values without compromising security or
+                    usability. For each request, Chainlink VRF generates one or more random values and cryptographic
+                    proof of how those values were determined. The proof is published and verified onchain before any
+                    consuming applications can use it. This process ensures that results cannot be tampered with or
+                    manipulated by any single entity including oracle operators, miners, users, or smart contract
+                    developers.
+                </p>
+                <p>
+                    Use Chainlink VRF to build reliable smart contracts for any applications that rely on unpredictable
+                    outcomes:
+                <ul>
+                    <li>Building blockchain games and NFTs.</li>
+                    <li>Random assignment of duties and resources. For example, randomly assigning judges to cases.</li>
+                    <li>Choosing a representative sample for consensus mechanisms.</li>
+                </ul>
+                </p>
+
+                <h5>>> Two methods to request randomness</h5>
+                <ul>
+                    <li>
+                        <b>Subscription</b>: Create a subscription account and fund its balance with either native
+                        tokens
+                        or LINK. You can then connect multiple consuming contracts to the subscription account. When
+                        the consuming contracts request randomness, the transaction costs are calculated after the
+                        randomness requests are fulfilled and the subscription balance is deducted accordingly. This
+                        method allows you to fund requests for multiple consumer contracts from a single
+                        subscription.
+                    </li>
+                    <li>
+                        <b>Direct funding</b>: Consuming contracts directly pay with either native tokens or LINK
+                        when they
+                        request random values. You must directly fund your consumer contracts and ensure that there
+                        are enough funds to pay for randomness requests.
+                    </li>
+                </ul>
+
+                <p>
+                    In our project we used Subscription method to generate secure random numbers.
+                </p>
+            </div>
+            <hr class="breakLine">
+
+            <!-- Libraries -->
+            <div>
+                <h3>>> DCSLibrary</h3>
+                <p>
+                    DSC Library is used to convert the usd amount to collateral amount and viceversa using assembly
+                    language to reduce the transaction gas.
+                </p>
+
+                <h4>>> Functions</h4>
+                <div class="container">
+                    <dt>getUSDAmount()</dt>
+                    <p>
+                        Return the collateral value in terms of USD amount using chainlink price feeds.
+                    </p>
+                    <dt>getTokenAmount()</dt>
+                    <p>
+                        Return the collateral amount by giving input as UDS value with decimals of 18.
+                    </p>
+                </div>
+            </div>
+            <hr class="breakLine">
+
+            <!-- Decentralized Stable Coin(DSC) -->
+            <div>
+                <h3>>> Decentralized Stable Coin(DSC)</h3>
+                <div>
+                    <p>
+                        Stablecoins are a type of cryptocurrency designed to maintain a stable value relative to a
+                        specific
+                        asset, typically a fiat currency like the US dollar or a commodity like gold. They aim to
+                        combine
+                        the benefits of cryptocurrencies (such as decentralization and security) with the stability of
+                        traditional financial assets
+                    </p>
+                    <h4>>> How do stablecoins work?</h4>
+                    <p>
+                        Stablecoins generally work the same across the board: They are cryptocurrencies minted on a
+                        blockchain that users can buy, sell and trade on an exchange just like any other crypto coin.
+                        People
+                        can store stablecoins in their hot wallets and/or cold storage devices like they would bitcoin
+                        or
+                        any altcoin.
+                    </p>
+                    <p>
+                        In order to have integrity, most stablecoins are linked to a reserve of external assets of some
+                        kind, whether it be a stash of fiat currency, commodities like gold or debt instruments like
+                        commercial paper. In most cases, the company or entity that develops the stablecoin owns
+                        reserves
+                        equal to the amount of stablecoins it has in circulation. This is such that any stablecoin
+                        holder
+                        should be able to redeem one stablecoin token for one dollar at any time.
+                    </p>
+
+                    <h4>>> The four types of stablecoins</h4>
+                    <p>
+                        There are four different types of stablecoins, each with its own way of fixing the value of the
+                        tokens to a stable figure.
+                    </p>
+                    <ol>
+                        <li>Fiat-backed</li>
+                        <li>Cryptocurrency-backed</li>
+                        <li>Commodity-backed</li>
+                        <li>Algorithmic</li>
+                    </ol>
+
+                    <p>
+                        In this project we used Algorithmic Stable coin, this category of stablecoins uses algorithms to
+                        modulate the supply based on its market demand. In short, these algorithms automatically burn
+                        (permanently remove coins from circulation) or mint new coins based on the fluctuating demand
+                        for
+                        the stablecoin at any given time.
+                    </p>
+                    <p>
+                        You can read more <a
+                            href="https://www.coindesk.com/learn/algorithmic-stablecoins-what-they-are-and-how-they-can-go-terribly-wrong/"
+                            target="_blank"> Algorithmic Stable coin</a> and <a
+                            href="https://www.coindesk.com/learn/whats-the-point-of-stablecoins-understanding-why-they-exist/"
+                            target="_blank">What are stable coins</a>.
+                    </p>
+                </div>
+            </div>
+            <hr class="breakLine">
+
+            <!-- Stable coin contracts -->
+            <div>
+                <h3>>> Stable Coin Contracts</h3>
+                <h4>>> DSC.sol</h4>
+                <div>
+                    <p>DSC contract is the ERC-20 token contract. The minting and burning of tokens are controlled
+                        by the DSCEngine logic. DSC.sol implements Ownable contract and the owner of DSC contract is
+                        DSCEngine contract.</p>
+                    <P>
+                        The DSC contract has the following functions:
+                    <uL>
+                        <li>mint() : This function is called to mint the DSC tokens.</li>
+                        <li>burn() : This function is used to burn the DSC Tokens.</li>
+                    </uL>
+                    The two function are only called by the DSCEngine contract only.
+                    </P>
+                </div>
+
+                <h4>>> DSCEngine.sol</h4>
+                <div>
+                    <P>
+                        DSCEngine contract is the logic contract that controls the minting and burning of DSC tokens. In
+                        this Engine contract we used Algorithmic Stable coin login to mint and burn DSC by depositing of
+                        collateral by maintaining a health factor of over collateralization of 200%.
+                    </P>
+                    <p>
+                        DSCEngine contract is Pausable and Re-entrancy protected contract.
+                    </p>
+                </div>
+
+                <h4>>> DSCAirdrop.sol</h4>
+                <div>
+                    <p>
+                        DSCAirdrop refer to the distribution of DSC Tokens to a large number of wallet
+                        addresses. This is typically done to promote the DCS tokens.
+                    </p>
+                    <p>
+                        In DSCAirdrop user will register for the airdrop with entry fees set by the owner. After
+                        completing of time period of airdrop the chainlink-automation calls automatically from the
+                        oracle and oracle callback the performUpkeep() function, inside this function we generate a
+                        secure random number using chainlink VRF and fulfillRandomWords() announce the winner after
+                        calling of requestRandomWords() function.
+                    </p>
+                </div>
+            </div>
+            <hr class="breakLine">
+
+            <!-- Fixed Pool -->
+            <div>
+                <h3>>> Fixed Pool</h3>
+                <p>
+                    Fixed pool is a decentralized pool, where user can stake their collateral tokens(which are accepted
+                    by the pool) and get the reward as the DSC tokens. User will stake the collateral for fixed days and
+                    that tokens are locked for that period. If the user stake the collateral for long period, they will
+                    get high reward rate that normal one.
+                </p>
+                <ul>
+                    <li>
+                        User can able to take the flash loan by implementing FlashLoanReceiver contract.
+                    </li>
+                    <li>
+                        Fixed pool is a Pausable functionalities where in emeregency or any hacks owner of the pool can
+                        pause the user
+                        called functions.
+                    </li>
+                    <li>
+                        User can implement multicall function.
+                    </li>
+                    <li>
+                        Fixed pool functions are protected by Re-entrancy guard.
+                    </li>
+                    <li>
+                        To transfer the ERC20 tokens we used Openzeppelin SafeERC20 contract.
+                    </li>
+                    <li>
+                        User can stake, redeem collateral and withdraw rewards.
+                    </li>
+                    <li>
+                        User can approve the tokens with gas-less token transfers using permit signature.
+                    </li>
+                </ul>
+
+                <h4>>> Events</h4>
+                <ul>
+                    <li><i>FlashLoan</i> : Emits when any one take FlashLoan successfully.</li>
+                    <li><i>Stake</i> : Emits when any user satke the collateral into the pool.</li>
+                    <li><i>Redeemed</i> : Emits when the user redeem his collateral after completing of their staking
+                        period.</li>
+                    <li><i>WithdrawRewards</i> : Emist when ever withdraw function is called.</li>
+                </ul>
+                <pre style="margin-top: -50px;">
+                    <code>event FlashLoan(
+    address indexed executor,
+    address indexed loanReceiver,
+    address collateral,
+    uint256 amount,
+    bytes payload,
+    uint256 loanFee
+);
+
+event Stake(
+    uint256 indexed stakingId,
+    address indexed user,
+    address indexed forTo,
+    address collateralToken,
+    uint256 amount,
+    uint256 stratTime,
+    uint256 endTime,
+    uint256 rewardRate,
+    uint256 fixedDays
+);
+
+event Redeemed(
+    address indexed user,
+    uint256 indexed stakingId,
+    address collateral,
+    uint256 amount,
+    address collateralReceiver,
+    address rewardReceiver
+);
+
+event WithdrawRewards(address indexed user, address indexed dscReceiver, uint256 amount);</code>
+                </pre>
+
+                <h4>>> Modifiers</h4>
+                <div class="container">
+                    <dt>isAcceptableToken()</dt>
+                    <p>
+                        Checks whether the collateral token is accepted by the pool or not.
+                    </p>
+                    <dt>isNonZero()</dt>
+                    <p>
+                        Check whether the input number is not a zero.
+                    </p>
+                </div>
+
+                <h4>>> Functions</h4>
+                <div class="container">
+                    <h5>>> Owner callable functions</h5>
+                    <dt>changeFeeReceiver()</dt>
+                    <p>
+                        This is function is used to set the fees receiver address. Where the fees is collected from
+                        flash-loan.
+                    </p>
+                    <dt>addCollateral()</dt>
+                    <P>
+                        This function is used to add a new collateral token to the pool to accept for staking.
+                    </P>
+                    <dt>removeCollateral()</dt>
+                    <P>
+                        This function is used to remove a collateral token from the pool. After removing collateral no
+                        longer the pool accept the collateral to stake.
+                    </P>
+                    <dt>updateFixedRewardRate()</dt>
+                    <P>
+                        This function is used to update the fixed reward rate of the pool.
+                    </P>
+                    <dt>pause()</dt>
+                    <P>
+                        This function is used to pause the pool when any hacks occured on pool. It pause all the user
+                        callable functions.
+                    </P>
+                    <dt>unpause()</dt>
+                    <P>
+                        This function is used to unpause the pool.
+                    </P>
+
+                    <h5>>> Read only functions</h5>
+                    <dt>getPendingReward()</dt>
+                    <P>
+                        This function is used to get the pending reward of the user for their staked collateral.
+                    </P>
+                    <dt>getUserStakingData()</dt>
+                    <P>
+                        This function is used to get the staking data of the user through his stakingId.
+                    </P>
+
+                    <h5>>> User/Stakerr callable functions</h5>
+                    <dt>getFlashLoan()</dt>
+                    <P>
+                        This function is used to get the flash loan for the user.
+                        <img src="./blog-images/rcr-stake/flash-loan.png" width="1000px" height="500px"><br>
+                    <ul>
+                        <li>At first we have to check whether the loan receiver is a smart contract or not . We have to
+                            accept only smart contracts to accept the loan amount to receive.</li>
+                        <li>User can take the flash loan upto the maximum balance of collateral in this pool.</li>
+                        <li>At line 197 We send the amount of tokens that the user want to take as flash loan.</li>
+                        <li>After sending tokens we are checking the call back <b>(keccak256(
+                                abi.encodePacked( "onFlashLoan(address _caller, address _collateral, uint256 _amount,
+                                bytes
+                                memory _payload)")
+                                );)</b> whether the function is called successfully or not, At line 200.</li>
+                        <li>After that at line 204, 205 pool recollect the sended tokens with fee of 0.3%, The fee is
+                            send to fee receive adddress and flash-loan amount is sended to pool.</li>
+                    </ul>
+                    </P>
+                    <dt>_stake()</dt>
+                    <p>
+                        The core logic of staking tokens is executed inside the _stake function. Here is the code :
+                        <img src="./blog-images/rcr-stake/_stake.png" width="1000px" height="500px">
+                    </p>
+                    <dt>stake()</dt>
+                    <P>
+                        This function is used to stake the tokens by making another transaction for approving the tokens
+                        to spend.
+                    </P>
+                    <dt>stakeWithPermit()</dt>
+                    <P>
+                        In this function we can make a single transaction for approving and staking by making signature
+                        to send tokens for the pool.
+                    </P>
+                    <dt>redeemCollateral()</dt>
+                    <P>
+                        This function is used to redeem the collateral from the pool. This is called only after
+                        completing after that staking period and after that isRedeemed state is updated to true.
+                    </P>
+                    <dt>withdrawRewards()</dt>
+                    <P>
+                        This function is used to withdraw the rewards from the pool. The reward tokens are the DSC
+                        tokens.
+                    </P>
+                </div>
+            </div>
+            <hr class="breakLine">
+
+            <!-- Security considerations -->
+            <div>
+                <h3>>> Security Considerations</h3>
+                <ul>
+                    <li>
+                        <i>Ownership and Permissions:</i> Implement robust ownership and permission mechanisms to
+                        control who can interact with the contract’s critical functions.
+                    </li>
+                    <li>
+                        <i>Reentrancy Guards:</i> Implement reentrancy guards using techniques such as the
+                        checks-effects-interactions pattern or the ReentrancyGuard contract from OpenZeppelin.
+                    </li>
+                    <li>
+                        <i>Parameter Checks:</i> Validate and sanitize all input parameters to prevent attacks such as
+                        integer overflow/underflow, and invalid addresses.
+                    </li>
+                    <li>
+                        <i>Flash Loan Attacks:</i> Protect against flash loan attacks by designing the protocol to
+                        handle sudden and large volume changes.
+                    </li>
+                    <li>
+                        <i>Event Emission: </i>Emit events for critical operations to provide transparency and
+                        traceability.
+                    </li>
+                    <li>
+                        <i>Pausable Contract:</i> Implement a Pausable mechanism to halt contract operations in case of
+                        an emergency.
+                    </li>
+                    <li>
+                        <i>Chainlink-automation</i> : Implement chainlink-automation for calling functions automatically
+                        using chainlink oracles.
+                    </li>
+                    <li>
+                        <i>chainlink VRF</i> : Implementing chainlink Verifiable random function to generate a secure
+                        random function.
+                    </li>
+                    <li>
+                        <i>Chainlink Price Feeds</i> : Implementing chainlink price feeds to get the collateral price in
+                        market using chainlink oracles.
+                    </li>
+                    <li>
+                        <i>Stale price manipulated</i> : Even if the chainlink price feed oracle is manipulated we can
+                        stop the transactions to get data from chainlink.
+                    </li>
+                    <li>
+                        <i>Assembly maths : </i>Writing secure assembly to calculate the output for maths functions.
+                    </li>
+                    <li>
+                        <i>Collateral Management:</i> Implemented mechanisms to handle collateral volatility and ensure
+                        over-collateralization.
+                    </li>
+                </ul>
+            </div>
+            <hr class="breakLine">
+
+        </div>
+
+        <!-- References -->
+        <div class="container">
+            <h3>>> Reference</h3>
+            <ul>
+                <li>
+                    <a href="https://docs.soliditylang.org/en/latest/" target="_blank">Solidity
+                        documentation</a>
+                </li>
+                <li>
+                    <a href="https://medium.com/geekculture/what-is-a-defi-flash-loans-flash-loan-attack-c130c83d9811"
+                        target="_blank">Flash loan docs</a>
+                </li>
+                <li>
+                    <a href="https://www.coindesk.com/learn/whats-the-point-of-stablecoins-understanding-why-they-exist/"
+                        target="_blank">Stable coin guide</a>
+                </li>
+                <li>
+                    <a href="https://github.com/x676f64/secureum-mind_map" target="_blank">Secureum mind map</a>
+                </li>
+                <li>
+                    <a href="https://book.getfoundry.sh/" target="_blank">Foundry book</a>
+                </li>
+                <li>
+                    <a href="https://chain.link/data-feeds" target="_blank">Chainlink Data Feeds</a>
+                </li>
+                <li>
+                    <a href="https://chain.link/automation" target="_blank">Chainlink Automation</a>
+                </li>
+                <li>
+                    <a href="https://chain.link/vrf" target="_blank">Chainlink VRF</a>
+                </li>
+                <li>
+                    <a href="https://docs.aave.com/hub" target="_blank">Aave docs</a>
+                </li>
+                <li>
+                    <a href="https://medium.com/web-3-digitals/smart-contract-testing-the-foundry-way-d86fcc5ca33e"
+                        target="_blank">Learn Testing</a>
+                </li>
+                <li>
+                    <a href="https://www.cyfrin.io/blog/smart-contract-fuzz-testing-using-foundry"
+                        target="_blank">Cyfrin Fuzz test guide</a>
+                </li>
+            </ul>
+
+        </div>
+
+        <!-- Footer -->
+        <footer id="footer">
+            <div class="container">
+                <div class="copyright">
+                    <strong><span>Fund Me</span></strong>
+                </div>
+                <div class="credits">
+                    <a href="#" style="font-size: 10px;">0xd0509B83468409A75De2771C1Ae7bE1026A69927</a>
+                </div>
+            </div>
+        </footer>
+
+        <!-- Scripts imports -->
+        <div>
+            <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+                    class="bi bi-arrow-up-short"></i></a>
+
+            <!-- Vendor JS Files -->
+            <script src="../assets/vendor/purecounter/purecounter_vanilla.js"></script>
+            <script src="../assets/vendor/aos/aos.js"></script>
+            <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+            <script src="../assets/vendor/glightbox/js/glightbox.min.js"></script>
+            <script src="../assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+            <script src="../assets/vendor/swiper/swiper-bundle.min.js"></script>
+            <script src="../assets/vendor/typed.js/typed.umd.js"></script>
+            <script src="../assets/vendor/waypoints/noframework.waypoints.js"></script>
+            <script src="../assets/vendor/php-email-form/validate.js"></script>
+
+            <!-- Template Main JS File -->
+            <script src="../assets/js/main.js"></script>
+        </div>
+</body>
+
+</html>

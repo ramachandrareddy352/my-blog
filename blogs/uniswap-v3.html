@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>uniswap-v3</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Favicons -->
+    <link href="../assets/img/favicon.jpg" rel="icon">
+    <link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+        rel="stylesheet">
+    <script src="https://kit.fontawesome.com/67ced9e5a8.js" crossorigin="anonymous"></script>
+
+
+    <!-- Vendor CSS Files -->
+    <link href="../assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="../assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="../assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="../assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+    <!-- Template Main CSS File -->
+    <link href="../assets/css/style.css" rel="stylesheet">
+    <link href="./css/blogStyle.css" rel="stylesheet">
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tomorrow-night-blue.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+    <!-- and it's easy to individually load additional languages -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script> -->
+
+    <script>hljs.highlightAll();</script>
+
+</head>
+
+<body>
+    <i class="bi bi-list mobile-nav-toggle d-xl-none"></i>
+
+    <!-- ======= Header ======= -->
+    <header id="header">
+        <div class="d-flex flex-column">
+
+            <div class="profile">
+                <img src="../assets/img/profile-img.jpg" alt="" class="img-fluid rounded-circle">
+                <center>
+                    <h4 class="text-light">@rama_eth</h4>
+                </center>
+                <div class="social-links mt-3 text-center">
+                    <a href="https://twitter.com/TavanamRama" class="twitter" target="_blank"><i
+                            class="bx bxl-twitter"></i></a>
+                    <a href="https://github.com/ramachandrareddy352" class="instagram" target="_blank"><i
+                            class="bx bxl-github"></i></a>
+                    <a href="https://www.instagram.com/rama_chandra_reddy_tavanam/" class="instagram" target="_blank"><i
+                            class="bx bxl-instagram"></i></a>
+                    <a href="https://www.linkedin.com/in/ramachandratavanam/" class="linkedin" target="_blank"><i
+                            class="bx bxl-linkedin"></i></a>
+                </div>
+            </div>
+
+            <nav id="navbar" class="nav-menu navbar">
+                <ul>
+                    <li><a href="../index.html" class="nav-link scrollto"><i class="bx bx-home"></i>
+                            <span>Home</span></a></li>
+                    <li><a href="../index.html" class="nav-link scrollto"><i class="bx bx-user"></i>
+                            <span>About</span></a>
+                    </li>
+                    <li><a href="../index.html" class="nav-link scrollto"><i class="bx bx-file-blank"></i>
+                            <span>Resume</span></a></li>
+                    <li><a href="../index.html" class="nav-link scrollto"><i class="bx bx-share-alt"></i>
+                            <span>Portfolio</span></a></li>
+                    <li><a href="../index.html#blogs" class="nav-link scrollto active"><i
+                                class="bx bx-book-content"></i>
+                            <span>Blogs/Uniswap-V3</span></a></li>
+                    <li><a href="../index.html" class="nav-link scrollto"><i class="bx bx-server"></i>
+                            <span>Services</span></a></li>
+                    <li><a href="../index.html" class="nav-link scrollto"><i class="bx bx-envelope"></i>
+                            <span>Contact</span></a></li>
+                </ul>
+            </nav>
+            <!-- .nav-menu -->
+        </div>
+    </header>
+
+    <main id="main">
+
+        <!-- ======= Blog data Section ======= -->
+        <div class="container" id="blog">
+
+            <!-- Introduction -->
+            <div>
+                <h3> >> Uniswap-V3 Overview</h3>
+                <p>Hello WEB3, learning protocols are very important it improves our knowledge towards DEFI world. In
+                    this blog we are going to see the overall view and core concepts of uniswap v3 protocol.
+                </p>
+                <p>
+                    Uniswap v3 is a decentralized exchange protocol that introduces concentrated liquidity, allowing
+                    liquidity providers (LPs) to allocate their funds within specific price ranges, enhancing capital
+                    efficiency. It features multiple fee tiers, enabling LPs to be compensated according to the risk
+                    level they take on. The protocol also introduces flexible fee structures and enhanced oracles for
+                    more accurate price tracking. Uniswap v3’s innovative design significantly reduces slippage and
+                    improves trading performance. Overall, it provides greater flexibility and control for LPs, leading
+                    to improved liquidity and trading experiences.
+                </p>
+
+                <h5>>> Why we are migrating to Uniswap V2 -> V3</h5>
+                <div>
+                    <dt>Concentrated Liquidity:</dt>
+                    <dd>
+                        <i>Uniswap v3:</i> Liquidity providers (LPs) can allocate their capital within specific price
+                        ranges,
+                        resulting in more efficient use of liquidity and potentially higher returns. This allows LPs to
+                        provide liquidity only where it is most needed, increasing capital efficiency.
+                        <br>
+                        <i>Uniswap v2: </i>Liquidity is distributed uniformly along the price curve, often leading to
+                        inefficient
+                        capital use as much of the liquidity may be outside the active trading range.
+                    </dd>
+
+                    <dt>Multiple Fee Tiers:</dt>
+                    <dd>
+                        <i>Uniswap v3:</i> Offers multiple fee tiers (0.05%, 0.30%, and 1.00%) so that LPs can be
+                        compensated based
+                        on the level of risk they are willing to take. This flexibility allows for better matching of
+                        fee
+                        structures to the volatility of different asset pairs.
+                        <br>
+                        <i>Uniswap v2:</i> Has a single fee tier (0.30%), which may not optimally reflect the varying
+                        risks and
+                        volatility of different trading pairs.
+                    </dd>
+                    <dt>Improved Capital Efficiency:</dt>
+                    <dd>
+                        <i>Uniswap v3:</i> Capital can be up to 4000x more efficient than v2 because liquidity is
+                        concentrated
+                        within specific price ranges. This leads to reduced slippage and better trading experiences,
+                        especially for large trades.
+                        <br>
+                        <i>Uniswap v2:</i> Capital is less efficiently used since liquidity is spread uniformly, which
+                        can result
+                        in higher slippage.
+                    </dd>
+                    <dt>Advanced Oracles:</dt>
+                    <dd>
+                        <i>Uniswap v3:</i> Introduces more accurate and flexible oracles, which are essential for many
+                        DeFi
+                        applications that rely on price feeds. The improved oracles provide better price tracking and
+                        reduce
+                        the risk of manipulation.
+                        <br>
+                        <i>Uniswap v2:</i> Oracles are less accurate and less flexible, making them less suitable for
+                        complex DeFi
+                        applications.
+                    </dd>
+                    <dt>Non-Fungible Liquidity Positions:</dt>
+                    <dd>
+                        <i>Uniswap v3:</i> Each liquidity position is represented as an NFT (non-fungible token),
+                        allowing for more
+                        complex and personalized strategies. LPs can sell or transfer their positions easily.
+                        <br>
+                        <i>Uniswap v2:</i> Liquidity positions are fungible ERC-20 tokens, which limits the flexibility
+                        and
+                        customization of liquidity provision strategies.
+                    </dd>
+                </div>
+            </div>
+
+            <!-- Calculating liquidity -->
+            <!--  CONCENTRATED LIQUIDITY -->
+            <!-- Range Orders -->
+            <!-- Multiple Pools Per Pair -->
+            <!-- Non-Fungible Liquidity -->
+            <!-- GOVERNANCE -->
+            <!-- ORACLE UPGRADES -->
+            <!-- swap and flash loan fee -->
+
+        </div>
+
+        <!-- References -->
+        <div class="container">
+            <br>
+            <h3>>> Reference</h3>
+            <ul>
+                <li>
+                    <a href="https://docs.uniswap.org/contracts/v3/overview" target="_blank">Uniswap V3 Overview</a>
+                </li>
+                <li>
+                    <a href="https://uniswap.org/whitepaper-v3.pdf" target="_blank">Uniswap-V3 whitepaper</a>
+                </li>
+                <li>
+                    <a href="https://www.youtube.com/playlist?list=PLO5VPQH6OWdXp2_Nk8U7V-zh7suI05i0E"
+                        target="_blank">Smart contract programmer Uniswap-V3</a>
+                </li>
+                <li>
+                    <a href="https://atiselsts.github.io/pdfs/uniswap-v3-liquidity-math.pdf"
+                        target="_blank">uniswap-v3-liquidity-math</a>
+                </li>
+                <li>
+                    <a href="https://uniswapv3book.com/" target="_blank">Uniswap-V3 Book</a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Footer -->
+        <footer id="footer">
+            <div class="container">
+                <div class="copyright">
+                    <strong><span>Fund Me</span></strong>
+                </div>
+                <div class="credits">
+                    <a href="#" style="font-size: 10px;">0xd0509B83468409A75De2771C1Ae7bE1026A69927</a>
+                </div>
+            </div>
+        </footer>
+
+        <!-- Scripts imports -->
+        <div>
+            <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+                    class="bi bi-arrow-up-short"></i></a>
+
+            <!-- Vendor JS Files -->
+            <script src="../assets/vendor/purecounter/purecounter_vanilla.js"></script>
+            <script src="../assets/vendor/aos/aos.js"></script>
+            <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+            <script src="../assets/vendor/glightbox/js/glightbox.min.js"></script>
+            <script src="../assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+            <script src="../assets/vendor/swiper/swiper-bundle.min.js"></script>
+            <script src="../assets/vendor/typed.js/typed.umd.js"></script>
+            <script src="../assets/vendor/waypoints/noframework.waypoints.js"></script>
+            <script src="../assets/vendor/php-email-form/validate.js"></script>
+
+            <!-- Template Main JS File -->
+            <script src="../assets/js/main.js"></script>
+        </div>
+</body>
+
+</html>

@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>uniswap-overview</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Favicons -->
+    <link href="../assets/img/favicon.jpg" rel="icon">
+    <link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+        rel="stylesheet">
+    <script src="https://kit.fontawesome.com/67ced9e5a8.js" crossorigin="anonymous"></script>
+
+
+    <!-- Vendor CSS Files -->
+    <link href="../assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="../assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="../assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="../assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+    <!-- Template Main CSS File -->
+    <link href="../assets/css/style.css" rel="stylesheet">
+    <link href="./css/blogStyle.css" rel="stylesheet">
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tomorrow-night-blue.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+    <!-- and it's easy to individually load additional languages -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script> -->
+
+    <script>hljs.highlightAll();</script>
+
+</head>
+
+<body>
+    <i class="bi bi-list mobile-nav-toggle d-xl-none"></i>
+
+    <!-- ======= Header ======= -->
+    <header id="header">
+        <div class="d-flex flex-column">
+
+            <div class="profile">
+                <img src="../assets/img/profile-img.jpg" alt="" class="img-fluid rounded-circle">
+                <center>
+                    <h4 class="text-light">@rama_eth</h4>
+                </center>
+                <div class="social-links mt-3 text-center">
+                    <a href="https://twitter.com/TavanamRama" class="twitter" target="_blank"><i
+                            class="bx bxl-twitter"></i></a>
+                    <a href="https://github.com/ramachandrareddy352" class="instagram" target="_blank"><i
+                            class="bx bxl-github"></i></a>
+                    <a href="https://www.instagram.com/rama_chandra_reddy_tavanam/" class="instagram" target="_blank"><i
+                            class="bx bxl-instagram"></i></a>
+                    <a href="https://www.linkedin.com/in/ramachandratavanam/" class="linkedin" target="_blank"><i
+                            class="bx bxl-linkedin"></i></a>
+                </div>
+            </div>
+
+            <nav id="navbar" class="nav-menu navbar">
+                <ul>
+                    <li><a href="../index.html" class="nav-link scrollto"><i class="bx bx-home"></i>
+                            <span>Home</span></a></li>
+                    <li><a href="../index.html" class="nav-link scrollto"><i class="bx bx-user"></i>
+                            <span>About</span></a>
+                    </li>
+                    <li><a href="../index.html" class="nav-link scrollto"><i class="bx bx-file-blank"></i>
+                            <span>Resume</span></a></li>
+                    <li><a href="../index.html" class="nav-link scrollto"><i class="bx bx-share-alt"></i>
+                            <span>Portfolio</span></a></li>
+                    <li><a href="../index.html" class="nav-link scrollto active"><i class="bx bx-book-content"></i>
+                            <span>Blogs/uniswap-overview</span></a></li>
+                    <li><a href="../index.html" class="nav-link scrollto"><i class="bx bx-server"></i>
+                            <span>Services</span></a></li>
+                    <li><a href="../index.html" class="nav-link scrollto"><i class="bx bx-envelope"></i>
+                            <span>Contact</span></a></li>
+                </ul>
+            </nav>
+            <!-- .nav-menu -->
+        </div>
+    </header>
+
+    <main id="main">
+
+        <!-- ======= Blog data Section ======= -->
+        <div class="container" id="blog">
+
+            <!-- Introduction -->
+            <div>
+                <h3> >> Uniswap Overview</h3>
+                <p>Hello WEB3, In this blog series, we are going to look overview of 4 versions of Uniswap protocola. It
+                    is a
+                    decentralized exchange (DEX) protocol built on the Ethereum blockchain, enabling users to trade
+                    cryptocurrencies directly from their wallets without intermediaries. Each version of Uniswap has
+                    introduced significant improvements and innovations. Here's an in-depth overview of Uniswap v1, v2,
+                    v3, and the upcoming v4.
+                </p>
+                <p>
+                    You can see my <a href="./uniswap-v2.html">uniswap-v2 code walk-through</a> blog page, which makes
+                    clear to understand the
+                    Uniswap-V2 protocol.
+                </p>
+            </div>
+            <hr class="breakLine">
+
+            <!-- Uniswap-V1 -->
+            <div>
+                <h3>>> Uniswap-V1</h3>
+                <p>
+                    Uniswap V1 is the first version of the protocol, launched in November 2018 at Devcon 4.
+                    Uniswap v1 introduced the constant product market maker model, where each liquidity pool is a pair
+                    of ERC-20 tokens. The product of the quantities of the two tokens remains constant (x * y = k),
+                    which defines the price.
+                </p>
+                <h5>>> V1 Features</h5>
+                <ul>
+                    <li>Add support for any ERC20 token using the Uniswap factory</li>
+                    <li>Join liquidity pools to collect fees on ETH-ERC20 pairs</li>
+                    <li>Liquidity-sensitive automated pricing using constant product formula</li>
+                    <li>Trade ETH for any ERC20 without wrapping</li>
+                    <li>Trade any ERC20 for any ERC20 in a single transaction</li>
+                    <li>Trade and transfer to a different address in a single transaction</li>
+                    <li>Lowest gas cost of any decentralized exchange</li>
+                    <li>Support for private and custom uniswap exchanges</li>
+                    <li>Buy ERC20 tokens from any wallet using ENS</li>
+                    <li>Partially verified smart contracts written in Vyper</li>
+                    <li>Mobile-optimized open source frontend implementation</li>
+                </ul>
+
+                <img src="./blog-images/uniswap-overview/v1_DAI_USDC_swap.webp">
+
+                <h5>>> How it works</h5>
+                <div>
+                    <p>
+                        Uniswap is made up of a series of ETH-ERC20 exchange contracts. There is exactly one exchange
+                        contract per ERC20 token. If a token does not yet have an exchange it can be created by anyone
+                        using the Uniswap factory contract. The factory serves as a public registry and is used to look
+                        up all token and exchange addresses added to the system.
+                    </p>
+                    <p>
+                        Each exchange holds reserves of both ETH and its associated ERC20 token. Anyone can become a
+                        liquidity provider on an exchange and contribute to its reserves. This is different than buying
+                        or selling; it requires depositing an equivalent value of both ETH and the relevant ERC20 token.
+                        Liquidity is pooled across all providers and an internal "pool token" (ERC20) is used to track
+                        each providers relative contribution. Pool tokens are minted when liquidity is deposited into
+                        the system and can be burned at any time to withdraw a proportional share of the reserves.
+                    </p>
+                    <p>
+                        Exchange contracts are automated market makers between an ETH-ERC20 pair. Traders can swap
+                        between the two in either direction by adding to the liquidity reserve of one and withdrawing
+                        from the reserve of the other. Since ETH is a common pair for all ERC20 exchanges, it can be
+                        used as an intermediary allowing direct ERC20-ERC20 trades in a single transaction. Users can
+                        specify a recipient address if they want to receive purchased tokens at a different address from
+                        the one used to make a transaction.
+                    </p>
+                    <p>
+                        Uniswap uses a "constant product" market making formula which sets the exchange rate based off
+                        of the relative size of the ETH and ERC20 reserves, and the amount with which an incoming trade
+                        shifts this ratio. Selling ETH for ERC20 tokens increases the size of the ETH reserve and
+                        decreases the size of the ERC20 reserve. This shifts the reserve ratio, increasing the ERC20
+                        token's price relative to ETH for subsequent transactions. The larger a trade relative to the
+                        total size of the reserves, the more price slippage will occur. Essentially, exchange contracts
+                        use the open financial market to decide on the relative value of a pair and uses that as a
+                        market making strategy.
+                    </p>
+                    <p>
+                        A small liquidity provider fee (0.30%) is taken out of each trade and added to the reserves.
+                        While the ETH-ERC20 reserve ratio is constantly shifting, fees makes sure that the total
+                        combined reserve size increases with every trade. This functions as a payout to liquidity
+                        providers that is collected when they burn their pool tokens to withdraw their portion of total
+                        reserves. Guaranteed arbitrage opportunities from price fluctuations should push a steady flow
+                        of transactions through the system and increase the amount of fee revenue generated.
+                    </p>
+                    <p>
+                        Since Uniswap is entirely on-chain, prices can change between when a transaction is signed and
+                        when it is included in a block. Traders can bound price fluctuations by specifying the minimum
+                        amount bought on sell orders, or the maximum amount sold on buy orders. This acts as a limit
+                        order that will automatically cancel if it is not filled. It is also possible to set transaction
+                        deadlines which will cancel orders if they are not executed fast enough.
+                    </p>
+                    <p>
+                        The reason only one exchange per token can be registered to the factory is to encourage
+                        providers to pool their liquidity into a single reserve. However, Uniswap has built in support
+                        for ERC20-to-ERC20 trades using the public pools from the factory on one side of the transaction
+                        and custom, user-specified pool on the other. Custom pools could have fund managers, use
+                        alternate pricing mechanisms, remove liquidity provider fees, integrate complex three
+                        dimensional fomo-based ponzi-schemes and more. They just need to implement the Uniswap interface
+                        and accept ETH as an intermediary asset. Custom pools do not have the same safety properties as
+                        the public ones. It is recommended users only interact with audited, open-source smart
+                        contracts.
+                    </p>
+                </div>
+
+                <h5>>> Why we are moving to V2</h5>
+                <ul>
+                    <li>
+                        Uniswap v1 can simply hacked through price manipulations, front running and sandwich attacks.
+                    </li>
+                    <li>
+                        The prices in Uniswap v1 could be easily manipulated within a single block, making it unreliable
+                        as a price feed.</li>
+                    <li>
+                        Uniswap v1 only allowed for trading pairs between ERC-20 tokens and ETH. This meant that if
+                        users wanted to trade between two ERC-20 tokens, they had to conduct two separate trades (ERC-20
+                        to ETH and then ETH to another ERC-20). This increased transaction costs and complexity.
+                    </li>
+                    <li>
+                        Uniswap v1 did not support flash loans or any mechanism to leverage liquidity pools for instant
+                        arbitrage opportunities within the same transaction.
+                    </li>
+                    <li>
+                        The routing mechanism in Uniswap v1 was basic and often resulted in suboptimal paths for trades,
+                        leading to higher slippage and costs.
+                    </li>
+                    <li>
+                        The overall functionality of Uniswap v1 was quite basic, and it did not support more advanced
+                        use cases or customization.
+                    </li>
+                </ul>
+            </div>
+            <hr class="breakLine">
+
+            <!-- Uniswap-V2 -->
+            <div>
+                <h3>>> Uniswap-V2</h3>
+                <p>
+                    The Uniswap V2 was launched in May, 2020 with a plethora. Uniswap v2 is a new implementation based
+                    on the same formula, with several new highlydesirable
+                    features. Most significantly, it enables the creation of arbitrary ERC20/ERC20
+                    pairs, rather than supporting only pairs between ERC20 and ETH. It also provides a hardened price
+                    oracle that accumulates the relative price of the two assets at the beginning of
+                    each block. This allows other contracts on Ethereum to estimate the time-weighted average
+                    price for the two assets over arbitrary intervals. Finally, it enables “flash swaps” where users
+                    can receive assets freely and use them elsewhere on the chain, only paying for (or returning)
+                    those assets at the end of the transaction.
+                </p>
+                <p>
+                    New features including TWAP (Time Weighted Average Price), Liquidity pools for non-native tokens
+                    which halves gas fees and slippage for token swaps, and Flash Swaps. In addition, this update
+                    removed native token functionality in favor of WETH (Wrapped Ether) and is written in Solidity - a
+                    welcome change for readability.
+
+                    The 0.3% fee model was shortly modified after release by members of the DAO, where 0.05% of the
+                    fee’s funds are reserved for the development of the Uniswap network.
+                </p>
+                <p>
+                    You can read <a href="./uniswap-v2.html">Uniswap-V2 walk-through</a> blog post written by me.
+                </p>
+
+                <h5>>> Why we are moving to V3</h5>
+                <ul>
+                    <li>
+                        In v2, liquidity is spread evenly across the entire price range from 0 to infinity, regardless
+                        of actual trading activity. This means a large portion of the liquidity provided by liquidity
+                        providers (LPs) is rarely used, leading to inefficient capital usage.
+                    </li>
+                    <li>
+                        V2 offers a single fee tier (0.3%) for all trading pairs.
+                        This uniform fee structure may not be optimal for different types of trading pairs with varying
+                        levels of volatility.
+                    </li>
+                    <li>
+                        The evenly distributed liquidity can lead to higher slippage, especially for large trades, as
+                        the depth of liquidity at specific price points might be insufficient.
+                    </li>
+                    <li>
+                        With concentrated liquidity, the depth of liquidity at specific price points is increased,
+                        leading to better price execution and lower slippage for traders.
+                    </li>
+                    <li>
+                        LPs have a passive role, providing liquidity across the entire price range without the ability
+                        to manage their positions dynamically.
+                    </li>
+                    <li>
+                        Liquidity positions are represented as fungible ERC-20 tokens, meaning each LP's contribution is
+                        homogenous and cannot be customized.
+                    </li>
+                </ul>
+            </div>
+            <hr class="breakLine">
+
+            <!-- Uniswap-V3 -->
+            <div>
+                <h3>>> Uniswap-V3</h3>
+                <p>
+                    Uniswap v3 is a noncustodial automated market maker implemented for the Ethereum Virtual Machine. In
+                    comparison to earlier
+                    versions of the protocol, Uniswap v3 provides increased capital
+                    efficiency and fine-tuned control to liquidity providers, improves
+                    the accuracy and convenience of the price oracle, and has a more
+                    flexible fee structure.
+                </p>
+                <h5>>> New features</h5>
+                <ul>
+                    <li>
+                        <i>Concentrated Liquidity:</i> Liquidity providers (LPs) are given
+                        the ability to concentrate their liquidity by “bounding" it
+                        within an arbitrary price range. This improves the pool’s
+                        capital efficiency and allows LPs to approximate their preferred reserves curve, while still
+                        being efficiently aggregated
+                        with the rest of the pool.
+                    </li>
+                    <li>
+                        <i>Flexible Fees:</i> The swap fee is no longer locked at 0.30%.
+                        Rather, the fee tier for each pool (of which there can be
+                        multiple per asset pair) is set on initialization.
+                        The initially supported fee tiers are 0.05%, 0.30%, and 1%.
+                        UNI governance is able to add additional values to this set.
+                    </li>
+                    <li>
+                        <i>Protocol Fee Governance:</i> UNI governance has more flexibility
+                        in setting the fraction of swap fees collected by the protocol
+                    </li>
+                    <li>
+                        <i>Active Liquidity Management: </i>LPs can actively manage their positions by adjusting their
+                        price ranges according to market conditions.
+                    </li>
+                    <li>
+                        <i>Improved Price Oracle:</i> Uniswap v3 provides a way for users
+                        to query recent price accumulator values, thus avoiding the
+                        need to checkpoint the accumulator value at the exact beginning and end of the period for which
+                        a TWAP is being
+                        measured.
+                    </li>
+                    <li>
+                        <i>Liquidity Oracle:</i> The contracts expose a time-weighted average liquidity oracle
+                    </li>
+                    <li>
+                        <i>Non-Fungible Token (NFT) Liquidity Positions</i> : Each liquidity position is represented as
+                        an NFT, providing unique ownership and customizability.
+                    </li>
+                    <li>
+                        <i>Automated Fee Compounding</i> : Although not a direct feature of the protocol, integrations
+                        and tools can automatically compound fees earned by LPs into their positions.
+                    </li>
+                </ul>
+
+                <h5>>> How Concentrated Liquidity works?</h5>
+                <p>
+                    The polarizing feature of Uniswap v3 is its concept of concentrated liquidity. In the constant
+                    product market maker, that we previously explained, the liquidity of the pool is evenly distributed.
+                    When a swap occurs, the asset moves along the curve, changing its x and y coordinates and thus its
+                    price. The CPMM curve (see Figure A) does not intersect with either the x or y axes and will
+                    therefore never run out of liquidity. The liquidity covers all possible price combinations on the
+                    curve: eg: even if ETH/USDC went to $1, there would be some liquidity available.
+                </p>
+                <p>
+                    In contrast, the concentrated liquidity model divides the price points evenly into ‘ticks’. The
+                    ticks create price ranges, which contain a finite amount of liquidity (see Figure C). Each price
+                    range will have its own price curve, representative of the liquidity available. If you look at the
+                    graph below (figure B), you can see that the concentrated liquidity graph does intersect with the x
+                    and y axes. These intersections are the upper and lower bound of the price range and once reached,
+                    mean that the price range has exhausted its liquidity and contains only 1 of the tokens in the
+                    token-pair. If this happens, the next price range will be entered, and there will be new liquidity
+                    available.
+                </p>
+                <img src="./blog-images/uniswap-overview/concentrated-liquidity-01.webp"><br>
+                <img src="./blog-images/uniswap-overview/concentrated-liquidity-02.webp"><br>
+                <p>
+                    When adding liquidity to a Uniswap v3 pool, liquidity providers specify the price range they would
+                    like to add liquidity. In return for staking, they are no longer given an ERC-20 LP token, but
+                    rather an NFT that contains far more information specific to LP’s unique position. An LP can still
+                    exit the pool at any time, however, the rewards work slightly differently. There are pool fee tiers,
+                    which range from 0.05% to 1%, and determine the rewards paid to the LPs for adding liquidity.
+                    However, if the price moves outside the range at which the LP specified, they will stop earning
+                    rewards. This means that the Uniswap v3 model requires more of an actively managed approach from LPs
+                    who are dealing with volatile tokens. But, when dealing with tokens of very similar value and low
+                    volatility, like a USDC/DAI pair, the concentrated liquidity approach makes a lot of sense. USDC and
+                    DAI are both pegged to the US Dollar and the price between the two assets should not fluctuate much.
+                    Look at Figure D below to see how differently liquidity is allocated to the USDC-DAI pool when
+                    compared to the ETH-USDC pool back in Figure C.
+                </p>
+                <img src="./blog-images/uniswap-overview/concentated-liquidity-03.webp"><br>
+                <p>
+                    The concentrated liquidity model substantially improves capital efficiency, allowing LPs to earn
+                    significantly better returns for adding the same amount of liquidity as they would have in v2. The
+                    LPs could also decide to add a smaller amount of liquidity, but achieve good returns and gain the
+                    flexibility to use their remaining funds elsewhere (see figure E below).
+                </p>
+                <p>
+                    The key concept here is flexibility — Uniswap v3 was created to maximize capital efficiency and give
+                    users far greater flexibility when interacting with the protocol.
+                </p>
+                <img src="./blog-images/uniswap-overview/concentrated-liquidity-04.webp"><br>
+                <p>
+                    Additionally, Uniswap v3 adds improvements to the TWAP oracle, improving its accuracy and
+                    reliability. Incidentally, the concentrated liquidity model also creates the opportunity for users
+                    to enter positions with very similar characteristics to that of traditional call and put options.
+                </p>
+
+                <h5>>> Why we are moving to V4</h5>
+                <ul>
+                    <li>
+                        In V3 for trading and changing liquidity positions it takes more gas. In V4 protocol implemented
+                        simple routing which reduce the gas cost.
+                    </li>
+                    <li>
+                        Uniswap V4 pools can support dynamic fees, on-chain limit orders, or act as a time-weighted
+                        average market maker (TWAMM) to spread large orders over time.
+                    </li>
+                    <li>
+                        The architecture has been updated, including a new "singleton" contract where all pools are
+                        contained within a single smart contract, enhancing the platform's efficiency and reducing
+                        costs.
+                    </li>
+                </ul>
+            </div>
+            <hr class="breakLine">
+
+            <!-- Uniswap-V4 -->
+            <div>
+                <h3>>> Uniswap-V4</h3>
+                <p>
+                    Uniswap V4 is designed to enhance the way liquidity is provided and tokens are traded on-chain. It
+                    aims to broaden the scope of decentralized trading. A significant feature in Uniswap V4 is the
+                    introduction of "hooks." These contracts operate at different stages in a pool action's lifecycle,
+                    allowing for a high degree of customization.
+                </p>
+                <p>
+                    Pool creators have the option to maintain the tradeoff decisions available in V3 or to explore new
+                    features. Uniswap V4 pools can support dynamic fees, on-chain limit orders, or act as a
+                    time-weighted average market maker (TWAMM) to spread large orders over time. The architecture has
+                    been updated, including a new "singleton" contract where all pools are contained within a single
+                    smart contract, enhancing the platform's efficiency and reducing costs.
+                </p>
+                <p>
+                    The integration of hooks with the singleton architecture is expected to make the platform more
+                    powerful and versatile, ensuring fast, secure, and efficient customization and routing across
+                    various pools.
+                </p>
+                <img src="./blog-images/uniswap-overview/uniswap-v4.webp"><br>
+
+                <h5>>> Key Features</h5>
+                <ul>
+                    <li>
+                        <b>Customizability with Hooks</b>: Uniswap V4 introduces a new feature called "hooks", which are
+                        essentially smart contracts that can be attached to liquidity pools. These hooks enable a high
+                        degree of customization, allowing developers to implement specific functionalities at different
+                        points in a pool's lifecycle, such as before or after swaps and liquidity modifications.
+                        <br>
+                        For example, hooks can enable order types (i.e. limit order), specially-tailored oracles, or
+                        custom AMM curves. The flexibility of hooks allows for a broad range of innovations while
+                        maintaining the core efficiency of the platform.
+                    </li>
+                    <li>
+                        <b>Singleton Contract for Efficiency</b>: A significant architectural change in Uniswap V4 is
+                        the introduction of a Singleton contract. In previous versions, each token pair required a
+                        separate smart contract, leading to higher gas costs, especially in multi-hop trades. The
+                        Singleton contract model consolidates all pools into a single contract, significantly reducing
+                        gas costs for both trading and pool creation. This model allows for more efficient multi-hop
+                        trades as tokens do not need to be transferred between multiple contracts. Additionally,
+                        creating a new pool in V4 is 99% cheaper in gas costs compared to V3, lowering barriers for
+                        setting up new pools.
+                    </li>
+                    <li>
+                        <b>Flash Accounting System</b>: Another innovative feature in Uniswap V4 is the "flash
+                        accounting" system. This system allows users to efficiently chain together multiple actions in a
+                        single transaction, such as swap-and-add-liquidity. The system tracks the net balances of
+                        inbound and outbound tokens; at the end of the transaction, the contract verifies all debts have
+                        been settled. If the user hasn’t settled their debts, the entire transaction reverts, ensuring
+                        security and efficiency. This system is similar to flash loans in concept and is part of the
+                        effort to reduce gas costs and enhance transaction efficiency on the platform.
+                    </li>
+                    <li>
+                        <b>Unlimited Fee Tiers</b>: Uniswap V4 allows unlimited fee tiers for various liquidity pools.
+                        This flexibility allows for a more tailored approach in catering to a diverse range of assets
+                        and trading strategies. Each pool can have its own unique fee tiers, optimizing the platform's
+                        appeal to a wider spectrum of users and market needs.
+                    </li>
+                    <li>
+                        <b>Native ETH Support</b>: Uniswap V4 enhances user experience by enabling direct trading pairs
+                        with native ETH, eliminating the need for WETH (Wrapped ETH). This simplification streamlines
+                        the trading process and lowers transaction costs.
+                    </li>
+                    <li>
+                        <b>Community-Driven Development and Innovation</b>: Uniswap V4 emphasizes a community-driven
+                        approach to development and innovation. Since its code release, there has been active community
+                        engagement, with many issues, pull requests, and unique feature ideas contributed by users. The
+                        protocol is designed to encourage innovation, allowing the global community to shape the future
+                        of AMMs.
+                    </li>
+                </ul>
+                <img src="./blog-images/uniswap-overview/v4_high_level_architecture.png">
+                <img src="./blog-images/uniswap-overview/v4_detailed_architecture.png">
+            </div>
+            <hr class="breakLine">
+
+        </div>
+
+        <!-- References -->
+        <div class="container">
+            <h3>>> Reference</h3>
+            <ul>
+                <li>
+                    <a href="https://docs.uniswap.org/" target="_blank">Uniswap documentation</a>
+                </li>
+                <li>
+                    <a href="https://hackmd.io/s/HJ9jLsfTz" target="_blank">Uniswap-V1 Whitepaper</a>
+                </li>
+                <li>
+                    <a href="https://docs.uniswap.org/whitepaper.pdf" target="_blank">Uniswap-V2 Whitepaper</a>
+                </li>
+                <li>
+                    <a href="./uniswap-v2.html">Uniswap-v2 code walk-through</a>
+                </li>
+                <li>
+                    <a href="https://atiselsts.github.io/pdfs/uniswap-v3-liquidity-math.pdf" target="_blank">Uniswap V3
+                        Maths</a>
+                </li>
+                <li>
+                    <a href="https://uniswap.org/whitepaper-v3.pdf" target="_blank">Uniswap-V3 Whitepaper</a>
+                </li>
+                <li>
+                    <a href="https://docs.uniswap.org/contracts/v4/overview" target="_blank">Uniswap-V4 Overview</a>
+                </li>
+            </ul>
+
+        </div>
+
+        <!-- Footer -->
+        <footer id="footer">
+            <div class="container">
+                <div class="copyright">
+                    <strong><span>Fund Me</span></strong>
+                </div>
+                <div class="credits">
+                    <a href="#" style="font-size: 10px;">0xd0509B83468409A75De2771C1Ae7bE1026A69927</a>
+                </div>
+            </div>
+        </footer>
+
+        <!-- Scripts imports -->
+        <div>
+            <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+                    class="bi bi-arrow-up-short"></i></a>
+
+            <!-- Vendor JS Files -->
+            <script src="../assets/vendor/purecounter/purecounter_vanilla.js"></script>
+            <script src="../assets/vendor/aos/aos.js"></script>
+            <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+            <script src="../assets/vendor/glightbox/js/glightbox.min.js"></script>
+            <script src="../assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+            <script src="../assets/vendor/swiper/swiper-bundle.min.js"></script>
+            <script src="../assets/vendor/typed.js/typed.umd.js"></script>
+            <script src="../assets/vendor/waypoints/noframework.waypoints.js"></script>
+            <script src="../assets/vendor/php-email-form/validate.js"></script>
+
+            <!-- Template Main JS File -->
+            <script src="../assets/js/main.js"></script>
+        </div>
+</body>
+
+</html>

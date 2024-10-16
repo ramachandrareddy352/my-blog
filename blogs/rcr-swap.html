@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>rcr-swap</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Favicons -->
+    <link href="../assets/img/favicon.jpg" rel="icon">
+    <link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+        rel="stylesheet">
+    <script src="https://kit.fontawesome.com/67ced9e5a8.js" crossorigin="anonymous"></script>
+
+
+    <!-- Vendor CSS Files -->
+    <link href="../assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="../assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="../assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="../assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+    <!-- Template Main CSS File -->
+    <link href="../assets/css/style.css" rel="stylesheet">
+    <link href="./css/blogStyle.css" rel="stylesheet">
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tomorrow-night-blue.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+    <!-- and it's easy to individually load additional languages -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script> -->
+
+    <script>hljs.highlightAll();</script>
+
+</head>
+
+<body>
+    <i class="bi bi-list mobile-nav-toggle d-xl-none"></i>
+
+    <!-- ======= Header ======= -->
+    <header id="header">
+        <div class="d-flex flex-column">
+
+            <div class="profile">
+                <img src="../assets/img/profile-img.jpg" alt="" class="img-fluid rounded-circle">
+                <center>
+                    <h4 class="text-light">@rama_eth</h4>
+                </center>
+                <div class="social-links mt-3 text-center">
+                    <a href="https://twitter.com/TavanamRama" class="twitter" target="_blank"><i
+                            class="bx bxl-twitter"></i></a>
+                    <a href="https://github.com/ramachandrareddy352" class="instagram" target="_blank"><i
+                            class="bx bxl-github"></i></a>
+                    <a href="https://www.instagram.com/rama_chandra_reddy_tavanam/" class="instagram" target="_blank"><i
+                            class="bx bxl-instagram"></i></a>
+                    <a href="https://www.linkedin.com/in/ramachandratavanam/" class="linkedin" target="_blank"><i
+                            class="bx bxl-linkedin"></i></a>
+                </div>
+            </div>
+
+            <nav id="navbar" class="nav-menu navbar">
+                <ul>
+                    <li><a href="../index.html" class="nav-link scrollto"><i class="bx bx-home"></i>
+                            <span>Home</span></a></li>
+                    <li><a href="../index.html" class="nav-link scrollto"><i class="bx bx-user"></i>
+                            <span>About</span></a>
+                    </li>
+                    <li><a href="../index.html" class="nav-link scrollto"><i class="bx bx-file-blank"></i>
+                            <span>Resume</span></a></li>
+                    <li><a href="../index.html" class="nav-link scrollto"><i class="bx bx-share-alt"></i>
+                            <span>Portfolio</span></a></li>
+                    <li><a href="../index.html" class="nav-link scrollto active"><i class="bx bx-book-content"></i>
+                            <span>Blogs/RCR-swap</span></a></li>
+                    <li><a href="../index.html" class="nav-link scrollto"><i class="bx bx-server"></i>
+                            <span>Services</span></a></li>
+                    <li><a href="../index.html" class="nav-link scrollto"><i class="bx bx-envelope"></i>
+                            <span>Contact</span></a></li>
+                </ul>
+            </nav>
+            <!-- .nav-menu -->
+        </div>
+    </header>
+
+    <main id="main">
+
+        <!-- ======= Blog data Section ======= -->
+        <div class="container" id="blog">
+
+            <!-- Introduction -->
+            <div>
+                <h3> >> RCR-swap</h3>
+                <p>Hello WEB3, In this blog series, we embark on a journey through the
+                    RCR-Swap, which is a Decentralized Exchange platform, which works on Constant Product
+                    Automated Market Maker(CPAMM) formula. Any user can interact with the Factory contract and
+                    create a pool with a initial
+                    liquidity locked in pool to avoid Inflation attack. For any two indentical tokens we can create
+                    nearly 200 pools
+                    with different fees receiving for the liquidity providers.
+                </p>
+                <ul>
+                    <li>
+                        Liquidity Providers(LP's) can able to add liquidity and remove liquidity and earn the fees
+                        paid by the user while swapping the tokens.
+                    </li>
+                    <li>
+                        User select the pool for which two tokens they are swapping. Its a static pool that means if
+                        user wants to swap two tokens then it's mandatory that there have to exist of pool.
+                    </li>
+                    <li>
+                        I didn't implement Multi Hop swap in this DEX.
+                    </li>
+                    <li>
+                        The protocol fees was set at initial creating of pool by the pool creator.
+                    </li>
+                    <li>
+                        For any pool creation at first adding liquidity we lock some(1000) liquidity in pool for
+                        permenently to avoid Inflation attack.
+                    </li>
+                    <li>
+                        In this DEX I have introduce a concept called <B>TICK</B>, which is used to swap the tokens
+                        in only certain range of amount.
+                    </li>
+                    <li>
+                        These Tick values is set by the Factory owner.
+                    </li>
+                    <li>
+                        I have used ERC-4626 concept to mint and burn shares of LP tokens to Liquidity Providers
+                        while adding and remove liquidity respectively.
+                    </li>
+                    <li>
+                        I have used a Pool Library contract to do some calculations reguarding to the pool. By using
+                        a library helps to reduec gas while making transactions on the pool.
+                    </li>
+                    <li>
+                        I have return all different test like Static, Fuzz, Invariant testing on the RCR-swap.
+                    </li>
+                    <li>
+                        I have used static analysis tools like slither to analyze the smart contracts.
+                    </li>
+                </ul>
+                <p>
+                    I recommend to go through the ethereum101, solidity 101, solidity 201 modules
+                    of the
+                    <a href="https://secureum.substack.com/" target="_blank">Secureum
+                        bootcamp</a> and some defi protocols
+                    like <a href="https://uniswap.org/" target="_blank">Uniswap V2</a> Which help us to build
+                    this
+                    DEX.
+                </p>
+                <br>
+                <span>Clone the repo : </span>
+                <div class="repo">
+                    <span>$ git clone <a href="https://github.com/ramachandrareddy352/rcr-swap/"
+                            target="_blank">https://github.com/ramachandrareddy352/rcr-swap/</a></span><br>
+                    <span>$ cd rcr-swap</span><br>
+                    <span>$ forge build</span>
+                </div>
+                <br>
+            </div>
+            <hr class="breakLine">
+
+            <!-- Repository Structure -->
+            <div>
+                <h3>>> Repository Structure</h3>
+                <ul>
+                    <li>src</li>
+                    <ul>
+                        <li>interfaces</li>
+                        <ul>
+                            <li>IERC20.sol</li>
+                            <li>IFactory.sol</li>
+                            <li>IPool.sol</li>
+                        </ul>
+                        <li>libraries</li>
+                        <ul>
+                            <li>PoolLibrary.sol</li>
+                            <li>SafeCast.sol</li>
+                            <li>SafeMath.sol</li>
+                        </ul>
+                        <li>utils</li>
+                        <ul>
+                            <li>Ownable.sol</li>
+                            <li>ReentrancyGuard.sol</li>
+                        </ul>
+                        <li>Factory.sol</li>
+                        <li>LP_ERC20.sol</li>
+                        <li>Pool.sol</li>
+                    </ul>
+                    <li>test</li>
+                    <ul>
+                        <li>fuzz</li>
+                        <ul>
+                            <li>PoolLibraryTest.t.sol</li>
+                        </ul>
+                        <li>helper</li>
+                        <ul>
+                            <li>ERC20.sol</li>
+                            <li>IERC20.sol</li>
+                            <li>PoolLibrary.sol</li>
+                        </ul>
+                        <li>invariant</li>
+                        <ul>
+                            <li>Handler.t.sol</li>
+                            <li>MultiHandler.t.sol</li>
+                        </ul>
+                        <li>unit</li>
+                        <ul>
+                            <li>FactoryTest.t.sol</li>
+                            <li>PoolTest.t.sol</li>
+                        </ul>
+                    </ul>
+                </ul>
+            </div>
+            <hr class="breakLine">
+
+            <!-- Libraries -->
+            <div>
+                <h3>>> Libraries</h3>
+                <p>
+                    In this src folder we written 3 libraries which helps to make smart contract development more
+                    efficient, modular, and secure. These libraries makes code Reusability and gas efficient.
+                </p>
+                <ol>
+                    <li>SafeCast.sol</li>
+                    <li>SafeMath.sol</li>
+                    <li>PoolLibrary.sol</li>
+                </ol>
+
+                <h4>>> SafeCast.sol</h4>
+                <p>
+                    This library is uesd to cast the numbers safely by avoiding arithmetic underflow and overflow
+                    conditions from uint256 to int256 and vice versa.
+                </p>
+                <h5>>> Functions</h5>
+                <ul>
+                    <li>toInt256() : Converts unsigned int data type numbers to signed data types.</li>
+                    <li>toUnit256() : Converts signed int data type numbers to unsigned data types</li>
+                </ul>
+
+                <h4>>> SafeMath.sol</h4>
+                <p>
+                    This library is used to make some calculations easily without any arithmetic underflow and overflow
+                    conditions.
+                </p>
+                <h5>>> Functions</h5>
+                <ul>
+                    <li>add() : return the sum of two signed and unsigned numbers.</li>
+                    <li>sub() : return the difference of two signed and unsigned numbers.</li>
+                    <li>mul() : return the multiplicaton of two unsigned numbers. </li>
+                    <li>div() : return the division of two unsigned numbers.</li>
+                    <li>mod() : return the modules of two unsigned numbers.</li>
+                    <li>max() : return the maximun of two unsigned numbers.</li>
+                    <li>min() : return the minimum of two unsigned numbers.</li>
+                    <li>average() : return the average of two unsigned numbers.</li>
+                    <li>sqrt() : return the square root of unsigned number.</li>
+                    <li>log2() : return the logorithmic value of unsigned number with base 2</li>
+                    <li>log10() : return the logorithmic value of unsigned number with base 10</li>
+                </ul>
+
+                <h4>>> PoolLibrary.sol</h4>
+                <p>
+                    Pool Library are vital for extending and simplifying interactions with the DEX. They provide
+                    essential functions for adding and removing liquidity, swapping tokens, and more, while ensuring
+                    efficiency, security, and ease of use for developers and users alike. By leveraging these libraries,
+                    developers can build robust and user-friendly decentralized applications that integrate seamlessly
+                    with the ecosystem.
+                </p>
+                <h5>>> Functions</h5>
+
+                <dt>quote()</dt>
+                <p>
+                    This function is used to determine the amount of one token that is equivalent to a given amount of
+                    another token, based on the reserves of the two tokens in the liquidity pool. This function is
+                    essential for understanding how much output you will receive for a given input amount when swapping
+                    tokens or adding liquidity.
+                    <img src="./blog-images/rcr-swap/quote.png" width="750px" height="180px">
+                </p>
+                <dt>getAmountOut()</dt>
+                <p>
+                    This function is used to calculate the output amount of one token given an input amount of another
+                    token according to the constant product formula(CPAMM).
+                    <img src="./blog-images/rcr-swap/get-amount-out.png" width="750px" height="250px">
+                </p>
+                <dt>getAmountIn()</dt>
+                <p>
+                    This function is used to calculate the amount of input tokens required to obtain a specified amount
+                    of output tokens when performing a swap. This function is crucial for determining how many tokens
+                    you need to provide to receive a desired amount of another token from a liquidity pool.
+                    <img src="./blog-images/rcr-swap/get-amount-in.png" width="750px" height="250px">
+                </p>
+                <dt>getCurrentPrice()</dt>
+                <p>
+                    This function is used to fetch the current price of a token pair within a liquidity pool.
+                    Understanding the price dynamics in a pool is crucial for various activities such as trading,
+                    arbitrage, and liquidity provision.
+                    <img src="./blog-images/rcr-swap/get-current-price.png" width="750px" height="300px">
+                </p>
+                <dt>getPriceRange()</dt>
+                <p>
+                    The function is used to return the range of values, where user have to swap the tokens within that
+                    range, this is used to maintain the pool prices. It helps from price oracle attacks on pool.
+                    <img src="./blog-images/rcr-swap/get-price-range.png" width="750px" height="350px"><br>
+                    <img src="./blog-images/rcr-swap/price-range-formula.jpg" width="750px" height="100px">
+                </p>
+                <dt>getAmountFee()</dt>
+                <p>
+                    This function is used to get the amount of fee for the given desired input of token amount.
+                    <img src="./blog-images/rcr-swap/get-amount-fee.png" width="750px" height="100px">
+                </p>
+            </div>
+
+            <!-- Facory -->
+            <div>
+                <h3>>> Factory</h3>
+                <p>
+                    In the Factory smart contract any user can create a pool with any two ERC-20 supporting tokens with
+                    different prices from 0.01% to 1% as protocol fees. These fees are fully distributed to Liquidity
+                    Providers with respectively to that pool. Distribution of fees is based on the amount of shares that
+                    the Liquidity Provides have on that pool.
+                </p>
+                <p>
+                    Factory have Owner who control the factory functions like setting TICK values. More TICK have able
+                    to swap tokens in more range.
+                    Factory uses safeMath library for calculations safely without any arithemtic issues.
+                </p>
+
+                <h4>>> Events in Factory</h4>
+                <P> Facory contract has singel Event, it Emits evvery time whenever a New Pool is created.</P>
+                <pre style="margin-top: -50px;">
+                    <code>event PairCreated(
+    uint256 indexed poolCount,
+    address token0,
+    address token1,
+    address indexed pair,
+    uint256 fee,
+    uint256 tick,
+    address createdBy
+);</code>
+                </pre>
+
+                <h4>>> Functions</h4>
+                <dt>createPool()</dt>
+                <p>
+                    This function is used to create a new pool with two ERC-20 tokens. It takes two ERC-20 tokens and
+                    fee as the parameters. All the pools are tracked through a s_poolCount state variable.
+                    <img src="./blog-images/rcr-swap/create-pool.png" width="1000px" height="500px">
+                </p>
+                <dt>setTicks()</dt>
+                <p>
+                    setTick function is used to set the tick values and it is called by the owner only.
+                </p>
+                <dt>transferOwner()</dt>
+                <p>
+                    This function is used to transfer the Factory ownership to another address.
+                </p>
+                <dt>read only functions</dt>
+                <ul>
+                    <li>function getOwnerPools(address _owner) external view returns (uint256[] memory);</li>
+                    <li>function getPoolData(address _pool) external view returns (address tokenA, address tokenB,
+                        uint256 fee);</li>
+                    <li>function getPool(uint256 _id) external view returns (_Pool memory);</li>
+                    <li>function getTick(address _token0, address _token1) external view returns (uint256);</li>
+                    <li>function getPair(address _token0, address _token1, uint256 _fee) external view returns
+                        (address);</li>
+                    <li>function getAllPoolsAddress() external view returns (address[] memory);</li>
+                </ul>
+            </div>
+
+            <!-- Pool -->
+            <div>
+                <h3>>> Pool</h3>
+                <p>
+                    The pool contract (often referred to as the pair contract) is a core component of the decentralized
+                    exchange protocol. It is responsible for managing the liquidity for a given pair of ERC-20 tokens,
+                    facilitating swaps, and handling liquidity provision and removal. The pool contract holds reserves
+                    of two ERC-20 tokens. Liquidity providers can add or remove tokens from these reserves, thereby
+                    providing or withdrawing liquidity from the pool.
+                </p>
+                <p>
+                    The pool contract allows users to swap one token for another. It uses an automated market maker
+                    (AMM) model based on the constant product formula (x * y = k) to determine the price and facilitate
+                    the trade.The pool contract determines the exchange rate between the two tokens based on their
+                    current reserves.
+                </p>
+                <p>
+                    When liquidity is added to the pool, liquidity providers receive pool tokens (also known as
+                    liquidity provider (LP) tokens) representing their share of the pool. These tokens can be burned to
+                    withdraw the underlying assets.
+                </p>
+
+                <h4>>> Events in Pool</h4>
+                <ul>
+                    <li>AddLiquidity : It emits when any Liquidity Provider add liquidity into pool.</li>
+                    <li>RemoveLiquidity : It emits when any Liquidity Provider remove there liquidity from pool.</li>
+                    <li>Swap : It emits when any user make swap between the tokens in the pool.</li>
+                </ul>
+                <pre style="margin-top: -50px;">
+                    <code>event AddLiquidity(address indexed from, address indexed to, uint256 amountA, uint256 amountB, uint256 liquidity);
+
+event RemoveLiquidity(address indexed from, address indexed to, uint256 liquidity, uint256 amountA, uint256 amountB);
+
+event Swap(address indexed from, address indexed to, uint256 amountIn, uint256 amountOut, uint256 amountInFee);</code>
+                </pre>
+
+                <h4>>> Modifiers</h4>
+                <ul>
+                    <li>ensure : Check whether the deadline is lesser than the current blocktime or not.</li>
+                    <li>zeroAddress : Check whether the given address is a non zero address.</li>
+                </ul>
+
+                <h4>>> Functions</h4>
+                <dt>_safeTransfer()</dt>
+                <p>
+                    The function uses the low-level call function to perform the token transfer. This is a lower-level
+                    operation compared to directly calling the token's transfer function.
+                    abi.encodeWithSelector( TRANSFER_SELECTOR, to, value) encodes the function selector for the transfer
+                    function, along with the arguments to and value. The TRANSFER_SELECTOR is typically defined as
+                    bytes4(keccak256( "transfer(address,uint256)"))
+                </p>
+                <dt>_safeTransferFrom()</dt>
+                <p>
+                    The function uses the low-level call function to perform the token transferFrom. This is a
+                    lower-level operation compared to directly calling the token's transferFrom function.
+                    abi.encodeWithSelector( TRANSFER_FROM_SELECTOR, from, to, value) encodes the function selector for
+                    the transferFrom function, along with the arguments to and value. The TRANSFER_FROM_SELECTOR is
+                    typically defined as bytes4(keccak256( "transferFrom(address,address,uint256)"))
+                </p>
+                <dt>_addLiquidity()</dt>
+                <p>
+                    _addLiquidity will take amountADesired and calculate the correct amount of tokenB that will respect
+                    the ratio. If this is amount is higher than amountBDesired (the amount of B the liquidity provider
+                    sent), then it will start with amountBDesired and calculate the optimal amount of B.
+                </p>
+                <dt>_mintLiquidity()</dt>
+                <p>
+                    This fucntion is used to mint the Liquidity tokens the Liquidity Providers with the given tokens.
+                    Function will reverts if the liquidity is zero and at initiall minimum liquidity of 1000 WEI LP
+                    tokens are locked for permenantly for avoiding <b>Inflation attack</b> on the pool.
+                </p>
+                <dt>addLiquidity()</dt>
+                <p>
+                    This function is used to add liquidity to the pool. It will take the amount of tokenA and tokenB and
+                    address who receive the LP tokens of the pool. It always check the minimum amount is satisfied with
+                    the user required which helps the user from <b>sandwich and front running attacks.</b>
+                </p>
+                <dt>_removeLiquidity()</dt>
+                <p>
+                    In this function we calculate all the tokens the Liquidity Provider will get based on the number of
+                    shares he have.
+                </p>
+                <dt>removeLiquidity()</dt>
+                <p>
+                    Remove liquidity calls burn but uses parameters amountAMin and amountBMin as safety checks to ensure
+                    that the liquidity provider gets back the amount of tokens they are expecting. If the ratio of
+                    tokens changes dramatically before the the liquidity tokens are burned, then the user burning the
+                    tokens won’t get back the amount of token A or B that they are expecting.
+                </p>
+                <dt>swapTokensExactInput()</dt>
+                <p>
+                    The user specifies exactly how many input tokens we want to swap and he will expect the desired
+                    output tokens using _amountOutMin.
+                </p>
+                <dt>swapTokensExactOutput()</dt>
+                <p>
+                    In this case user enter the number of tokens he want to get and pool calculate the number of input
+                    tokens are required to execute the swap.
+                </p>
+                <dt>mintLiquidity()</dt>
+                <p>
+                    Its a emeregency fucntion to leverage the pool liquidity by adding manually and it is called by
+                    Factory owner only.
+                </p>
+            </div>
+
+            <!-- Testing -->
+            <div>
+                <h3>Testing Smart contracts</h3>
+                <h4>Unit Test</h4>
+                <img src="./blog-images/rcr-swap/unit-tests.png" width="600px" height="600px"><br>
+                <h4>>> Fuzz Test</h4>
+                <p>
+                    Fuzz testing, also known as fuzzing, is a software testing technique used to discover
+                    vulnerabilities and bugs by inputting a large amount of random data (often called "fuzz") into the
+                    system or program being tested.
+                </p>
+                <p>
+                    Foundry is a powerful framework for developing, testing, and deploying Ethereum smart contracts. It
+                    includes a built-in fuzz testing feature that makes it easy to apply fuzz testing to your smart
+                    contracts.
+                </p>
+                <p>
+                    We have return a Fuzz test on PoolLibrary contrat to test all the values are the expected vales or
+                    not.
+                </p>
+                <img src="./blog-images/rcr-swap/fuzz-test.png" width="600px" height="180px"><br>
+                <h4>>> Invariant Test</h4>
+                <p>
+                    An invariant test refers to a type of test that checks for the consistency of certain conditions or
+                    properties throughout the execution of a contract, regardless of the specific actions performed.
+                    These tests are crucial for ensuring the robustness and correctness of smart contracts by verifying
+                    that key properties remain true under various scenarios and state changes.
+                </p>
+                <p>
+                    Inside the Handler file we create a Handler contact which is used to give the all requirements
+                    needed for the functions call from the Pool_Handler_Test test contract. Pool_Handler_Test call the
+                    functions inside the Handler contract randomly and check all the states updation are correct or not.
+                </p>
+            </div>
+
+            <!-- Security Considerations -->
+            <div>
+                <h3>>> Security Considerations</h3>
+                <ul>
+                    <li>
+                        <i>Safe token transfer</i> : using low level calls to transfer ERC20 tokens, where some tokens
+                        doesn't return boolean values after token transfer.
+                    </li>
+                    <li>
+                        <i>Fuzz test</i> : Testing all the functions and write a Fuzz test for the Pool Library, because
+                        the main calculation is done in the pool library.
+                    </li>
+                    <li>
+                        <i>Emergency functions</i>: Created a emergency mintLiquidity(), whenever any liquidity issues
+                        occur in pool the factory owner will correct the liquidity by calling this function.
+                    </li>
+                    <li>
+                        <i>Price manipulation attack</i> : Reduce the price manipulation by introducing TICK variable
+                        which helps to swap the tokens in a range based on the reservers on that pool.
+                    </li>
+                    <li>
+                        <i>SafeMath library</i> : Using safeMath library protect from any other arithemetic issues.
+                    </li>
+                    <li>
+                        <i>Input Validation</i>: Checks for valid addresses in the constructor and various functions,
+                        preventing potential issues related to invalid or zero addresses.
+                    </li>
+                    <li>
+                        <i>Minimum Liquidity Lock</i>: A minimum liquidity amount is minted initially to lock some
+                        liquidity. This prevents an inflation attack where an attacker could artificially inflate the
+                        liquidity.
+                    </li>
+                    <li>
+                        <i>Liquidity Minting Approach</i>: The contract calculates initial liquidity shares using a
+                        square root function, inspired by Uniswap V2. This approach aims to mitigate the “doubling
+                        liquidity” problem that could lead to unintended consequences.
+                    </li>
+                    <li>
+                        <i>Fixed Exchange Rate:</i> Used a fixed exchange rate between token0 and token1 This simplifies
+                        the contract, it is important to note that in dynamic market conditions, fixed exchange rates
+                        may expose users to impermanent loss.
+                    </li>
+                    <li>
+                        <i>Reentrancy Protection</i>: Ensuring that functions are not susceptible to reentrancy attacks
+                        by applying nonReentrant modifier.
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+        <hr class="breakLine">
+
+        <!-- References -->
+        <div class="container">
+            <h3>>> Reference</h3>
+            <ul>
+                <li>
+                    <a href="https://docs.soliditylang.org/en/latest/" target="_blank">Solidity
+                        documentation</a>
+                </li>
+                <li>
+                    <a href="https://github.com/x676f64/secureum-mind_map" target="_blank">Secureum mind map</a>
+                </li>
+                <li>
+                    <a href="https://book.getfoundry.sh/" target="_blank">Foundry book</a>
+                </li>
+                <li>
+                    <a href="https://medium.com/web-3-digitals/smart-contract-testing-the-foundry-way-d86fcc5ca33e"
+                        target="_blank">Learn Testing</a>
+                </li>
+                <li>
+                    <a href="https://www.cyfrin.io/blog/smart-contract-fuzz-testing-using-foundry"
+                        target="_blank">Cyfrin Fuzz test guide</a>
+                </li>
+                <li>
+                    <a href="https://blog.trailofbits.com/2019/05/27/slither-the-leading-static-analyzer-for-smart-contracts/"
+                        target="_blank">Learn Slither</a>
+                </li>
+                <li>
+                    <a href="https://github.com/Quillhash/Solidity-Attack-Vectors" target="_blank">Solidity
+                        attack vecors</a>
+                </li>
+                <li>
+                    <a href="https://docs.uniswap.org/contracts/v2/overview/" target="_blank">Uniswap docs</a>
+                </li>
+            </ul>
+
+        </div>
+
+        <!-- Footer -->
+        <footer id="footer">
+            <div class="container">
+                <div class="copyright">
+                    <strong><span>Fund Me</span></strong>
+                </div>
+                <div class="credits">
+                    <a href="#" style="font-size: 10px;">0xd0509B83468409A75De2771C1Ae7bE1026A69927</a>
+                </div>
+            </div>
+        </footer>
+
+        <!-- Scripts imports -->
+        <div>
+            <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+                    class="bi bi-arrow-up-short"></i></a>
+
+            <!-- Vendor JS Files -->
+            <script src="../assets/vendor/purecounter/purecounter_vanilla.js"></script>
+            <script src="../assets/vendor/aos/aos.js"></script>
+            <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+            <script src="../assets/vendor/glightbox/js/glightbox.min.js"></script>
+            <script src="../assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+            <script src="../assets/vendor/swiper/swiper-bundle.min.js"></script>
+            <script src="../assets/vendor/typed.js/typed.umd.js"></script>
+            <script src="../assets/vendor/waypoints/noframework.waypoints.js"></script>
+            <script src="../assets/vendor/php-email-form/validate.js"></script>
+
+            <!-- Template Main JS File -->
+            <script src="../assets/js/main.js"></script>
+        </div>
+</body>
+
+</html>
