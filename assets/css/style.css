@@ -1488,3 +1488,37 @@ h1, h2, h3, h4, h5, h6 {
   .loader { display: none; }
   .avatar, .avatar img { animation: none; }
 }
+
+  #resume .res-chips { display: flex; flex-wrap: wrap; gap: 0.45rem; list-style: none; margin: 1.4rem 0 0; padding: 0; }
+  #resume .res-chips li {
+    font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.03em;
+    color: var(--ash); border: 1px solid var(--line); border-radius: 100px;
+    padding: 0.34rem 0.8rem; transition: color .3s var(--ease), border-color .3s var(--ease);
+  }
+  #resume .res-chips li:hover { color: var(--bloom); border-color: rgba(233, 184, 255, 0.32); }
+
+  #resume .res-link { color: var(--orchid); border-bottom: 1px solid rgba(176, 120, 255, 0.32); transition: border-color .3s ease; }
+  #resume .res-link:hover { border-color: var(--orchid); }
+
+  #resume .res-find {
+    display: inline-block; font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.05em;
+    padding: 0.16rem 0.5rem; border-radius: 100px; margin-left: 0.5rem; vertical-align: middle; white-space: nowrap;
+  }
+  #resume .res-find.high { color: #ff9a9a; background: rgba(255, 90, 90, 0.1); border: 1px solid rgba(255, 90, 90, 0.28); }
+  #resume .res-find.med  { color: #ffce82; background: rgba(255, 180, 60, 0.1); border: 1px solid rgba(255, 180, 60, 0.28); }
+  #resume .res-find.info { color: var(--bloom); background: rgba(176, 120, 255, 0.1); border: 1px solid rgba(176, 120, 255, 0.26); }
+
+  #resume .res-group { margin-bottom: 1.8rem; }
+  #resume .res-group:last-child { margin-bottom: 0; }
+  #resume .res-group h5 {
+    font-family: var(--mono); font-weight: 500; font-size: 0.7rem; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--ash); margin: 0 0 0.7rem;
+  }
+
+  #resume .res-list { list-style: none; padding: 0; margin: 0; }
+  #resume .res-list li {
+    display: flex; align-items: baseline; justify-content: space-between; gap: 1rem;
+    padding: 0.55rem 0; border-bottom: 1px solid var(--line-soft); color: var(--bone); font-size: 0.92rem;
+  }
+  #resume .res-list li:last-child { border-bottom: 0; }
+  #resume .res-list .lvl { font-family: var(--mono); font-size: 0.64rem; letter-spacing: 0.04em; color: var(--ash-dim); white-space: nowrap; }
