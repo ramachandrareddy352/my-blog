@@ -126,7 +126,8 @@
                     <ul>
                         <li>Learn the basics: set up an instance and call functions. Deploy the instance, call
                             <b>authenticate()</b> with the password, and follow the breadcrumb trail of
-                            <code>info()</code> methods.</li>
+                            <code>info()</code> methods.
+                        </li>
                     </ul>
                     <h5>Solution</h5>
                     <span class="levelBox">HelloSolve.s.sol</span>
@@ -154,6 +155,8 @@ contract HelloSolve is Script {
                     <div class="repo"><span>$ forge script script/HelloSolve.s.sol:HelloSolve --rpc-url $RPC_URL
                             --broadcast</span></div>
                 </section>
+
+                <hr class="breakLine">
 
                 <!-- 1 -->
                 <section id="c1" class="challenge">
@@ -187,6 +190,7 @@ contract HelloSolve is Script {
                     <div class="repo"><span>$ forge script script/FallbackSolve.s.sol:FallbackSolve --rpc-url $RPC_URL
                             --broadcast</span></div>
                 </section>
+                <hr class="breakLine">
 
                 <!-- 2 -->
                 <section id="c2" class="challenge">
@@ -219,6 +223,7 @@ contract HelloSolve is Script {
                     <div class="repo"><span>$ forge script script/FalloutSolve.s.sol:FalloutSolve --rpc-url $RPC_URL
                             --broadcast</span></div>
                 </section>
+                <hr class="breakLine">
 
                 <!-- 3 -->
                 <section id="c3" class="challenge">
@@ -254,6 +259,7 @@ contract HelloSolve is Script {
                     <div class="repo"><span>$ forge script script/CoinflipSolve.s.sol:CoinflipSolve --rpc-url $RPC_URL
                             --broadcast</span></div>
                 </section>
+                <hr class="breakLine">
 
                 <!-- 4 -->
                 <section id="c4" class="challenge">
@@ -266,7 +272,8 @@ contract HelloSolve is Script {
                     <ul>
                         <li><b>tx.origin</b> is the original EOA; <b>msg.sender</b> is the immediate caller. Calling
                             <b>changeOwner()</b> from a contract makes them differ, satisfying
-                            <code>tx.origin != msg.sender</code>.</li>
+                            <code>tx.origin != msg.sender</code>.
+                        </li>
                     </ul>
                     <span class="levelBox">TelephoneSolve.s.sol</span>
                     <div class="container" id="code">
@@ -282,6 +289,7 @@ contract HelloSolve is Script {
                     <div class="repo"><span>$ forge script script/TelephoneSolve.s.sol:TelephoneSolve --rpc-url $RPC_URL
                             --broadcast</span></div>
                 </section>
+                <hr class="breakLine">
 
                 <!-- 5 -->
                 <section id="c5" class="challenge">
@@ -293,7 +301,8 @@ contract HelloSolve is Script {
                     <h5>Solution</h5>
                     <ul>
                         <li>Solidity 0.6.0 has no automatic overflow/underflow checks. <b>transfer()</b> does
-                            <code>balances[msg.sender] - _value</code> with no guard.</li>
+                            <code>balances[msg.sender] - _value</code> with no guard.
+                        </li>
                         <li>Transferring 21 tokens from a balance of 20 underflows to <code>(2**256) - 1</code>.</li>
                     </ul>
                     <span class="levelBox">TokenSolve.s.sol</span>
@@ -313,6 +322,7 @@ interface IToken {
                     <div class="repo"><span>$ forge script script/TokenSolve.s.sol:TokenSolve --rpc-url $RPC_URL
                             --broadcast</span></div>
                 </section>
+                <hr class="breakLine">
 
                 <!-- 6 -->
                 <section id="c6" class="challenge">
@@ -326,7 +336,8 @@ interface IToken {
                         <li>Delegation's <b>fallback()</b> forwards calldata to Delegate via <b>delegatecall</b> — which
                             runs Delegate's code in Delegation's storage context.</li>
                         <li>Send calldata equal to the 4-byte selector of <b>pwn()</b>. Delegate's
-                            <code>owner = msg.sender</code> writes to Delegation's slot 0, making you owner.</li>
+                            <code>owner = msg.sender</code> writes to Delegation's slot 0, making you owner.
+                        </li>
                     </ul>
                     <span class="levelBox">DelegationSolve.s.sol</span>
                     <div class="container" id="code">
@@ -344,6 +355,7 @@ interface IToken {
                     <div class="repo"><span>$ forge script script/DelegationSolve.s.sol:DelegationSolve --rpc-url
                             $RPC_URL --broadcast</span></div>
                 </section>
+                <hr class="breakLine">
 
                 <!-- 7 -->
                 <section id="c7" class="challenge">
@@ -372,6 +384,8 @@ interface IToken {
                     <div class="repo"><span>$ forge script script/ForceSolve.s.sol:ForceSolve --rpc-url $RPC_URL
                             --broadcast</span></div>
                 </section>
+                <hr class="breakLine">
+
                 <!-- 8 -->
                 <section id="c8" class="challenge">
                     <h4><span class="num">08</span> Vault</h4>
@@ -399,6 +413,7 @@ interface IToken {
                     <div class="repo"><span>$ forge script script/VaultSolve.s.sol:VaultSolve --rpc-url $RPC_URL
                             --broadcast</span></div>
                 </section>
+                <hr class="breakLine">
 
                 <!-- 9 -->
                 <section id="c9" class="challenge">
@@ -412,7 +427,8 @@ interface IToken {
                         <li>To dethrone, the contract pays the old king. If the old king can't receive ETH, the payment
                             reverts and the throne sticks.</li>
                         <li>Become king with a contract that has no payable receive/fallback — future
-                            <code>transfer</code> to it always reverts.</li>
+                            <code>transfer</code> to it always reverts.
+                        </li>
                     </ul>
                     <span class="levelBox">KingSolve.s.sol</span>
                     <div class="container" id="code">
@@ -426,6 +442,7 @@ interface IToken {
                     <div class="repo"><span>$ forge script script/KingSolve.s.sol:KingSolve --rpc-url $RPC_URL
                             --broadcast</span></div>
                 </section>
+                <hr class="breakLine">
 
                 <!-- 10 -->
                 <section id="c10" class="challenge">
@@ -467,6 +484,7 @@ interface IToken {
                     <div class="repo"><span>$ forge script script/ReentrancySolve.s.sol:ReentrancySolve --rpc-url
                             $RPC_URL --broadcast</span></div>
                 </section>
+                <hr class="breakLine">
 
                 <!-- 11 -->
                 <section id="c11" class="challenge">
@@ -479,7 +497,8 @@ interface IToken {
                     <ul>
                         <li><b>goTo()</b> trusts the caller's <b>isLastFloor()</b>. Implement it to return
                             <code>false</code> on the first call and <code>true</code> on the second — flipping a stored
-                            bool each call.</li>
+                            bool each call.
+                        </li>
                     </ul>
                     <span class="levelBox">ElevatorSolve.s.sol</span>
                     <div class="container" id="code">
@@ -503,6 +522,7 @@ interface IToken {
                     <div class="repo"><span>$ forge script script/ElevatorSolve.s.sol:ElevatorSolve --rpc-url $RPC_URL
                             --broadcast</span></div>
                 </section>
+                <hr class="breakLine">
 
                 <!-- 12 -->
                 <section id="c12" class="challenge">
@@ -531,6 +551,7 @@ interface IToken {
                     <div class="repo"><span>$ forge script script/PrivacySolve.s.sol:PrivacySolve --rpc-url $RPC_URL
                             --broadcast</span></div>
                 </section>
+                <hr class="breakLine">
 
                 <!-- 13 -->
                 <section id="c13" class="challenge">
@@ -546,7 +567,8 @@ interface IToken {
                             small offset.</li>
                         <li><b>gateThree</b>: craft the key so the lower 4 bytes equal the lower 2 bytes, differ from
                             the full 8 bytes, and match <code>uint16(uint160(tx.origin))</code>. Mask:
-                            <code>0xFFFFFFFF0000FFFF</code>.</li>
+                            <code>0xFFFFFFFF0000FFFF</code>.
+                        </li>
                     </ul>
                     <span class="levelBox">GatekeeperOneSolve.s.sol</span>
                     <div class="container" id="code">
@@ -565,6 +587,7 @@ interface IToken {
                     <div class="repo"><span>$ forge script script/GatekeeperOneSolve.s.sol:GatekeeperOneSolve --rpc-url
                             $RPC_URL --broadcast</span></div>
                 </section>
+                <hr class="breakLine">
 
                 <!-- 14 -->
                 <section id="c14" class="challenge">
@@ -579,7 +602,8 @@ interface IToken {
                         <li><b>gateTwo</b>: <code>extcodesize(caller)</code> must be 0 — true while running inside a
                             constructor (code isn't deployed yet).</li>
                         <li><b>gateThree</b>: XOR means the key is the inverse of <code>keccak256(this)</code>:
-                            <code>key = type(uint64).max ^ uint64(bytes8(keccak256(...)))</code>.</li>
+                            <code>key = type(uint64).max ^ uint64(bytes8(keccak256(...)))</code>.
+                        </li>
                     </ul>
                     <span class="levelBox">GatekeeperTwoSolve.s.sol</span>
                     <div class="container" id="code">
@@ -595,6 +619,7 @@ interface IToken {
                     <div class="repo"><span>$ forge script script/GatekeeperTwoSolve.s.sol:GatekeeperTwoSolve --rpc-url
                             $RPC_URL --broadcast</span></div>
                 </section>
+                <hr class="breakLine">
 
                 <!-- 15 -->
                 <section id="c15" class="challenge">
@@ -606,7 +631,8 @@ interface IToken {
                     <h5>Solution</h5>
                     <ul>
                         <li>The <code>lockTokens</code> modifier only guards <b>transfer()</b>. The ERC20
-                            <b>transferFrom()</b> path is unguarded — approve a helper and transfer via it.</li>
+                            <b>transferFrom()</b> path is unguarded — approve a helper and transfer via it.
+                        </li>
                     </ul>
                     <span class="levelBox">NaughtCoinSolve.s.sol</span>
                     <div class="container" id="code">
@@ -622,6 +648,7 @@ interface IToken {
                     <div class="repo"><span>$ forge script script/NaughtCoinSolve.s.sol:NaughtCoinSolve --rpc-url
                             $RPC_URL --broadcast</span></div>
                 </section>
+                <hr class="breakLine">
 
                 <!-- 16 -->
                 <section id="c16" class="challenge">
@@ -634,7 +661,8 @@ interface IToken {
                     <ul>
                         <li><b>setFirstTime()</b> delegatecalls into the library, but the library writes to <b>slot
                                 0</b> — which in Preservation is <code>timeZone1Library</code>, not
-                            <code>storedTime</code>.</li>
+                            <code>storedTime</code>.
+                        </li>
                         <li>Point slot 0 at an attacker library with matching layout; its <code>setTime</code> writes
                             the owner. First call sets the library to the attacker; second call overwrites owner with
                             the player.</li>
@@ -659,6 +687,7 @@ interface IToken {
                     <div class="repo"><span>$ forge script script/PreservationSolve.s.sol:PreservationSolve --rpc-url
                             $RPC_URL --broadcast</span></div>
                 </section>
+                <hr class="breakLine">
 
                 <!-- 17 -->
                 <section id="c17" class="challenge">
@@ -689,6 +718,8 @@ interface IToken {
                     <div class="repo"><span>$ forge script script/RecoverySolve.s.sol:RecoverySolve --rpc-url $RPC_URL
                             --broadcast</span></div>
                 </section>
+                <hr class="breakLine">
+
                 <!-- 18 -->
                 <section id="c18" class="challenge">
                     <h4><span class="num">18</span> MagicNum</h4>
@@ -726,6 +757,7 @@ Creation code — return the runtime code
                     <div class="repo"><span>$ forge script script/MagicNumSolve.s.sol:MagicNumSolve --rpc-url $RPC_URL
                             --broadcast</span></div>
                 </section>
+                <hr class="breakLine">
 
                 <!-- 19 -->
                 <section id="c19" class="challenge">
@@ -767,6 +799,7 @@ find i : h + i = 0  ->  i = 0 - h  (mod 2**256)</pre>
                     <div class="repo"><span>$ forge script script/AlienCodexSolve.s.sol:AlienCodexSolve --rpc-url
                             $RPC_URL --broadcast</span></div>
                 </section>
+                <hr class="breakLine">
 
                 <!-- 20 -->
                 <section id="c20" class="challenge">
@@ -797,6 +830,7 @@ find i : h + i = 0  ->  i = 0 - h  (mod 2**256)</pre>
                     <div class="repo"><span>$ forge script script/DenialSolve.s.sol:DenialSolve --rpc-url $RPC_URL
                             --broadcast</span></div>
                 </section>
+                <hr class="breakLine">
 
                 <!-- 21 -->
                 <section id="c21" class="challenge">
@@ -809,7 +843,8 @@ find i : h + i = 0  ->  i = 0 - h  (mod 2**256)</pre>
                     <ul>
                         <li>Like Elevator, <b>buy()</b> calls your <b>price()</b> twice. Return 100 while
                             <code>!isSold</code> and 1 after — using the contract's own <code>isSold</code> flag as the
-                            toggle.</li>
+                            toggle.
+                        </li>
                     </ul>
                     <span class="levelBox">ShopSolve.s.sol</span>
                     <div class="container" id="code">
@@ -831,6 +866,7 @@ find i : h + i = 0  ->  i = 0 - h  (mod 2**256)</pre>
                     <div class="repo"><span>$ forge script script/ShopSolve.s.sol:ShopSolve --rpc-url $RPC_URL
                             --broadcast</span></div>
                 </section>
+                <hr class="breakLine">
 
                 <!-- 22 -->
                 <section id="c22" class="challenge">
@@ -893,6 +929,7 @@ find i : h + i = 0  ->  i = 0 - h  (mod 2**256)</pre>
                     <div class="repo"><span>$ forge script script/DexSolve.s.sol:DexSolve --rpc-url $RPC_URL
                             --broadcast</span></div>
                 </section>
+                <hr class="breakLine">
 
                 <!-- 23 -->
                 <section id="c23" class="challenge">
@@ -947,6 +984,7 @@ contract MyToken is ERC20 {
                     <div class="repo"><span>$ forge script script/DexTwoSolve.s.sol:DexTwoSolve --rpc-url $RPC_URL
                             --broadcast</span></div>
                 </section>
+                <hr class="breakLine">
 
                 <!-- 24 -->
                 <section id="c24" class="challenge">
@@ -959,10 +997,12 @@ contract MyToken is ERC20 {
                     <ul>
                         <li>PuzzleProxy and PuzzleWallet have mismatched storage layouts:
                             <code>pendingAdmin</code>/<code>admin</code> overlap with
-                            <code>owner</code>/<code>maxBalance</code>.</li>
+                            <code>owner</code>/<code>maxBalance</code>.
+                        </li>
                         <li>Call <b>proposeNewAdmin()</b> to set yourself as owner, then <b>addToWhitelist()</b>. Use
                             nested <b>multicall</b> to call <b>deposit()</b> twice while only sending value once, then
-                            <b>execute()</b> to drain the balance to 0.</li>
+                            <b>execute()</b> to drain the balance to 0.
+                        </li>
                         <li>With balance 0, <b>setMaxBalance(uint256(player))</b> overwrites <code>admin</code> — you're
                             admin.</li>
                     </ul>
@@ -993,6 +1033,7 @@ contract MyToken is ERC20 {
                     <div class="repo"><span>$ forge script script/PuzzleWalletSolve.s.sol:PuzzleWalletSolve --rpc-url
                             $RPC_URL --broadcast</span></div>
                 </section>
+                <hr class="breakLine">
 
                 <!-- 25 -->
                 <section id="c25" class="challenge">
@@ -1022,6 +1063,7 @@ contract MyToken is ERC20 {
                     <div class="repo"><span>$ forge script script/MotorbikeSolve.s.sol:MotorbikeSolve --rpc-url $RPC_URL
                             --broadcast</span></div>
                 </section>
+                <hr class="breakLine">
 
                 <!-- 26 -->
                 <section id="c26" class="challenge">
@@ -1035,9 +1077,11 @@ contract MyToken is ERC20 {
                     <ul>
                         <li>The DET token delegates from LegacyToken, so <b>sweepToken(LGT)</b> indirectly moves the
                             underlying DET via <b>delegateTransfer()</b> — that function carries the
-                            <code>fortaNotify</code> modifier.</li>
+                            <code>fortaNotify</code> modifier.
+                        </li>
                         <li>The bot reads <b>origSender</b> from calldata at offset <b>0xA8</b> via
-                            <code>calldataload</code>; if it's the CryptoVault, raise an alert to revert the sweep.</li>
+                            <code>calldataload</code>; if it's the CryptoVault, raise an alert to revert the sweep.
+                        </li>
                     </ul>
                     <div class="repo">
                         <pre>position  bytes  type     value
@@ -1069,6 +1113,7 @@ contract MyToken is ERC20 {
                     <div class="repo"><span>$ forge script script/DoubleEntryPointSolve.s.sol:DoubleEntryPointSolve
                             --rpc-url $RPC_URL --broadcast</span></div>
                 </section>
+                <hr class="breakLine">
 
                 <!-- 27 -->
                 <section id="c27" class="challenge">
@@ -1112,6 +1157,7 @@ contract MyToken is ERC20 {
                     <div class="repo"><span>$ forge script script/GoodSamaritanSolve.s.sol:GoodSamaritanSolve --rpc-url
                             $RPC_URL --broadcast</span></div>
                 </section>
+                <hr class="breakLine">
 
                 <!-- 28 -->
                 <section id="c28" class="challenge">
@@ -1125,7 +1171,8 @@ contract MyToken is ERC20 {
                         <li><b>gateOne</b>: call <b>construct0r()</b> (not a real constructor) to become owner, and call
                             from a contract so <code>tx.origin != owner</code>.</li>
                         <li><b>gateTwo</b>: deploy SimpleTrick via <b>createTrick()</b>, then call
-                            <b>getAllowance(block.timestamp)</b> — the password is the same-tx timestamp.</li>
+                            <b>getAllowance(block.timestamp)</b> — the password is the same-tx timestamp.
+                        </li>
                         <li><b>gateThree</b>: the contract must hold &gt; 0.001 ETH and its <code>send</code> to owner
                             must fail. Make your attacker contract reject ETH (no receive/fallback) so the send returns
                             false.</li>
@@ -1149,6 +1196,7 @@ contract MyToken is ERC20 {
                     <div class="repo"><span>$ forge script script/GatekeeperThreeSolve.s.sol:GatekeeperThreeSolve
                             --rpc-url $RPC_URL --broadcast</span></div>
                 </section>
+                <hr class="breakLine">
 
                 <!-- 29 -->
                 <section id="c29" class="challenge">

