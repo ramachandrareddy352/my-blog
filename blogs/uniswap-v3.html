@@ -2,245 +2,2608 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-
-    <title>uniswap-v3</title>
-    <meta content="" name="description">
-    <meta content="" name="keywords">
-
-    <!-- Favicons -->
-    <link href="../assets/img/favicon.jpg" rel="icon">
-    <link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
-
-    <!-- Google Fonts -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Uniswap V3 — The Complete Field Notes</title>
+    <meta name="description"
+        content="A 9-module implementation-grade reference for Uniswap V3: Q64.96 math, ticks, the tick bitmap, concentrated liquidity, swaps, fees, the oracle — every formula derived with interactive curve graphs." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-        href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
-        rel="stylesheet">
-    <script src="https://kit.fontawesome.com/67ced9e5a8.js" crossorigin="anonymous"></script>
+        href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script async src="https://www.desmos.com/api/v1.11/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
 
+    <style>
+        :root {
+            --void: #0A0A0C;
+            --void-2: #0D0D11;
+            --ink: #121217;
+            --haze: #16161C;
+            --haze-2: #1C1C24;
+            --line: rgba(255, 255, 255, 0.08);
+            --line-soft: rgba(255, 255, 255, 0.05);
+            --orchid: #B078FF;
+            --iris: #6D5BFF;
+            --bloom: #E9B8FF;
+            --mint: #6FE7B0;
+            --amber: #F6B17A;
+            --bone: #ECEAF2;
+            --ash: #9A98A6;
+            --ash-dim: #6E6C7A;
+            --code-bg: #0E0E13;
+            --code-kw: #C9A8FF;
+            --code-str: #9BE6B0;
+            --code-com: #5E5C6B;
+            --code-num: #F6B17A;
+            --code-fn: #7FD0FF;
+            --display: "Fraunces", Georgia, serif;
+            --body: "Inter", system-ui, sans-serif;
+            --mono: "JetBrains Mono", ui-monospace, monospace;
+            --ease: cubic-bezier(0.22, 1, 0.36, 1);
+            --ease-soft: cubic-bezier(0.16, 1, 0.3, 1);
+            --rail: 330px;
+        }
 
-    <!-- Vendor CSS Files -->
-    <link href="../assets/vendor/aos/aos.css" rel="stylesheet">
-    <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-    <link href="../assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
-    <link href="../assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
-    <link href="../assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    <!-- Template Main CSS File -->
-    <link href="../assets/css/style.css" rel="stylesheet">
-    <link href="./css/blogStyle.css" rel="stylesheet">
+        html {
+            scroll-behavior: smooth;
+            -webkit-text-size-adjust: 100%;
+        }
 
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tomorrow-night-blue.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+        body {
+            background: var(--void);
+            color: var(--bone);
+            font-family: var(--body);
+            font-size: 16px;
+            line-height: 1.72;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
 
-    <!-- and it's easy to individually load additional languages -->
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script> -->
+        body::-webkit-scrollbar {
+            width: 0;
+            height: 0;
+        }
 
-    <script>hljs.highlightAll();</script>
+        body {
+            scrollbar-width: none;
+        }
 
+        ::selection {
+            background: var(--orchid);
+            color: var(--void);
+        }
+
+        a {
+            color: var(--orchid);
+            text-decoration: none;
+            transition: color .25s ease;
+        }
+
+        a:hover {
+            color: var(--bloom);
+        }
+
+        :focus-visible {
+            outline: 2px solid var(--orchid);
+            outline-offset: 3px;
+            border-radius: 4px;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5 {
+            font-family: var(--display);
+            font-weight: 400;
+            letter-spacing: -0.02em;
+            line-height: 1.15;
+        }
+
+        .aurora {
+            position: fixed;
+            inset: -20%;
+            z-index: -2;
+            pointer-events: none;
+            background: radial-gradient(40% 50% at 82% 6%, rgba(176, 120, 255, 0.15), transparent 70%), radial-gradient(35% 45% at 8% 24%, rgba(109, 91, 255, 0.12), transparent 70%);
+            filter: blur(22px);
+            animation: drift 24s var(--ease-soft) infinite alternate;
+        }
+
+        @keyframes drift {
+            0% {
+                transform: translate3d(0, 0, 0);
+            }
+
+            100% {
+                transform: translate3d(-3%, 2%, 0) scale(1.06);
+            }
+        }
+
+        .grain {
+            position: fixed;
+            inset: 0;
+            z-index: 9;
+            pointer-events: none;
+            opacity: .5;
+            mix-blend-mode: soft-light;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+        }
+
+        .progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 2px;
+            width: 100%;
+            transform: scaleX(0);
+            transform-origin: 0 50%;
+            background: linear-gradient(90deg, var(--iris), var(--orchid), var(--bloom));
+            z-index: 60;
+        }
+
+        .rail {
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: var(--rail);
+            z-index: 40;
+            background: linear-gradient(180deg, var(--void-2), var(--void));
+            border-right: 1px solid var(--line);
+            display: flex;
+            flex-direction: column;
+            transition: transform .5s var(--ease);
+        }
+
+        .rail__top {
+            padding: 1.4rem 1.4rem 1rem;
+            border-bottom: 1px solid var(--line-soft);
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-family: var(--mono);
+            font-size: 0.82rem;
+            letter-spacing: 0.03em;
+            color: var(--bone);
+            border: 1px solid var(--line);
+            border-radius: 100px;
+            padding: 0.6rem 1.1rem;
+            transition: all .35s var(--ease);
+        }
+
+        .back-btn:hover {
+            color: var(--void);
+            background: var(--orchid);
+            border-color: var(--orchid);
+            transform: translateX(-3px);
+        }
+
+        .back-btn svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .rail__title {
+            margin-top: 1.1rem;
+        }
+
+        .rail__kicker {
+            font-family: var(--mono);
+            font-size: 0.66rem;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: var(--orchid);
+        }
+
+        .rail__h {
+            font-family: var(--display);
+            font-size: 1.5rem;
+            margin-top: 0.35rem;
+        }
+
+        .rail__h em {
+            font-style: italic;
+            color: var(--bloom);
+        }
+
+        .rail__count {
+            font-family: var(--mono);
+            font-size: 0.68rem;
+            color: var(--ash-dim);
+            margin-top: 0.5rem;
+            letter-spacing: 0.04em;
+        }
+
+        .rail__search {
+            margin: 0.9rem 1.4rem 0.4rem;
+            position: relative;
+        }
+
+        .rail__search input {
+            width: 100%;
+            background: var(--void-2);
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            padding: 0.6rem 0.9rem 0.6rem 2.1rem;
+            color: var(--bone);
+            font-family: var(--mono);
+            font-size: 0.78rem;
+            transition: border-color .3s ease;
+        }
+
+        .rail__search input:focus {
+            outline: none;
+            border-color: var(--orchid);
+        }
+
+        .rail__search input::placeholder {
+            color: var(--ash-dim);
+        }
+
+        .rail__search svg {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 14px;
+            height: 14px;
+            stroke: var(--ash-dim);
+        }
+
+        .rail__nav {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0.6rem 0.8rem 1.4rem;
+        }
+
+        .rail__nav::-webkit-scrollbar {
+            width: 0;
+        }
+
+        .rail__nav {
+            scrollbar-width: none;
+        }
+
+        .rail__nav a {
+            display: flex;
+            align-items: baseline;
+            gap: 0.7rem;
+            padding: 0.5rem 0.7rem;
+            border-radius: 9px;
+            color: var(--ash);
+            font-size: 0.86rem;
+            line-height: 1.35;
+            position: relative;
+            transition: color .25s ease, background .25s ease, padding-left .3s var(--ease);
+        }
+
+        .rail__nav a .n {
+            font-family: var(--mono);
+            font-size: 0.66rem;
+            color: var(--ash-dim);
+            flex-shrink: 0;
+            min-width: 1.6rem;
+        }
+
+        .rail__nav a::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%) scaleY(0);
+            width: 3px;
+            height: 55%;
+            border-radius: 4px;
+            background: var(--orchid);
+            transition: transform .3s var(--ease);
+        }
+
+        .rail__nav a:hover {
+            color: var(--bone);
+            background: rgba(176, 120, 255, 0.06);
+            padding-left: 1rem;
+        }
+
+        .rail__nav a.active {
+            color: var(--bone);
+            background: rgba(176, 120, 255, 0.09);
+            padding-left: 1rem;
+        }
+
+        .rail__nav a.active .n {
+            color: var(--orchid);
+        }
+
+        .rail__nav a.active::before {
+            transform: translateY(-50%) scaleY(1);
+        }
+
+        .rail__nav a.hide {
+            display: none;
+        }
+
+        .rail-toggle {
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            z-index: 70;
+            width: 46px;
+            height: 46px;
+            border-radius: 12px;
+            display: none;
+            place-items: center;
+            background: rgba(10, 10, 12, 0.72);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--line);
+            cursor: pointer;
+        }
+
+        .rail-toggle span,
+        .rail-toggle span::before,
+        .rail-toggle span::after {
+            content: "";
+            position: absolute;
+            width: 20px;
+            height: 1.6px;
+            background: var(--bone);
+            transition: .35s var(--ease);
+        }
+
+        .rail-toggle span {
+            position: relative;
+        }
+
+        .rail-toggle span::before {
+            top: -6px;
+        }
+
+        .rail-toggle span::after {
+            top: 6px;
+        }
+
+        .rail-toggle.open span {
+            background: transparent;
+        }
+
+        .rail-toggle.open span::before {
+            top: 0;
+            transform: rotate(45deg);
+        }
+
+        .rail-toggle.open span::after {
+            top: 0;
+            transform: rotate(-45deg);
+        }
+
+        .scrim {
+            position: fixed;
+            inset: 0;
+            z-index: 39;
+            background: rgba(5, 5, 7, 0.6);
+            backdrop-filter: blur(2px);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .4s ease;
+        }
+
+        .scrim.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .main {
+            margin-left: var(--rail);
+        }
+
+        .wrap {
+            max-width: 920px;
+            margin: 0 auto;
+            padding: 0 clamp(1.25rem, 4vw, 3.5rem);
+        }
+
+        .post-hero {
+            padding: clamp(4rem, 9vw, 7rem) 0 2.5rem;
+        }
+
+        .post-hero .eyebrow {
+            font-family: var(--mono);
+            font-size: 0.72rem;
+            letter-spacing: 0.26em;
+            text-transform: uppercase;
+            color: var(--orchid);
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .post-hero .eyebrow::before {
+            content: "";
+            width: 34px;
+            height: 1px;
+            background: var(--orchid);
+        }
+
+        .post-hero h1 {
+            font-size: clamp(2.4rem, 6vw, 4.2rem);
+            line-height: 1;
+            margin-bottom: 1.3rem;
+        }
+
+        .post-hero h1 em {
+            font-style: italic;
+            color: var(--bloom);
+        }
+
+        .post-hero .lede {
+            color: var(--ash);
+            font-size: 1.06rem;
+            max-width: 66ch;
+        }
+
+        .post-hero .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1.6rem;
+        }
+
+        .post-hero .tags span {
+            font-family: var(--mono);
+            font-size: 0.68rem;
+            letter-spacing: 0.04em;
+            color: var(--bloom);
+            border: 1px solid rgba(233, 184, 255, 0.25);
+            border-radius: 100px;
+            padding: 0.28rem 0.7rem;
+        }
+
+        .content {
+            padding-bottom: 6rem;
+        }
+
+        .content p {
+            color: var(--ash);
+            margin: 0 0 1.1rem;
+        }
+
+        .content p b,
+        .content p strong,
+        .content li b,
+        .content li strong {
+            color: var(--bone);
+            font-weight: 600;
+        }
+
+        .content em,
+        .content i {
+            color: var(--bloom);
+            font-style: italic;
+        }
+
+        .content ul,
+        .content ol {
+            margin: 0 0 1.2rem;
+            padding-left: 1.3rem;
+            color: var(--ash);
+        }
+
+        .content li {
+            margin-bottom: 0.5rem;
+        }
+
+        .content li::marker {
+            color: var(--orchid);
+        }
+
+        .content ul ul,
+        .content ol ol,
+        .content ul ol,
+        .content ol ul {
+            margin-top: 0.5rem;
+        }
+
+        .module {
+            scroll-margin-top: 2rem;
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            background: var(--ink);
+            padding: clamp(1.5rem, 3vw, 2.6rem);
+            margin-bottom: 1.8rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .module::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(var(--iris), var(--orchid), transparent);
+            opacity: 0;
+            transition: opacity .5s ease;
+        }
+
+        .module:hover::before {
+            opacity: 1;
+        }
+
+        .module>h2 {
+            font-size: clamp(1.7rem, 3.4vw, 2.3rem);
+            color: var(--bone);
+            margin: 0 0 0.3rem;
+            display: flex;
+            align-items: baseline;
+            gap: 0.7rem;
+            flex-wrap: wrap;
+        }
+
+        .module .mod-num {
+            font-family: var(--mono);
+            font-size: 0.74rem;
+            color: var(--orchid);
+            background: rgba(176, 120, 255, 0.1);
+            border: 1px solid rgba(176, 120, 255, 0.25);
+            border-radius: 8px;
+            padding: 0.22rem 0.6rem;
+        }
+
+        .module .mod-sub {
+            color: var(--ash);
+            font-size: 0.96rem;
+            margin: 0.4rem 0 1.4rem;
+        }
+
+        .content h3 {
+            font-family: var(--display);
+            font-size: 1.35rem;
+            color: var(--bone);
+            margin: 1.9rem 0 0.8rem;
+        }
+
+        .content h4 {
+            font-size: 1.08rem;
+            color: var(--bone);
+            margin: 1.4rem 0 0.6rem;
+            font-family: var(--display);
+        }
+
+        .content h5 {
+            font-family: var(--mono);
+            font-weight: 500;
+            font-size: 0.74rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--orchid);
+            margin: 1.5rem 0 0.7rem;
+        }
+
+        .note {
+            border: 1px solid var(--line);
+            border-left: 3px solid var(--iris);
+            background: var(--void-2);
+            border-radius: 10px;
+            padding: 1rem 1.2rem;
+            margin: 0 0 1.3rem;
+        }
+
+        .note.v2 {
+            border-left-color: var(--amber);
+        }
+
+        .note.warn {
+            border-left-color: #ff7676;
+        }
+
+        .note .tag {
+            font-family: var(--mono);
+            font-size: 0.64rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--iris);
+            display: block;
+            margin-bottom: 0.4rem;
+        }
+
+        .note.v2 .tag {
+            color: var(--amber);
+        }
+
+        .note.warn .tag {
+            color: #ff7676;
+        }
+
+        .note p:last-child {
+            margin-bottom: 0;
+        }
+
+        .formula {
+            background: var(--void-2);
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            padding: 1.2rem 1.3rem;
+            margin: 0 0 1.3rem;
+            overflow-x: auto;
+        }
+
+        .formula .katex-display {
+            margin: 0.3rem 0;
+        }
+
+        .formula .lbl {
+            font-family: var(--mono);
+            font-size: 0.64rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--ash-dim);
+            margin-bottom: 0.6rem;
+            display: block;
+        }
+
+        .katex {
+            color: var(--bone);
+            font-size: 1.04em;
+        }
+
+        .vars {
+            list-style: none;
+            padding: 0;
+            margin: 0.8rem 0 0;
+            font-size: 0.88rem;
+        }
+
+        .vars li {
+            margin-bottom: 0.35rem;
+            color: var(--ash);
+            padding-left: 0;
+        }
+
+        .vars code {
+            color: var(--bloom);
+        }
+
+        .example {
+            border: 1px dashed rgba(176, 120, 255, 0.35);
+            border-radius: 12px;
+            padding: 1.2rem 1.4rem;
+            margin: 0 0 1.4rem;
+            background: rgba(176, 120, 255, 0.03);
+        }
+
+        .example .lbl {
+            font-family: var(--mono);
+            font-size: 0.66rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--orchid);
+            display: block;
+            margin-bottom: 0.7rem;
+        }
+
+        .codebox {
+            background: var(--code-bg);
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            margin: 0 0 1.4rem;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .codebox::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 38px;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.025), transparent);
+            border-bottom: 1px solid var(--line-soft);
+            pointer-events: none;
+        }
+
+        .codebox .dots {
+            position: absolute;
+            top: 14px;
+            left: 16px;
+            display: flex;
+            gap: 6px;
+            z-index: 1;
+        }
+
+        .codebox .dots i {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            display: block;
+        }
+
+        .codebox .dots i:nth-child(1) {
+            background: #ff5f57aa;
+        }
+
+        .codebox .dots i:nth-child(2) {
+            background: #febc2eaa;
+        }
+
+        .codebox .dots i:nth-child(3) {
+            background: #28c840aa;
+        }
+
+        .codebox .lang {
+            position: absolute;
+            top: 11px;
+            right: 14px;
+            z-index: 1;
+            font-family: var(--mono);
+            font-size: 0.62rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--ash-dim);
+        }
+
+        .codebox .copy {
+            position: absolute;
+            top: 8px;
+            right: 14px;
+            z-index: 2;
+            font-family: var(--mono);
+            font-size: 0.62rem;
+            letter-spacing: 0.06em;
+            color: var(--ash);
+            background: var(--haze);
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            padding: 0.25rem 0.55rem;
+            cursor: pointer;
+            opacity: 0;
+            transition: all .3s ease;
+        }
+
+        .codebox:hover .copy {
+            opacity: 1;
+        }
+
+        .codebox .copy:hover {
+            color: var(--bloom);
+            border-color: var(--orchid);
+        }
+
+        .codebox .copy.copied {
+            color: var(--mint);
+            border-color: var(--mint);
+        }
+
+        pre {
+            margin: 0;
+            padding: 2.6rem 1.3rem 1.3rem;
+            overflow-x: auto;
+            font-family: var(--mono);
+            font-size: 0.8rem;
+            line-height: 1.65;
+            color: #cdd0e0;
+            tab-size: 4;
+        }
+
+        pre::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        pre::-webkit-scrollbar-thumb {
+            background: var(--haze-2);
+            border-radius: 8px;
+        }
+
+        code {
+            font-family: var(--mono);
+        }
+
+        :not(pre)>code {
+            background: var(--haze);
+            border: 1px solid var(--line-soft);
+            border-radius: 5px;
+            padding: 0.1rem 0.4rem;
+            font-size: 0.85em;
+            color: var(--bloom);
+        }
+
+        .tok-com {
+            color: var(--code-com);
+            font-style: italic;
+        }
+
+        .tok-str {
+            color: var(--code-str);
+        }
+
+        .tok-kw {
+            color: var(--code-kw);
+        }
+
+        .tok-num {
+            color: var(--code-num);
+        }
+
+        .tok-fn {
+            color: var(--code-fn);
+        }
+
+        .tbl {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0 0 1.4rem;
+            font-size: 0.86rem;
+            overflow: hidden;
+            border-radius: 10px;
+            border: 1px solid var(--line);
+        }
+
+        .tbl th,
+        .tbl td {
+            text-align: left;
+            padding: 0.65rem 0.85rem;
+            border-bottom: 1px solid var(--line-soft);
+            vertical-align: top;
+        }
+
+        .tbl th {
+            background: var(--void-2);
+            color: var(--orchid);
+            font-family: var(--mono);
+            font-size: 0.7rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+
+        .tbl td {
+            color: var(--ash);
+        }
+
+        .tbl td b {
+            color: var(--bone);
+        }
+
+        .tbl tr:last-child td {
+            border-bottom: 0;
+        }
+
+        .tbl code {
+            color: var(--bloom);
+            font-size: 0.86em;
+        }
+
+        .lab {
+            border: 1px solid rgba(109, 91, 255, 0.3);
+            border-radius: 14px;
+            margin: 1.6rem 0;
+            overflow: hidden;
+            background: var(--void-2);
+        }
+
+        .lab__head {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.85rem 1.2rem;
+            border-bottom: 1px solid var(--line);
+            background: linear-gradient(90deg, rgba(109, 91, 255, 0.08), transparent);
+        }
+
+        .lab__head .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--iris);
+            box-shadow: 0 0 10px var(--iris);
+        }
+
+        .lab__head h4 {
+            margin: 0;
+            font-family: var(--mono);
+            font-size: 0.72rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--bloom);
+        }
+
+        .lab__body {
+            padding: 1.2rem;
+        }
+
+        .desmos {
+            width: 100%;
+            height: 430px;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid var(--line);
+            background: #0b0b0f;
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 0.9rem 1.4rem;
+            margin-bottom: 1.1rem;
+        }
+
+        .ctrl label {
+            display: block;
+            font-family: var(--mono);
+            font-size: 0.68rem;
+            letter-spacing: 0.04em;
+            color: var(--ash);
+            margin-bottom: 0.35rem;
+        }
+
+        .ctrl label b {
+            color: var(--bloom);
+        }
+
+        .ctrl input[type=range] {
+            width: 100%;
+            accent-color: var(--orchid);
+            height: 4px;
+        }
+
+        .readout {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin-top: 0.4rem;
+        }
+
+        .readout .pill {
+            font-family: var(--mono);
+            font-size: 0.72rem;
+            color: var(--bone);
+            background: var(--ink);
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            padding: 0.35rem 0.7rem;
+        }
+
+        .readout .pill b {
+            color: var(--mint);
+        }
+
+        .cwrap {
+            width: 100%;
+            height: 300px;
+            position: relative;
+        }
+
+        .cwrap canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .summary {
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            background: var(--void-2);
+            padding: 1.2rem 1.4rem;
+            margin: 1.6rem 0 1rem;
+        }
+
+        .summary .lbl {
+            font-family: var(--mono);
+            font-size: 0.66rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--mint);
+            display: block;
+            margin-bottom: 0.6rem;
+        }
+
+        .selfcheck {
+            border: 1px solid rgba(246, 177, 122, 0.3);
+            border-radius: 12px;
+            background: rgba(246, 177, 122, 0.04);
+            padding: 1.2rem 1.4rem;
+            margin: 1rem 0 0;
+        }
+
+        .selfcheck .lbl {
+            font-family: var(--mono);
+            font-size: 0.66rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--amber);
+            display: block;
+            margin-bottom: 0.6rem;
+        }
+
+        .selfcheck ol {
+            margin-bottom: 0;
+        }
+
+        .selfcheck details {
+            margin-top: 0.6rem;
+            border-top: 1px solid var(--line-soft);
+            padding-top: 0.6rem;
+        }
+
+        .selfcheck summary {
+            cursor: pointer;
+            color: var(--orchid);
+            font-size: 0.86rem;
+            font-family: var(--mono);
+        }
+
+        .selfcheck details p {
+            margin: 0.6rem 0 0;
+            font-size: 0.92rem;
+        }
+
+        .breakLine {
+            border: 0;
+            height: 1px;
+            background: var(--line-soft);
+            margin: 2.4rem 0;
+            position: relative;
+        }
+
+        .breakLine::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 30%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--orchid), transparent);
+        }
+
+        .refs {
+            border-top: 1px solid var(--line-soft);
+            padding-top: 2rem;
+        }
+
+        .foot {
+            border-top: 1px solid var(--line-soft);
+            padding: 2.2rem clamp(1.25rem, 4vw, 3.5rem);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            flex-wrap: wrap;
+            font-family: var(--mono);
+            font-size: 0.72rem;
+            color: var(--ash-dim);
+            letter-spacing: 0.03em;
+        }
+
+        .foot a {
+            color: var(--ash);
+        }
+
+        .top {
+            position: fixed;
+            right: 1.6rem;
+            bottom: 1.6rem;
+            z-index: 38;
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            background: rgba(10, 10, 12, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--line);
+            color: var(--bone);
+            cursor: pointer;
+            opacity: 0;
+            transform: translateY(18px) scale(.85);
+            pointer-events: none;
+            transition: all .45s var(--ease);
+        }
+
+        .top.show {
+            opacity: 1;
+            transform: none;
+            pointer-events: auto;
+        }
+
+        .top:hover {
+            border-color: var(--orchid);
+            color: var(--orchid);
+        }
+
+        .top svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity .8s var(--ease), transform .8s var(--ease);
+        }
+
+        .reveal.in {
+            opacity: 1;
+            transform: none;
+        }
+
+        @media (max-width: 1100px) {
+            :root {
+                --rail: 0px;
+            }
+
+            .rail {
+                width: 310px;
+                transform: translateX(-100%);
+            }
+
+            .rail.open {
+                transform: translateX(0);
+                box-shadow: 30px 0 80px rgba(0, 0, 0, 0.6);
+            }
+
+            .main {
+                margin-left: 0;
+            }
+
+            .rail-toggle {
+                display: grid;
+            }
+
+            .post-hero {
+                padding-top: 5.5rem;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+
+            *,
+            *::before,
+            *::after {
+                animation: none !important;
+                transition: none !important;
+                scroll-behavior: auto !important;
+            }
+
+            .reveal {
+                opacity: 1;
+                transform: none;
+            }
+        }
+    </style>
 </head>
 
 <body>
-    <i class="bi bi-list mobile-nav-toggle d-xl-none"></i>
+    <div class="aurora" aria-hidden="true"></div>
+    <div class="grain" aria-hidden="true"></div>
+    <div class="progress" id="progress" aria-hidden="true"></div>
 
-    <!-- ======= Header ======= -->
-    <header id="header">
-        <div class="d-flex flex-column">
+    <button class="rail-toggle" id="railToggle" aria-label="Toggle modules"><span></span></button>
+    <div class="scrim" id="scrim" aria-hidden="true"></div>
 
-            <div class="profile">
-                <img src="../assets/img/profile-img.jpg" alt="" class="img-fluid rounded-circle">
-                <center>
-                    <h4 class="text-light">@rama_eth</h4>
-                </center>
-                <div class="social-links mt-3 text-center">
-                    <a href="https://twitter.com/TavanamRama" class="twitter" target="_blank"><i
-                            class="bx bxl-twitter"></i></a>
-                    <a href="https://github.com/ramachandrareddy352" class="instagram" target="_blank"><i
-                            class="bx bxl-github"></i></a>
-                    <a href="https://www.instagram.com/rama_chandra_reddy_tavanam/" class="instagram" target="_blank"><i
-                            class="bx bxl-instagram"></i></a>
-                    <a href="https://www.linkedin.com/in/ramachandratavanam/" class="linkedin" target="_blank"><i
-                            class="bx bxl-linkedin"></i></a>
-                </div>
+    <aside class="rail" id="rail">
+        <div class="rail__top">
+            <a class="back-btn" href="../index.html#blogs">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <line x1="19" y1="12" x2="5" y2="12" />
+                    <polyline points="12 19 5 12 12 5" />
+                </svg>
+                Back to index
+            </a>
+            <div class="rail__title">
+                <div class="rail__kicker">Protocol deep dive</div>
+                <div class="rail__h">Uniswap <em>V3</em></div>
+                <div class="rail__count">9 modules · concentrated liquidity</div>
             </div>
-
-            <nav id="navbar" class="nav-menu navbar">
-                <ul>
-                    <li><a href="../index.html" class="nav-link scrollto"><i class="bx bx-home"></i>
-                            <span>Home</span></a></li>
-                    <li><a href="../index.html" class="nav-link scrollto"><i class="bx bx-user"></i>
-                            <span>About</span></a>
-                    </li>
-                    <li><a href="../index.html" class="nav-link scrollto"><i class="bx bx-file-blank"></i>
-                            <span>Resume</span></a></li>
-                    <li><a href="../index.html" class="nav-link scrollto"><i class="bx bx-share-alt"></i>
-                            <span>Portfolio</span></a></li>
-                    <li><a href="../index.html#blogs" class="nav-link scrollto active"><i
-                                class="bx bx-book-content"></i>
-                            <span>Blogs/Uniswap-V3</span></a></li>
-                    <li><a href="../index.html" class="nav-link scrollto"><i class="bx bx-server"></i>
-                            <span>Services</span></a></li>
-                    <li><a href="../index.html" class="nav-link scrollto"><i class="bx bx-envelope"></i>
-                            <span>Contact</span></a></li>
-                </ul>
-            </nav>
-            <!-- .nav-menu -->
         </div>
-    </header>
+        <div class="rail__search">
+            <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8">
+                <circle cx="11" cy="11" r="7" />
+                <line x1="21" y1="21" x2="16.5" y2="16.5" />
+            </svg>
+            <input type="text" id="railSearch" placeholder="Filter modules…" aria-label="Filter modules" />
+        </div>
+        <nav class="rail__nav" id="railNav">
+            <a href="#m0"><span class="n">00</span><span>Mental model · V2 → V3</span></a>
+            <a href="#m1"><span class="n">01</span><span>Mathematical foundations</span></a>
+            <a href="#m2"><span class="n">02</span><span>Ticks &amp; the tick bitmap</span></a>
+            <a href="#m3"><span class="n">03</span><span>Liquidity &amp; reserves</span></a>
+            <a href="#m4"><span class="n">04</span><span>Positions &amp; fee growth</span></a>
+            <a href="#m5"><span class="n">05</span><span>Swaps · the state machine</span></a>
+            <a href="#m6"><span class="n">06</span><span>Fees</span></a>
+            <a href="#m7"><span class="n">07</span><span>Pool lifecycle &amp; admin</span></a>
+            <a href="#m8"><span class="n">08</span><span>The price oracle (TWAP)</span></a>
+            <a href="#m9"><span class="n">09</span><span>Building your own DEX</span></a>
+            <a href="#refs"><span class="n">—</span><span>References</span></a>
+        </nav>
+    </aside>
 
-    <main id="main">
+    <main class="main">
+        <div class="wrap">
+            <header class="post-hero reveal">
+                <div class="eyebrow">Implementation-grade · Ethereum AMM</div>
+                <h1>Uniswap <em>V3</em> — concentrated liquidity</h1>
+                <p class="lede">Nine modules from the V2 mental model to a from-scratch DEX. Q64.96 fixed-point math,
+                    ticks and
+                    the tick bitmap, virtual reserves, the swap state machine, fee-growth accounting and the TWAP oracle
+                    — every
+                    formula derived, canonical <code>v3-core</code> code line-by-line, worked Q64.96 examples, and
+                    interactive
+                    curve graphs you can drag.</p>
+                <div class="tags"><span>Q64.96</span><span>sqrtPriceX96</span><span>Ticks &amp;
+                        bitmap</span><span>Virtual reserves</span><span>Swap state machine</span><span>Fee
+                        growth</span><span>TWAP</span></div>
+            </header>
 
-        <!-- ======= Blog data Section ======= -->
-        <div class="container" id="blog">
+            <div class="content" id="content">
+                <!-- ============================ MODULE 0 ============================ -->
+                <section id="m0" class="module">
+                    <h2><span class="mod-num">MODULE 00</span> Mental model · V2 → V3</h2>
+                    <p class="mod-sub">Why full-range liquidity wastes capital, what "concentrated" really changes, and
+                        the structural consequences: ticks, fee tiers, NFT positions.</p>
 
-            <!-- Introduction -->
-            <div>
-                <h3> >> Uniswap-V3 Overview</h3>
-                <p>Hello WEB3, learning protocols are very important it improves our knowledge towards DEFI world. In
-                    this blog we are going to see the overall view and core concepts of uniswap v3 protocol.
-                </p>
-                <p>
-                    Uniswap v3 is a decentralized exchange protocol that introduces concentrated liquidity, allowing
-                    liquidity providers (LPs) to allocate their funds within specific price ranges, enhancing capital
-                    efficiency. It features multiple fee tiers, enabling LPs to be compensated according to the risk
-                    level they take on. The protocol also introduces flexible fee structures and enhanced oracles for
-                    more accurate price tracking. Uniswap v3’s innovative design significantly reduces slippage and
-                    improves trading performance. Overall, it provides greater flexibility and control for LPs, leading
-                    to improved liquidity and trading experiences.
-                </p>
+                    <h3>The analogy</h3>
+                    <p>Imagine a market stall that must stock <em>every</em> possible price for a good — from $0.01 to
+                        infinity — even though it only ever sells around $3,000. Most of the inventory just sits there,
+                        never touched, earning nothing. That's a Uniswap V2 liquidity provider. V3 lets the stall owner
+                        stock <em>only</em> the prices that actually trade, so the same capital does far more work.</p>
 
-                <h5>>> Why we are migrating to Uniswap V2 -> V3</h5>
-                <div>
-                    <dt>Concentrated Liquidity:</dt>
-                    <dd>
-                        <i>Uniswap v3:</i> Liquidity providers (LPs) can allocate their capital within specific price
-                        ranges,
-                        resulting in more efficient use of liquidity and potentially higher returns. This allows LPs to
-                        provide liquidity only where it is most needed, increasing capital efficiency.
-                        <br>
-                        <i>Uniswap v2: </i>Liquidity is distributed uniformly along the price curve, often leading to
-                        inefficient
-                        capital use as much of the liquidity may be outside the active trading range.
-                    </dd>
+                    <h3>V2 baseline — the constant product</h3>
+                    <div class="formula">
+                        <span class="lbl">the invariant &amp; the price</span>
+                        <div data-katex>x \cdot y = k, \qquad P = \dfrac{y}{x} \quad(\text{token1 per token0})</div>
+                        <ul class="vars">
+                            <li><code>x</code> — reserve of token0 (lower address), <code>y</code> — reserve of token1
+                            </li>
+                            <li><code>k</code> — the invariant; the pool keeps <code>x·y</code> constant across swaps
+                                (before fees)</li>
+                            <li>Every V2 LP spreads liquidity across <code>(0, ∞)</code> — they cannot choose a range
+                            </li>
+                        </ul>
+                    </div>
+                    <p>The canonical enforcement, from <code>UniswapV2Pair.sol</code> (<code>swap</code>), checks the
+                        invariant on the post-swap balances (adjusted for the 0.3% fee):</p>
+                    <div class="codebox">
+                        <div class="dots"><i></i><i></i><i></i></div><span class="lang">solidity ·
+                            UniswapV2Pair.sol</span>
+                        <pre><code>uint balance0Adjusted = balance0 * 1000 - amount0In * 3;
+uint balance1Adjusted = balance1 * 1000 - amount1In * 3;
+require(
+  balance0Adjusted * balance1Adjusted >= uint(_reserve0) * _reserve1 * (1000**2),
+  "UniswapV2: K"
+);</code></pre>
+                    </div>
 
-                    <dt>Multiple Fee Tiers:</dt>
-                    <dd>
-                        <i>Uniswap v3:</i> Offers multiple fee tiers (0.05%, 0.30%, and 1.00%) so that LPs can be
-                        compensated based
-                        on the level of risk they are willing to take. This flexibility allows for better matching of
-                        fee
-                        structures to the volatility of different asset pairs.
-                        <br>
-                        <i>Uniswap v2:</i> Has a single fee tier (0.30%), which may not optimally reflect the varying
-                        risks and
-                        volatility of different trading pairs.
-                    </dd>
-                    <dt>Improved Capital Efficiency:</dt>
-                    <dd>
-                        <i>Uniswap v3:</i> Capital can be up to 4000x more efficient than v2 because liquidity is
-                        concentrated
-                        within specific price ranges. This leads to reduced slippage and better trading experiences,
-                        especially for large trades.
-                        <br>
-                        <i>Uniswap v2:</i> Capital is less efficiently used since liquidity is spread uniformly, which
-                        can result
-                        in higher slippage.
-                    </dd>
-                    <dt>Advanced Oracles:</dt>
-                    <dd>
-                        <i>Uniswap v3:</i> Introduces more accurate and flexible oracles, which are essential for many
-                        DeFi
-                        applications that rely on price feeds. The improved oracles provide better price tracking and
-                        reduce
-                        the risk of manipulation.
-                        <br>
-                        <i>Uniswap v2:</i> Oracles are less accurate and less flexible, making them less suitable for
-                        complex DeFi
-                        applications.
-                    </dd>
-                    <dt>Non-Fungible Liquidity Positions:</dt>
-                    <dd>
-                        <i>Uniswap v3:</i> Each liquidity position is represented as an NFT (non-fungible token),
-                        allowing for more
-                        complex and personalized strategies. LPs can sell or transfer their positions easily.
-                        <br>
-                        <i>Uniswap v2:</i> Liquidity positions are fungible ERC-20 tokens, which limits the flexibility
-                        and
-                        customization of liquidity provision strategies.
-                    </dd>
-                </div>
+                    <h3>The capital-efficiency problem (quantified)</h3>
+                    <p>If an LP concentrates the same capital into a price range <code>[P_a, P_b]</code> instead of
+                        <code>(0, ∞)</code>, the effective depth multiplies. The general efficiency multiplier
+                        <code>E</code> relative to full-range V2 is:
+                    </p>
+                    <div class="formula">
+                        <span class="lbl">capital efficiency multiplier</span>
+                        <div data-katex>E = \dfrac{2\sqrt{P}}{\,2\sqrt{P} - \sqrt{P_a} - \dfrac{P}{\sqrt{P_b}}\,}</div>
+                        <p style="margin:0.6rem 0 0;color:var(--ash);font-size:0.9rem">and for a symmetric range
+                            centered at the current price, the clean closed form:</p>
+                        <div data-katex>E = \dfrac{1}{1 - \left(\dfrac{P_a}{P_b}\right)^{1/4}}</div>
+                    </div>
+                    <div class="example">
+                        <span class="lbl">Worked example — stablecoin vs ETH range</span>
+                        <p>A USDC/USDT pair concentrated to <b>±1%</b> (<code>P_a/P_b = 0.99/1.01 ≈ 0.9802</code>):</p>
+                        <div data-katex>E = \dfrac{1}{1 - 0.9802^{1/4}} = \dfrac{1}{1 - 0.99503} \approx
+                            \mathbf{201\times}</div>
+                        <p>The same liquidity provides ~<b>200× the depth</b> of full-range V2. A wider ETH/USDC range
+                            from $2,500 to $3,600 (<code>P_a/P_b ≈ 0.694</code>):</p>
+                        <div data-katex>E = \dfrac{1}{1 - 0.694^{1/4}} = \dfrac{1}{1 - 0.9127} \approx
+                            \mathbf{5.45\times}</div>
+                    </div>
+
+                    <div class="lab">
+                        <div class="lab__head"><span class="dot"></span>
+                            <h4>Interactive · capital efficiency vs range width</h4>
+                        </div>
+                        <div class="lab__body">
+                            <p style="color:var(--ash);font-size:0.9rem;margin-bottom:1rem">Drag the lower/upper bounds
+                                around a center price. The Desmos graph plots the efficiency multiplier <code>E</code>
+                                as the range tightens — watch it blow up as the band narrows (the leverage of
+                                concentration). The curve uses the symmetric closed form
+                                <code>E = 1/(1−(P_a/P_b)^¼)</code>; the readout below applies it to your exact bounds.
+                                (For a price sitting <em>off-center</em> in the range, use the general form
+                                <code>E = 2√P/(2√P − √P_a − P/√P_b)</code> from the derivation above — e.g. P=3000 in
+                                [2500,3600] gives ≈5.45×.)
+                            </p>
+                            <div class="controls">
+                                <div class="ctrl"><label>center price P <b id="ePO">3000</b></label><input id="eP"
+                                        type="range" min="100" max="5000" step="50" value="3000"></div>
+                                <div class="ctrl"><label>lower P_a <b id="ePaO">2500</b></label><input id="ePa"
+                                        type="range" min="50" max="4900" step="50" value="2500"></div>
+                                <div class="ctrl"><label>upper P_b <b id="ePbO">3600</b></label><input id="ePb"
+                                        type="range" min="200" max="8000" step="50" value="3600"></div>
+                            </div>
+                            <div id="effGraph" class="desmos"></div>
+                            <div class="readout">
+                                <span class="pill">efficiency <b id="effO">—</b></span>
+                                <span class="pill">P_a/P_b <b id="ratioO">—</b></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3>The structural consequences</h3>
+                    <table class="tbl">
+                        <tr>
+                            <th>Feature</th>
+                            <th>Why concentration forces it</th>
+                        </tr>
+                        <tr>
+                            <td><b>Ticks</b></td>
+                            <td>Ranges need discrete, well-defined boundaries; ticks are the price grid (each = 1 basis
+                                point) positions snap to</td>
+                        </tr>
+                        <tr>
+                            <td><b>Multiple fee tiers</b></td>
+                            <td>Tight ranges suit stable pairs (low fee); volatile pairs need wider ranges and higher
+                                fees to compensate for impermanent loss</td>
+                        </tr>
+                        <tr>
+                            <td><b>NFT positions</b></td>
+                            <td>A position is now <code>(owner, tickLower, tickUpper)</code> — no longer fungible, so
+                                it's an ERC-721, not an ERC-20 LP token</td>
+                        </tr>
+                    </table>
+
+                    <h3>Architecture: core vs periphery</h3>
+                    <ul>
+                        <li><b>Core</b> (<code>v3-core</code>): <code>UniswapV3Factory</code>,
+                            <code>UniswapV3Pool</code> — minimal, unopinionated, immutable. Holds funds and the math;
+                            uses callbacks (<code>uniswapV3SwapCallback</code>, <code>uniswapV3MintCallback</code>) so
+                            it never trusts the caller's accounting.
+                        </li>
+                        <li><b>Periphery</b> (<code>v3-periphery</code>): <code>NonfungiblePositionManager</code> (wraps
+                            positions as NFTs), <code>SwapRouter</code> (multi-hop, slippage, deadlines). Replaceable,
+                            user-friendly, where opinions live.</li>
+                    </ul>
+
+                    <div class="summary">
+                        <span class="lbl">Summary</span>
+                        <ul>
+                            <li>V2 spreads every LP across <code>(0, ∞)</code>, so most capital sits at untraded prices
+                                earning nothing.</li>
+                            <li>Concentrating into <code>[P_a, P_b]</code> multiplies effective depth — ~200× for a ±1%
+                                stable range — at the cost of LP'ing only while price is in range.</li>
+                            <li>Concentration forces ticks (range boundaries), fee tiers, and non-fungible NFT
+                                positions; core stays minimal/immutable, periphery is replaceable.</li>
+                        </ul>
+                    </div>
+                    <div class="selfcheck">
+                        <span class="lbl">Self-check</span>
+                        <ol>
+                            <li>In V2, why does liquidity at a price the pair never reaches earn zero fees?</li>
+                            <li>What's the tradeoff an LP accepts to get the ~200× capital efficiency?</li>
+                            <li>Why is the swap-invariant check in <em>core</em> and slippage/deadline logic in
+                                <em>periphery</em>?
+                            </li>
+                        </ol>
+                        <details>
+                            <summary>Show answers</summary>
+                            <p>1) Fees accrue only on swaps that move through a price; liquidity parked at never-traded
+                                prices is never the marginal liquidity, so no swap ever touches it. 2) The position only
+                                earns and only stays "active" while price is inside <code>[P_a, P_b]</code>; outside the
+                                range it earns nothing and becomes 100% one token. 3) Core must be minimal and immutable
+                                to be trustless and gas-cheap (it just enforces the math via callbacks); UX concerns
+                                like slippage and deadlines vary and belong in replaceable periphery.</p>
+                        </details>
+                    </div>
+                </section>
+                <hr class="breakLine">
+
+                <!-- ============================ MODULE 1 ============================ -->
+                <section id="m1" class="module">
+                    <h2><span class="mod-num">MODULE 01</span> Mathematical foundations</h2>
+                    <p class="mod-sub">Q64.96 fixed-point, why store √P, square-and-multiply exponentiation, and the
+                        local constant product.</p>
+
+                    <h3>1.1 · Q number format</h3>
+                    <p>The EVM has no floating point. V3 uses <b>fixed-point</b>: a real number times a power of two,
+                        stored as an integer. <code>Qm.n</code> means <code>m</code> integer bits and <code>n</code>
+                        fractional bits. <code>Q64.96</code> = 64 integer + 96 fractional = 160 bits total (fits a
+                        <code>uint160</code>); <code>Q128.128</code> = 256 bits.
+                    </p>
+                    <div class="formula">
+                        <span class="lbl">to/from X96</span>
+                        <div data-katex>x_{\text{X96}} = \big\lfloor x \cdot 2^{96} \big\rfloor, \qquad x =
+                            \dfrac{x_{\text{X96}}}{2^{96}}</div>
+                    </div>
+                    <div class="example">
+                        <span class="lbl">Worked example — representing 3000 and √3000</span>
+                        <div data-katex>3000_{\text{X96}} = 3000\cdot 2^{96} \approx 2.376\times10^{32}</div>
+                        <div data-katex>\sqrt{3000} \approx 54.772,\quad \sqrt{3000}_{\text{X96}} = 54.772\cdot 2^{96}
+                            \approx 4.339\times10^{30}</div>
+                        <p>And the per-tick base <code>1.0001</code>: <code>1.0001 · 2^96 ≈ 7.923×10^28</code>.</p>
+                    </div>
+
+                    <h3>1.2 · Why store the square root of price</h3>
+                    <p>V3 stores <b><code>sqrtPriceX96 = √P · 2^96</code></b>, not <code>P</code>. Reason: swap math
+                        relates amounts to <em>differences in √P</em> (Module 3), so storing <code>√P</code> means the
+                        hot path never computes a square root on-chain — only multiply/divide. Square roots in the EVM
+                        are expensive; differences of a stored <code>√P</code> are cheap.</p>
+                    <div class="formula">
+                        <span class="lbl">price ↔ sqrtPriceX96 (decimal-adjusted)</span>
+                        <div data-katex>P = \left(\dfrac{\text{sqrtPriceX96}}{2^{96}}\right)^{2}, \qquad
+                            P_{\text{human}} = P \cdot 10^{\,d_0 - d_1}</div>
+                        <ul class="vars">
+                            <li><code>d_0, d_1</code> — decimals of token0, token1. For ETH(18)/USDC(6) as token1/token0
+                                the raw <code>P</code> is in 1e-12 units, so multiply by <code>10^{12}</code> to read
+                                USDC-per-ETH.</li>
+                        </ul>
+                    </div>
+                    <div class="example">
+                        <span class="lbl">Worked example — recover USDC-per-ETH</span>
+                        <p>Suppose token0 = USDC (6), token1 = WETH (18), and <code>sqrtPriceX96</code> encodes raw
+                            <code>P = token1/token0</code>. If raw <code>P = 3.33×10^{-16}</code> WETH per USDC-unit,
+                            the human ETH price is its inverse with decimal shift:
+                            <code>1 / (P · 10^{6−18}) = 1/(3.33×10^{-16}·10^{-12})</code> → ≈ <b>$3,000 per ETH</b>. The
+                            decimal shift is the step re-implementations most often get wrong — always track which token
+                            is token0.
+                        </p>
+                    </div>
+
+                    <h3>1.3 · Square-and-multiply</h3>
+                    <p>Computing <code>1.0001^tick</code> for <code>tick</code> up to ~887,272 by repeated
+                        multiplication would cost hundreds of thousands of multiplications. Square-and-multiply does it
+                        in <code>O(log tick)</code>: write the exponent in binary, square the base each bit, and
+                        multiply the running product whenever a bit is set.</p>
+                    <div class="example">
+                        <span class="lbl">Worked example — base^13, 13 = 1101₂</span>
+                        <div class="codebox">
+                            <div class="dots"><i></i><i></i><i></i></div><span class="lang">trace</span>
+                            <pre><code>13 = 1101 in binary  (bits: 8 + 4 + 1)
+square chain:  b^1 → b^2 → b^4 → b^8
+bit 0 (1): set  → multiply in b^1     result = b^1
+bit 1 (0): skip
+bit 2 (1): set  → multiply in b^4     result = b^1 · b^4 = b^5
+bit 3 (1): set  → multiply in b^8     result = b^5 · b^8 = b^13   ✓
+4 squarings + 3 multiplies instead of 12 multiplies</code></pre>
+                        </div>
+                    </div>
+                    <p><code>TickMath.getSqrtRatioAtTick</code> (Module 2.2) is a <em>hard-coded</em>
+                        square-and-multiply: each precomputed hex constant is <code>1.0001^(−2^i)</code> in Q128.128,
+                        multiplied in only when the matching bit of <code>tick</code> is set.</p>
+
+                    <h3>1.4 · The constant product, locally</h3>
+                    <p>V3 still uses <code>x·y = k</code>, but only <em>within</em> a tick range and with
+                        <em>virtual</em> reserves. From <code>L = √(x·y)</code> and <code>√P = √(y/x)</code> we derive
+                        the two relations the whole protocol leans on:
+                    </p>
+                    <div class="formula">
+                        <span class="lbl">the L-reserve-price identities</span>
+                        <div data-katex>x = \dfrac{L}{\sqrt{P}}, \qquad y = L\cdot\sqrt{P}</div>
+                        <p style="margin:0.6rem 0 0;color:var(--ash);font-size:0.9rem">Derivation: from
+                            <code>L²=xy</code> and <code>P=y/x</code>, substitute <code>y=Px</code> →
+                            <code>L²=x²P</code> → <code>x=L/√P</code>; then <code>y=Px=PL/√P=L√P</code>. ∎
+                        </p>
+                    </div>
+                    <p><code>L</code> is the position's <em>liquidity</em> — the depth of the curve. It stays constant
+                        during any swap that does <em>not</em> cross a tick; only <code>√P</code>, <code>x</code> and
+                        <code>y</code> move.
+                    </p>
+
+                    <div class="summary">
+                        <span class="lbl">Summary</span>
+                        <ul>
+                            <li>Q64.96 stores reals as integers (×2^96); <code>sqrtPriceX96</code> packs <code>√P</code>
+                                into a <code>uint160</code>.</li>
+                            <li>Storing <code>√P</code> keeps the swap hot-path to multiply/divide; the price↔sqrtPrice
+                                conversion must account for token decimals.</li>
+                            <li><code>x = L/√P</code>, <code>y = L√P</code> are the core identities; <code>L</code> is
+                                constant within a tick range, and <code>1.0001^tick</code> is computed by hard-coded
+                                square-and-multiply.</li>
+                        </ul>
+                    </div>
+                    <div class="selfcheck">
+                        <span class="lbl">Self-check</span>
+                        <ol>
+                            <li>How many bits does <code>Q64.96</code> use, and what type holds it?</li>
+                            <li>Why does storing <code>√P</code> instead of <code>P</code> save gas at swap time?</li>
+                            <li>Derive <code>y = L√P</code> from <code>L² = xy</code> and <code>P = y/x</code>.</li>
+                        </ol>
+                        <details>
+                            <summary>Show answers</summary>
+                            <p>1) 64 + 96 = 160 bits, held in a <code>uint160</code>. 2) Swap amounts depend on
+                                differences of <code>√P</code>; with <code>√P</code> stored, the path never computes an
+                                on-chain square root (expensive) — only multiply/divide. 3)
+                                <code>P = y/x → y = Px</code>; <code>L² = xy = x·Px = x²P → x = L/√P</code>; then
+                                <code>y = Px = P·L/√P = L√P</code>. ∎
+                            </p>
+                        </details>
+                    </div>
+                </section>
+                <hr class="breakLine">
+
+                <!-- ============================ MODULE 2 ============================ -->
+                <section id="m2" class="module">
+                    <h2><span class="mod-num">MODULE 02</span> Ticks &amp; the tick bitmap</h2>
+                    <p class="mod-sub">tick↔price, the hard-coded TickMath, tick spacing, the ±887272 limits, and the
+                        bitmap that makes swaps cheap.</p>
+
+                    <h3>2.1 · What a tick is</h3>
+                    <div class="formula">
+                        <span class="lbl">the tick grid</span>
+                        <div data-katex>P(i) = 1.0001^{\,i}, \qquad i = \dfrac{\ln P}{\ln 1.0001}</div>
+                    </div>
+                    <p>Base <code>1.0001</code> means each tick is one <b>basis point</b> (0.01%) of price change. Ticks
+                        are integers; "the current tick" is the greatest <code>i</code> whose price is ≤ the current
+                        price.</p>
+
+                    <h3>2.2 · TickMath (the real code)</h3>
+                    <p><code>getSqrtRatioAtTick(int24 tick)</code> is square-and-multiply over the bits of
+                        <code>|tick|</code>. Each constant is <code>1.0001^(−2^k)</code> in Q128.128; a constant is
+                        multiplied in only if bit <code>k</code> is set, then the result is inverted if
+                        <code>tick &gt; 0</code> and shifted to Q64.96:
+                    </p>
+                    <div class="codebox">
+                        <div class="dots"><i></i><i></i><i></i></div><span class="lang">solidity · TickMath.sol
+                            (excerpt)</span>
+                        <pre><code>uint256 absTick = tick &lt; 0 ? uint256(-int256(tick)) : uint256(int256(tick));
+uint256 ratio = absTick &amp; 0x1 != 0
+    ? 0xfffcb933bd6fad37aa2d162d1a594001       // 1.0001^(-1) in Q128.128
+    : 0x100000000000000000000000000000000;     // 1.0 in Q128.128
+if (absTick &amp; 0x2  != 0) ratio = (ratio * 0xfff97272373d413259a46990580e213a) &gt;&gt; 128;
+if (absTick &amp; 0x4  != 0) ratio = (ratio * 0xfff2e50f5f656932ef12357cf3c7fdcc) &gt;&gt; 128;
+// … one line per bit, up to 0x80000 …
+if (tick &gt; 0) ratio = type(uint256).max / ratio;   // invert for positive ticks
+// round up, then shift Q128.128 → Q64.96
+sqrtPriceX96 = uint160((ratio &gt;&gt; 32) + (ratio % (1 &lt;&lt; 32) == 0 ? 0 : 1));</code></pre>
+                    </div>
+                    <p><code>getTickAtSqrtRatio</code> goes the other way: a most-significant-bit log computation
+                        (binary search) returning the greatest tick with <code>sqrtRatio ≤ input</code> — the off-by-one
+                        direction matters for the bitmap.</p>
+
+                    <h3>2.3–2.5 · Spacing, fee tiers, limits</h3>
+                    <table class="tbl">
+                        <tr>
+                            <th>Fee</th>
+                            <th>tickSpacing</th>
+                            <th>Use</th>
+                        </tr>
+                        <tr>
+                            <td>0.05%</td>
+                            <td>10</td>
+                            <td>Stable pairs (tight, fine-grained)</td>
+                        </tr>
+                        <tr>
+                            <td>0.30%</td>
+                            <td>60</td>
+                            <td>Standard pairs</td>
+                        </tr>
+                        <tr>
+                            <td>1.00%</td>
+                            <td>200</td>
+                            <td>Volatile/exotic (coarse, cheaper crossing)</td>
+                        </tr>
+                    </table>
+                    <p>Position boundaries must be divisible by <code>tickSpacing</code>. Wider spacing = fewer
+                        initializable ticks = cheaper swaps (fewer crossings) but coarser liquidity. The limits come
+                        from fitting <code>√P</code> into a <code>uint160</code>:</p>
+                    <div class="formula">
+                        <div data-katex>\text{MIN\_TICK} = -887272, \quad \text{MAX\_TICK} = 887272, \quad
+                            1.0001^{887272} \approx 2^{128}</div>
+                    </div>
+                    <p>So the price range is ~<code>2^{-128}</code> to <code>2^{128}</code>; swaps clamp against
+                        <code>MIN_SQRT_RATIO</code> / <code>MAX_SQRT_RATIO</code>.
+                    </p>
+
+                    <h3>2.6 · The tick bitmap (in depth)</h3>
+                    <p>The pool tracks which ticks are <em>initialized</em> (referenced by some position) in a
+                        <code>mapping(int16 =&gt; uint256)</code> — one 256-bit word per 256 (compressed) ticks. A
+                        tick's place decomposes into a word position and a bit position:
+                    </p>
+                    <div class="formula">
+                        <span class="lbl">wordPos / bitPos decomposition</span>
+                        <div data-katex>\text{compressed} = \dfrac{\text{tick}}{\text{tickSpacing}}, \quad
+                            \text{wordPos} = \text{compressed} \gg 8, \quad \text{bitPos} = \text{compressed}
+                            \mathbin{\&} 255</div>
+                    </div>
+                    <div class="codebox">
+                        <div class="dots"><i></i><i></i><i></i></div><span class="lang">solidity · TickBitmap.sol</span>
+                        <pre><code>function flipTick(mapping(int16 =&gt; uint256) storage self, int24 tick, int24 tickSpacing) internal {
+    int24 compressed = tick / tickSpacing;
+    (int16 wordPos, uint8 bitPos) = position(compressed);
+    uint256 mask = 1 &lt;&lt; bitPos;
+    self[wordPos] ^= mask;                       // toggle the bit
+}
+
+function nextInitializedTickWithinOneWord(
+    mapping(int16 =&gt; uint256) storage self, int24 tick, int24 tickSpacing, bool lte
+) internal view returns (int24 next, bool initialized) {
+    int24 compressed = tick / tickSpacing;
+    if (lte) {                                    // searching left (price down)
+        (int16 wordPos, uint8 bitPos) = position(compressed);
+        uint256 mask = (1 &lt;&lt; bitPos) - 1 + (1 &lt;&lt; bitPos);   // all bits ≤ current
+        uint256 masked = self[wordPos] &amp; mask;
+        initialized = masked != 0;
+        next = initialized
+            ? (compressed - int24(bitPos - BitMath.mostSignificantBit(masked))) * tickSpacing
+            : (compressed - int24(bitPos)) * tickSpacing;
+    } else { /* search right (price up): least-significant-bit of the upper mask */ }
+}</code></pre>
+                    </div>
+                    <p>The swap loop calls <code>nextInitializedTickWithinOneWord</code> each step to jump straight to
+                        the next tick that actually has liquidity, instead of scanning all 887k ticks — the single
+                        biggest gas win in the swap path.</p>
+
+                    <div class="summary">
+                        <span class="lbl">Summary</span>
+                        <ul>
+                            <li><code>P(i) = 1.0001^i</code> (each tick = 1 bp); <code>TickMath</code> is hard-coded
+                                square-and-multiply for tick→√P and an MSB-log for √P→tick.</li>
+                            <li>Fee tier fixes <code>tickSpacing</code>; boundaries must be divisible by it; limits
+                                ±887272 come from fitting <code>√P</code> in a <code>uint160</code>.</li>
+                            <li>The bitmap stores initialized ticks 256-per-word;
+                                <code>nextInitializedTickWithinOneWord</code> lets swaps skip empty ticks.
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="selfcheck">
+                        <span class="lbl">Self-check</span>
+                        <ol>
+                            <li>What price change does one tick represent, and why base 1.0001?</li>
+                            <li>For <code>tickSpacing = 60</code>, is tick 75 a legal position boundary? What about 120?
+                            </li>
+                            <li>Why does the bitmap make swaps dramatically cheaper than scanning ticks?</li>
+                        </ol>
+                        <details>
+                            <summary>Show answers</summary>
+                            <p>1) 0.01% (one basis point); base 1.0001 makes each integer tick exactly 1 bp so the grid
+                                is uniform in log-price. 2) 75 is illegal (75/60 not integer); 120 is legal (120/60 =
+                                2). 3) It packs 256 ticks per word, so one <code>SLOAD</code> + bit-mask finds the next
+                                initialized tick, versus iterating potentially thousands of empty ticks.</p>
+                        </details>
+                    </div>
+                </section>
+                <hr class="breakLine">
+
+                <!-- ============================ MODULE 3 ============================ -->
+                <section id="m3" class="module">
+                    <h2><span class="mod-num">MODULE 03</span> Liquidity &amp; reserves</h2>
+                    <p class="mod-sub">Virtual vs real reserves, the three price regions, and the amount-delta formulas
+                        with their rounding directions.</p>
+
+                    <h3>3.1–3.2 · L, virtual vs real reserves</h3>
+                    <p>A concentrated position on <code>[P_a, P_b]</code> behaves like a much larger full-range V2
+                        position <em>while price is in range</em>. The trick: add offset terms so the local curve looks
+                        like a shifted constant product. Virtual reserves are what the curve "pretends" exist; real
+                        reserves are what's actually deposited.</p>
+                    <div class="formula">
+                        <span class="lbl">real reserves from virtual (in-range)</span>
+                        <div data-katex>x_{\text{real}} = L\left(\dfrac{1}{\sqrt{P}} - \dfrac{1}{\sqrt{P_b}}\right),
+                            \qquad y_{\text{real}} = L\left(\sqrt{P} - \sqrt{P_a}\right)</div>
+                    </div>
+                    <p>At the boundaries one real reserve hits zero: at <code>P = P_b</code>, <code>x_real = 0</code>
+                        (all token1); at <code>P = P_a</code>, <code>y_real = 0</code> (all token0).</p>
+
+                    <h3>3.3 · The three regions</h3>
+                    <table class="tbl">
+                        <tr>
+                            <th>Price vs range</th>
+                            <th>Composition</th>
+                            <th>Amounts</th>
+                        </tr>
+                        <tr>
+                            <td><code>P ≤ P_a</code> (below)</td>
+                            <td>100% token0</td>
+                            <td><code>x = L(1/√P_a − 1/√P_b)</code>, <code>y = 0</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>P_a &lt; P &lt; P_b</code> (in range)</td>
+                            <td>mix</td>
+                            <td><code>x = L(1/√P − 1/√P_b)</code>, <code>y = L(√P − √P_a)</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>P ≥ P_b</code> (above)</td>
+                            <td>100% token1</td>
+                            <td><code>x = 0</code>, <code>y = L(√P_b − √P_a)</code></td>
+                        </tr>
+                    </table>
+
+                    <h3>3.4 · Amount deltas (the code)</h3>
+                    <p><code>SqrtPriceMath.getAmount0Delta</code> / <code>getAmount1Delta</code> compute how much token
+                        moves between two <code>√P</code> for a given <code>L</code>. Side by side — note token0 has the
+                        product of both √P in the denominator, token1 is just the difference:</p>
+                    <div class="formula">
+                        <span class="lbl">amount0 vs amount1 — why they differ</span>
+                        <div data-katex>\Delta x = L\cdot\dfrac{\sqrt{P_b} - \sqrt{P_a}}{\sqrt{P_a}\,\sqrt{P_b}}, \qquad
+                            \Delta y = L\cdot\big(\sqrt{P_b} - \sqrt{P_a}\big)</div>
+                    </div>
+                    <p>Derivation: <code>Δx = L/√P_a − L/√P_b = L(√P_b − √P_a)/(√P_a√P_b)</code> from
+                        <code>x = L/√P</code>; <code>Δy = L√P_b − L√P_a</code> from <code>y = L√P</code>. They differ
+                        because token0 lives in the <code>1/√P</code> world and token1 in the <code>√P</code> world.
+                    </p>
+                    <div class="note warn">
+                        <span class="tag">Rounding — where re-implementations leak</span>
+                        <p><code>getAmount0Delta</code> / <code>getAmount1Delta</code> take a <code>roundUp</code> flag.
+                            The protocol rounds <b>up</b> when computing what a user must <em>pay in</em> (so the pool
+                            never receives too little) and <b>down</b> when computing what a user <em>receives out</em>
+                            (so the pool never pays too much). Get this backwards and the pool slowly bleeds value to
+                            traders.</p>
+                    </div>
+                    <div class="example">
+                        <span class="lbl">Worked example — amount0 between two ticks</span>
+                        <p><code>L = 2,000,000</code>, range tick 0 → tick 60 (<code>√P_a = 1.0</code>,
+                            <code>√P_b ≈ 1.00299551</code> in Q64.96):
+                        </p>
+                        <div data-katex>\Delta x = 2{,}000{,}000\cdot\dfrac{1.00299551 - 1.0}{1.0\cdot 1.00299551}
+                            \approx 5{,}971 \text{ token0 units}</div>
+                        <div data-katex>\Delta y = 2{,}000{,}000\cdot(1.00299551 - 1.0) \approx 5{,}991 \text{ token1
+                            units}</div>
+                    </div>
+
+                    <div class="lab">
+                        <div class="lab__head"><span class="dot"></span>
+                            <h4>Interactive · position reserves across the three regions</h4>
+                        </div>
+                        <div class="lab__body">
+                            <p style="color:var(--ash);font-size:0.9rem;margin-bottom:1rem">Drag the current price
+                                across a fixed range. The Desmos graph plots token0 (orchid) and token1 (mint) reserves
+                                vs price — watch token0→0 at the upper bound and token1→0 at the lower bound, with the
+                                mix in between.</p>
+                            <div class="controls">
+                                <div class="ctrl"><label>current price P <b id="rPO">3000</b></label><input id="rP"
+                                        type="range" min="1000" max="5000" step="25" value="3000"></div>
+                                <div class="ctrl"><label>range lower P_a <b id="rPaO">2500</b></label><input id="rPa"
+                                        type="range" min="1000" max="4000" step="25" value="2500"></div>
+                                <div class="ctrl"><label>range upper P_b <b id="rPbO">3600</b></label><input id="rPb"
+                                        type="range" min="1100" max="5000" step="25" value="3600"></div>
+                                <div class="ctrl"><label>liquidity L <b id="rLO">1000</b></label><input id="rL"
+                                        type="range" min="100" max="5000" step="100" value="1000"></div>
+                            </div>
+                            <div id="reservesGraph" class="desmos"></div>
+                            <div class="readout">
+                                <span class="pill">token0 <b id="x0O">—</b></span>
+                                <span class="pill">token1 <b id="y0O">—</b></span>
+                                <span class="pill">region <b id="regO">—</b></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="summary">
+                        <span class="lbl">Summary</span>
+                        <ul>
+                            <li>Virtual reserves make a concentrated position behave like a big V2 position in range;
+                                real reserves are the deposited amounts, hitting zero at the bounds.</li>
+                            <li>Three regions: all token0 below the range, a mix inside, all token1 above.</li>
+                            <li><code>Δx</code> carries <code>1/(√P_a√P_b)</code>, <code>Δy</code> is the bare √P
+                                difference; round up on pay-in, down on pay-out.</li>
+                        </ul>
+                    </div>
+                    <div class="selfcheck">
+                        <span class="lbl">Self-check</span>
+                        <ol>
+                            <li>At <code>P = P_b</code>, which real reserve is zero and which token does the position
+                                fully hold?</li>
+                            <li>Why does <code>Δx</code> have <code>√P_a√P_b</code> in the denominator but
+                                <code>Δy</code> doesn't?
+                            </li>
+                            <li>Which rounding direction applies to the amount a trader must pay in, and why?</li>
+                        </ol>
+                        <details>
+                            <summary>Show answers</summary>
+                            <p>1) <code>x_real = 0</code>; the position is 100% token1 (it sold all its token0 as price
+                                rose to the top). 2) token0 reserves are <code>L/√P</code>, so a difference gives
+                                <code>L(√P_b−√P_a)/(√P_a√P_b)</code>; token1 is <code>L√P</code>, whose difference is
+                                just <code>L(√P_b−√P_a)</code>. 3) Round <em>up</em>, so the pool never collects less
+                                than the exact amount owed (protects LPs/the invariant).
+                            </p>
+                        </details>
+                    </div>
+                </section>
+                <hr class="breakLine">
+
+                <!-- ============================ MODULE 4 ============================ -->
+                <section id="m4" class="module">
+                    <h2><span class="mod-num">MODULE 04</span> Positions &amp; fee growth</h2>
+                    <p class="mod-sub">The Position struct, mint/burn/collect's two-step design, and the feeGrowthInside
+                        accounting that isolates a range's fees.</p>
+
+                    <h3>4.1 · The Position struct</h3>
+                    <div class="codebox">
+                        <div class="dots"><i></i><i></i><i></i></div><span class="lang">solidity · Position.sol</span>
+                        <pre><code>struct Info {
+    uint128 liquidity;                 // L contributed by this position
+    uint256 feeGrowthInside0LastX128;  // snapshot of in-range fee growth, token0
+    uint256 feeGrowthInside1LastX128;  // snapshot, token1
+    uint128 tokensOwed0;               // fees credited, not yet collected
+    uint128 tokensOwed1;
+}</code></pre>
+                    </div>
+                    <p>Keyed by <code>keccak256(owner, tickLower, tickUpper)</code> — that's why positions are
+                        non-fungible: two LPs with different ranges hold fundamentally different things, so the
+                        periphery wraps each as an ERC-721.</p>
+
+                    <h3>4.2 · mint / burn / collect (two-step)</h3>
+                    <p><code>mint</code> updates both ticks via <code>Tick.update</code> (flipping the bitmap if a tick
+                        becomes initialized), writes the position, then calls <code>uniswapV3MintCallback</code> so the
+                        caller pays — the pool verifies tokens arrived rather than trusting the caller.
+                        <code>burn</code> does <em>not</em> transfer tokens; it reduces liquidity and credits
+                        <code>tokensOwed</code>. <code>collect</code> is the actual withdrawal. The split lets an LP
+                        burn and re-mint without forced transfers, and batches fee collection.
+                    </p>
+
+                    <h3>4.3 · Fee growth accounting (the clever part)</h3>
+                    <p><code>feeGrowthGlobal0X128</code> is a monotonically increasing accumulator: total fees per unit
+                        of liquidity, ever. To find fees earned <em>inside</em> a range, subtract the "outside" growth
+                        of the two boundary ticks:</p>
+                    <div class="formula">
+                        <span class="lbl">getFeeGrowthInside</span>
+                        <div data-katex>f_{\text{inside}} = f_{\text{global}} - f_{\text{below}}(\text{tickLower}) -
+                            f_{\text{above}}(\text{tickUpper})</div>
+                        <p style="margin:0.6rem 0 0;color:var(--ash);font-size:0.9rem">where
+                            <code>f_below</code>/<code>f_above</code> are derived from each tick's
+                            <code>feeGrowthOutside</code>, chosen by where the current tick sits relative to the
+                            boundary.
+                        </p>
+                    </div>
+                    <div class="formula">
+                        <span class="lbl">fees owed since last touch</span>
+                        <div data-katex>\text{tokensOwed} = L \cdot \big(f_{\text{inside,now}} -
+                            f_{\text{inside,last}}\big)</div>
+                    </div>
+                    <p>The subtraction isolates exactly the growth that happened while price was inside the range — the
+                        mechanism behind every fee question in Module 6.</p>
+
+                    <div class="summary">
+                        <span class="lbl">Summary</span>
+                        <ul>
+                            <li>A position is <code>(owner, tickLower, tickUpper)</code> with liquidity, two fee-growth
+                                snapshots, and owed balances — non-fungible, hence NFTs.</li>
+                            <li>mint pays via callback; burn only credits <code>tokensOwed</code>; collect withdraws — a
+                                deliberate two-step.</li>
+                            <li><code>feeGrowthInside = global − below − above</code>; owed =
+                                <code>L · Δ feeGrowthInside</code>.
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="selfcheck">
+                        <span class="lbl">Self-check</span>
+                        <ol>
+                            <li>Why doesn't <code>burn</code> send tokens, and what does?</li>
+                            <li>How does subtracting two ticks' outside-growth isolate in-range fees?</li>
+                            <li>Why are V3 positions ERC-721 rather than ERC-20?</li>
+                        </ol>
+                        <details>
+                            <summary>Show answers</summary>
+                            <p>1) <code>burn</code> credits <code>tokensOwed</code>; <code>collect</code> performs the
+                                transfer — separating accounting from withdrawal. 2) The global accumulator minus
+                                growth-below-lower minus growth-above-upper leaves only growth that occurred while the
+                                price was between the bounds. 3) Positions differ by range
+                                <code>(tickLower, tickUpper)</code>, so they aren't interchangeable — non-fungible.
+                            </p>
+                        </details>
+                    </div>
+                </section>
+                <hr class="breakLine">
+
+                <!-- ============================ MODULE 5 ============================ -->
+                <section id="m5" class="module">
+                    <h2><span class="mod-num">MODULE 05</span> Swaps · the state machine</h2>
+                    <p class="mod-sub">The swap loop, computeSwapStep, crossing a tick, the edge-of-tick case, and
+                        exact-in vs exact-out.</p>
+
+                    <h3>5.1 · Entry &amp; state</h3>
+                    <p><code>swap(recipient, zeroForOne, amountSpecified, sqrtPriceLimitX96, data)</code>.
+                        <code>zeroForOne</code> = selling token0 for token1 (price falls).
+                        <code>amountSpecified &gt; 0</code> = exact input, <code>&lt; 0</code> = exact output.
+                        <code>sqrtPriceLimitX96</code> caps how far price may move. The loop carries a
+                        <code>SwapState</code> (remaining amount, current <code>√P</code>, current tick, accumulated
+                        fees, active <code>liquidity</code>).
+                    </p>
+
+                    <h3>5.2–5.3 · The loop &amp; computeSwapStep</h3>
+                    <div class="codebox">
+                        <div class="dots"><i></i><i></i><i></i></div><span class="lang">solidity · UniswapV3Pool.swap
+                            (shape)</span>
+                        <pre><code>while (state.amountSpecifiedRemaining != 0 &amp;&amp; state.sqrtPriceX96 != sqrtPriceLimitX96) {
+    StepComputations memory step;
+    step.sqrtPriceStartX96 = state.sqrtPriceX96;
+    // 1) find the next initialized tick within one word (bitmap)
+    (step.tickNext, step.initialized) =
+        tickBitmap.nextInitializedTickWithinOneWord(state.tick, tickSpacing, zeroForOne);
+    step.sqrtPriceNextX96 = TickMath.getSqrtRatioAtTick(step.tickNext);
+    // 2) swap within this tick range up to the next tick or the limit
+    (state.sqrtPriceX96, step.amountIn, step.amountOut, step.feeAmount) =
+        SwapMath.computeSwapStep(
+            state.sqrtPriceX96,
+            (zeroForOne ? step.sqrtPriceNextX96 &lt; sqrtPriceLimitX96 : step.sqrtPriceNextX96 &gt; sqrtPriceLimitX96)
+                ? sqrtPriceLimitX96 : step.sqrtPriceNextX96,
+            state.liquidity, state.amountSpecifiedRemaining, fee);
+    // 3) update remaining amounts &amp; global fee growth …
+    // 4) if we reached the next tick exactly, cross it
+    if (state.sqrtPriceX96 == step.sqrtPriceNextX96 &amp;&amp; step.initialized) {
+        int128 liquidityNet = ticks.cross(step.tickNext, feeGrowthGlobal0X128, feeGrowthGlobal1X128);
+        if (zeroForOne) liquidityNet = -liquidityNet;
+        state.liquidity = LiquidityMath.addDelta(state.liquidity, liquidityNet);
+        state.tick = zeroForOne ? step.tickNext - 1 : step.tickNext;
+    }
+}</code></pre>
+                    </div>
+                    <p><code>computeSwapStep</code> moves <code>√P</code> as far as the remaining amount allows, bounded
+                        by the next tick or the limit. The fee is taken from the input. Exact-in consumes input and
+                        produces output; exact-out targets an output and back-computes input — same code path, routed by
+                        the sign of <code>amountSpecified</code>.</p>
+
+                    <h3>5.4 · Crossing a tick (liquidityNet vs liquidityGross)</h3>
+                    <p>Each tick stores <code>liquidityNet</code> — the signed change to active liquidity when crossed
+                        (a position adds <code>+L</code> at its lower tick, <code>−L</code> at its upper).
+                        <code>Tick.cross</code> applies it and flips <code>feeGrowthOutside</code>.
+                        <code>liquidityGross</code> tracks total referencing liquidity for bookkeeping (when it hits
+                        zero the tick uninitializes). When crossing left (<code>zeroForOne</code>), the sign is negated.
+                    </p>
+
+                    <h3>5.5 · The edge-of-tick case (your specific question)</h3>
+                    <p>As a swap pushes price to a range boundary, one real reserve of in-range positions goes to zero.
+                        The crucial distinction: <b>price (√P) moves continuously across the boundary, but active
+                            liquidity L jumps discretely</b> at the crossing.</p>
+                    <div class="example">
+                        <span class="lbl">Worked trace — token0 → token1 hitting P_upper, then continuing</span>
+                        <div class="codebox">
+                            <div class="dots"><i></i><i></i><i></i></div><span class="lang">trace</span>
+                            <pre><code>single position L=1,000,000 on [tickLo, tickHi]; price rising (oneForZero)
+... swap consumes token1 in, pays token0 out, √P climbs toward √P(tickHi)
+at √P = √P(tickHi):  x_real = L(1/√P_hi − 1/√P_hi) = 0   → position now 100% token1
+computeSwapStep returns sqrtPriceX96 == sqrtPriceNextX96  → reached the tick exactly
+Tick.cross(tickHi):  liquidityNet here is −L (it's this position's UPPER bound)
+state.liquidity += (−L)  → active L drops to whatever the NEXT range holds (maybe 0)
+√P keeps moving continuously into the next range; L is now the next range's depth</code></pre>
+                        </div>
+                        <p>The symmetric case (token1 → token0, price falling) hits <code>P_lower</code> where
+                            <code>y_real → 0</code> (position becomes 100% token0), crosses <code>tickLo</code> whose
+                            <code>liquidityNet</code> is <code>+L</code> as a lower bound — but negated on a downward
+                            cross, so active L still steps to the adjacent range's value.
+                        </p>
+                    </div>
+
+                    <div class="lab">
+                        <div class="lab__head"><span class="dot"></span>
+                            <h4>Interactive · active liquidity steps as price crosses ticks</h4>
+                        </div>
+                        <div class="lab__body">
+                            <p style="color:var(--ash);font-size:0.9rem;margin-bottom:1rem">Three overlapping positions
+                                on different ranges. Drag the price; the canvas shows each position's range (bars) and
+                                the resulting <em>active</em> liquidity (the stepped orchid line) — continuous price,
+                                discrete L jumps at every tick boundary.</p>
+                            <div class="controls">
+                                <div class="ctrl"><label>current tick <b id="ctO">0</b></label><input id="ct"
+                                        type="range" min="-600" max="600" step="10" value="0"></div>
+                            </div>
+                            <div class="cwrap" style="height:320px"><canvas id="liqCanvas"></canvas></div>
+                            <div class="readout">
+                                <span class="pill">active L <b id="alO">—</b></span>
+                                <span class="pill">positions in range <b id="pirO">—</b></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3>5.6 · Exact-in vs exact-out side by side</h3>
+                    <table class="tbl">
+                        <tr>
+                            <th></th>
+                            <th>Exact in (amountSpecified &gt; 0)</th>
+                            <th>Exact out (amountSpecified &lt; 0)</th>
+                        </tr>
+                        <tr>
+                            <td>Loop target</td>
+                            <td>consume all input</td>
+                            <td>produce the requested output</td>
+                        </tr>
+                        <tr>
+                            <td>Fee</td>
+                            <td>taken from input each step</td>
+                            <td>added on top of required input</td>
+                        </tr>
+                        <tr>
+                            <td>computeSwapStep</td>
+                            <td>moves √P by available input</td>
+                            <td>moves √P to deliver needed output</td>
+                        </tr>
+                        <tr>
+                            <td>Return</td>
+                            <td>output received</td>
+                            <td>input required</td>
+                        </tr>
+                    </table>
+
+                    <div class="summary">
+                        <span class="lbl">Summary</span>
+                        <ul>
+                            <li>The swap loop repeatedly: finds the next initialized tick (bitmap), runs
+                                <code>computeSwapStep</code> to that tick or the limit, updates amounts/fees, and
+                                crosses the tick if reached exactly.
+                            </li>
+                            <li>Crossing applies the tick's signed <code>liquidityNet</code> (negated when going down);
+                                price is continuous, active L is discrete.</li>
+                            <li>Exact-in and exact-out share the path, routed by the sign of
+                                <code>amountSpecified</code>.
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="selfcheck">
+                        <span class="lbl">Self-check</span>
+                        <ol>
+                            <li>At a range's upper boundary, which reserve is zero and what is the position made of?
+                            </li>
+                            <li>What's continuous and what's discrete as a swap crosses a tick?</li>
+                            <li>Why is a tick's <code>liquidityNet</code> negated when crossing in the
+                                <code>zeroForOne</code> direction?
+                            </li>
+                        </ol>
+                        <details>
+                            <summary>Show answers</summary>
+                            <p>1) <code>x_real = 0</code> (token0 gone); the position is 100% token1. 2) <code>√P</code>
+                                moves continuously; active liquidity <code>L</code> jumps discretely at the crossing. 3)
+                                <code>liquidityNet</code> is stored for upward crossings (price rising); going down
+                                reverses the direction of liquidity entering/leaving, so the sign flips.
+                            </p>
+                        </details>
+                    </div>
+                </section>
+                <hr class="breakLine">
+
+                <!-- ============================ MODULE 6 ============================ -->
+                <section id="m6" class="module">
+                    <h2><span class="mod-num">MODULE 06</span> Fees</h2>
+                    <p class="mod-sub">Where the fee is taken, the rigorous proof that only in-range LPs earn, protocol
+                        fees — and why there are no liquidators in an AMM.</p>
+
+                    <h3>6.1 · Accrual</h3>
+                    <p>In <code>computeSwapStep</code> the fee is skimmed from the input each step and added to
+                        <code>feeGrowthGlobalX128</code> as <code>feeAmount · 2^128 / liquidity</code> — i.e. fee
+                        <em>per unit of active liquidity</em>. So only the liquidity that was active during that step
+                        shares in it.
+                    </p>
+
+                    <h3>6.2 · In-range vs out-of-range (proved, not asserted)</h3>
+                    <p>From Module 4.3, a position's earned fee is <code>L · (f_inside,now − f_inside,last)</code>.
+                        While price is <em>outside</em> the range, <code>f_inside</code> does not change — the
+                        <code>feeGrowthOutside</code> subtraction holds the inside-accumulator flat — so the difference
+                        contributes <b>zero</b>. Therefore:
+                    </p>
+                    <ul>
+                        <li>Liquidity parked in a range where swaps happen <em>outside</em> earns <b>nothing</b> —
+                            provably, from the accumulator, not by assertion.</li>
+                        <li>When a swap occurs at a price <em>inside</em> a range, only positions whose ranges include
+                            that price are "active," and they split that step's fee <b>pro-rata by liquidity</b>
+                            (because the global accrual is per-unit-L and only their L is active).</li>
+                    </ul>
+
+                    <div class="note v2">
+                        <span class="tag">Terminology correction</span>
+                        <p>There are <b>no liquidators</b> in Uniswap V3. Liquidation is a lending-protocol concept
+                            (Aave/Compound) — there's no borrowing in a spot AMM, so nothing to liquidate. The closest
+                            analogue is <b>arbitrageurs</b>: they trade against the pool to realign its price with the
+                            broader market. They earn <em>no</em> protocol fee — their profit is the price gap they
+                            close. Arbitrage (not liquidation) is what keeps a V3 pool's price correct.</p>
+                    </div>
+
+                    <h3>6.3 · Protocol fees</h3>
+                    <p><code>setFeeProtocol</code> sets a fraction (e.g. 1/4 to 1/10) of the swap fee to divert to the
+                        protocol; it's skimmed in <code>computeSwapStep</code> before the rest goes to LPs, accumulated
+                        in <code>protocolFees</code>, and withdrawn by the owner via <code>collectProtocol</code>.</p>
+
+                    <div class="summary">
+                        <span class="lbl">Summary</span>
+                        <ul>
+                            <li>Fees accrue per unit of <em>active</em> liquidity into the global accumulator, so only
+                                in-range liquidity shares each swap.</li>
+                            <li>Out-of-range positions provably earn zero (their <code>f_inside</code> is frozen);
+                                in-range positions split fees pro-rata by L.</li>
+                            <li>No liquidators exist in an AMM — arbitrageurs (unpaid by the protocol) keep the price
+                                aligned; protocol fees are an optional skim collected by the owner.</li>
+                        </ul>
+                    </div>
+                    <div class="selfcheck">
+                        <span class="lbl">Self-check</span>
+                        <ol>
+                            <li>If swaps happen only at prices outside my range, how much do I earn — and why, from the
+                                accumulator?</li>
+                            <li>Two in-range positions have L = 1M and 3M. How is a swap's fee split?</li>
+                            <li>Why is "liquidator" the wrong word for Uniswap V3, and what's the right analogue?</li>
+                        </ol>
+                        <details>
+                            <summary>Show answers</summary>
+                            <p>1) Zero — <code>f_inside</code> doesn't advance while price is outside the range, so
+                                <code>L·Δf_inside = 0</code>. 2) 1:3 — pro-rata by liquidity (25% / 75%). 3) There's no
+                                borrowing in an AMM, so nothing to liquidate; the analogue is arbitrageurs, who realign
+                                price and profit from the gap rather than a protocol fee.
+                            </p>
+                        </details>
+                    </div>
+                </section>
+                <hr class="breakLine">
+
+                <!-- ============================ MODULE 7 ============================ -->
+                <section id="m7" class="module">
+                    <h2><span class="mod-num">MODULE 07</span> Pool lifecycle &amp; admin</h2>
+                    <p class="mod-sub">Factory CREATE2 pool creation, initialization, owner-gated functions, and why
+                        core immutability is a feature.</p>
+
+                    <h3>7.1 · Factory &amp; pool creation</h3>
+                    <p><code>UniswapV3Factory.createPool(tokenA, tokenB, fee)</code> orders the tokens
+                        (<code>token0 = lower address</code>), looks up the <code>tickSpacing</code> for that fee, and
+                        deploys via <code>CREATE2</code> with a deterministic salt:</p>
+                    <div class="codebox">
+                        <div class="dots"><i></i><i></i><i></i></div><span class="lang">solidity · UniswapV3Factory /
+                            PoolDeployer</span>
+                        <pre><code>pool = address(new UniswapV3Pool{salt: keccak256(abi.encode(token0, token1, fee))}());</code></pre>
+                    </div>
+                    <p>Deterministic addresses let anyone compute a pool's address off-chain from
+                        <code>(token0, token1, fee)</code> without a registry lookup.
+                        <code>enableFeeAmount(fee, tickSpacing)</code> adds new fee/spacing tiers (owner-only).
+                    </p>
+
+                    <h3>7.2 · Initialization</h3>
+                    <p><code>initialize(sqrtPriceX96)</code> sets the starting price and tick once; a pool must be
+                        initialized before any mint or swap. This bootstraps <code>slot0</code> (the packed current
+                        price, tick, and oracle state).</p>
+
+                    <h3>7.3 · Admin / immutability</h3>
+                    <p>Owner-gated: <code>setFeeProtocol</code>, <code>collectProtocol</code>, and factory
+                        <code>setOwner</code>. Critically, <b>core is immutable</b> — there is no admin who can move
+                        user funds, pause the pool, or change the math. The only owner powers are the protocol-fee
+                        switch and collecting already-accrued protocol fees. Immutability is the feature: users get a
+                        permanent guarantee the rules can't change under them.
+                    </p>
+
+                    <div class="summary">
+                        <span class="lbl">Summary</span>
+                        <ul>
+                            <li>Pools are CREATE2-deployed with salt <code>(token0, token1, fee)</code>, giving
+                                deterministic, registry-free addresses.</li>
+                            <li><code>initialize</code> sets the starting <code>sqrtPriceX96</code> once before any
+                                liquidity or swaps.</li>
+                            <li>Core is immutable; the owner can only toggle/collect protocol fees — never touch user
+                                funds or the math.</li>
+                        </ul>
+                    </div>
+                    <div class="selfcheck">
+                        <span class="lbl">Self-check</span>
+                        <ol>
+                            <li>What goes into the CREATE2 salt, and why does determinism help?</li>
+                            <li>What must happen before a pool accepts liquidity?</li>
+                            <li>Name the only things a pool owner can do — and what they cannot.</li>
+                        </ol>
+                        <details>
+                            <summary>Show answers</summary>
+                            <p>1) <code>(token0, token1, fee)</code>; addresses are computable off-chain without a
+                                lookup, simplifying integrations. 2) <code>initialize(sqrtPriceX96)</code> must set the
+                                starting price/tick. 3) Owner can set/collect protocol fees and (factory) transfer
+                                ownership; it cannot move user funds, pause, or alter the math.</p>
+                        </details>
+                    </div>
+                </section>
+                <hr class="breakLine">
+
+                <!-- ============================ MODULE 8 ============================ -->
+                <section id="m8" class="module">
+                    <h2><span class="mod-num">MODULE 08</span> The price oracle (TWAP)</h2>
+                    <p class="mod-sub">The observation ring buffer, the tick accumulator, computing a TWAP, and why it
+                        uses the log-price.</p>
+
+                    <h3>8.1 · Observations</h3>
+                    <p>Each pool keeps a ring buffer of <code>Observation</code>s: a timestamp, a <b>tick
+                            accumulator</b> (cumulative sum of the current tick × seconds), a cumulative
+                        <code>1/liquidity</code>, and an init flag. <code>observe(secondsAgos[])</code> interpolates
+                        between stored observations to return accumulators at past times.
+                    </p>
+
+                    <h3>8.2 · The tick accumulator &amp; TWAP</h3>
+                    <div class="formula">
+                        <span class="lbl">time-weighted average tick</span>
+                        <div data-katex>\text{tickCumulative}(t) = \int_0^t \text{tick}(\tau)\,d\tau, \qquad
+                            \bar{i}_{[t_1,t_2]} = \dfrac{\text{tickCumulative}(t_2) - \text{tickCumulative}(t_1)}{t_2 -
+                            t_1}</div>
+                    </div>
+                    <p>Two observations give the average tick over the window by a simple difference-over-time. Convert
+                        back to a price with <code>P = 1.0001^{\bar i}</code>.</p>
+                    <div class="example">
+                        <span class="lbl">Worked example — 30-minute TWAP</span>
+                        <p>If <code>tickCumulative</code> rose by <code>3,600,000</code> over <code>1,800</code>
+                            seconds: <code>avg tick = 3,600,000 / 1,800 = 2,000</code> →
+                            <code>P = 1.0001^{2000} ≈ 1.2214</code> (token1 per token0).
+                        </p>
+                    </div>
+
+                    <h3>8.3 · Why log-price, why it exists</h3>
+                    <p>Averaging the <em>tick</em> (log price) rather than the price means the TWAP is a geometric mean
+                        — robust to asymmetric spikes and cheap to accumulate (just add <code>tick × Δt</code>).
+                        On-chain TWAP exists so other protocols can read a <b>manipulation-resistant</b> price: moving a
+                        TWAP requires sustaining a manipulated price across time (and paying arbitrage), not just a
+                        single-block push. Its limitation: it lags, and very short windows are cheaper to manipulate.
+                    </p>
+
+                    <div class="summary">
+                        <span class="lbl">Summary</span>
+                        <ul>
+                            <li>A ring buffer of observations stores a cumulative tick accumulator; <code>observe</code>
+                                interpolates past values.</li>
+                            <li>TWAP tick = Δ accumulator / Δ time; convert via <code>P = 1.0001^tick</code>.</li>
+                            <li>Using log-price gives a geometric mean and cheap accumulation; the TWAP resists
+                                single-block manipulation but lags.</li>
+                        </ul>
+                    </div>
+                    <div class="selfcheck">
+                        <span class="lbl">Self-check</span>
+                        <ol>
+                            <li>How do you get an average tick over a window from two observations?</li>
+                            <li>Why average the tick rather than the price directly?</li>
+                            <li>Why is a TWAP harder to manipulate than a spot price, and what's the cost of that
+                                robustness?</li>
+                        </ol>
+                        <details>
+                            <summary>Show answers</summary>
+                            <p>1) <code>(tickCumulative(t2) − tickCumulative(t1)) / (t2 − t1)</code>. 2) It yields a
+                                geometric mean (robust to asymmetric spikes) and accumulates cheaply as
+                                <code>tick·Δt</code>. 3) Moving it requires holding a manipulated price across many
+                                blocks against arbitrage, not one push; the cost is that the TWAP lags the true price
+                                and short windows are weaker.
+                            </p>
+                        </details>
+                    </div>
+                </section>
+                <hr class="breakLine">
+
+                <!-- ============================ MODULE 9 ============================ -->
+                <section id="m9" class="module">
+                    <h2><span class="mod-num">MODULE 09</span> Building your own DEX</h2>
+                    <p class="mod-sub">A build order, the correctness pitfalls and how to test them, what to reuse vs
+                        re-derive, non-EVM porting, and invariant tests.</p>
+
+                    <h3>9.1 · Recommended build order</h3>
+                    <ol>
+                        <li><b>Fixed-point + math libs</b> (Modules 1, 3.4): <code>FullMath.mulDiv</code>,
+                            <code>TickMath</code>, <code>SqrtPriceMath</code>. Get these bit-exact first.
+                        </li>
+                        <li><b>Ticks + bitmap</b> (Module 2): <code>Tick.update/cross</code>,
+                            <code>TickBitmap.flipTick/nextInitializedTickWithinOneWord</code>.
+                        </li>
+                        <li><b>Positions + fee growth</b> (Module 4): the accumulator accounting.</li>
+                        <li><b>mint/burn/collect</b> with callbacks.</li>
+                        <li><b>The swap loop</b> (Module 5) — last and slowest; it composes everything above.</li>
+                        <li><b>Oracle</b> (Module 8) and <b>factory/init</b> (Module 7).</li>
+                    </ol>
+
+                    <h3>9.2 · Top correctness pitfalls &amp; how to test</h3>
+                    <table class="tbl">
+                        <tr>
+                            <th>Pitfall</th>
+                            <th>Test</th>
+                        </tr>
+                        <tr>
+                            <td>Rounding direction (pay-in up, pay-out down)</td>
+                            <td>Fuzz swaps; assert pool balance never decreases below the invariant after a round trip
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>token0/token1 ordering</td>
+                            <td>Property test: <code>token0 &lt; token1</code> always; price interpreted as
+                                token1/token0</td>
+                        </tr>
+                        <tr>
+                            <td>Bitmap edge at word boundaries</td>
+                            <td>Initialize ticks straddling a 256-multiple; assert next-tick search crosses words
+                                correctly</td>
+                        </tr>
+                        <tr>
+                            <td>Price-limit clamp</td>
+                            <td>Swap with a limit mid-range; assert <code>√P</code> stops exactly at the limit</td>
+                        </tr>
+                        <tr>
+                            <td><code>liquidityNet</code> sign</td>
+                            <td>Mint a position, swap across both bounds, assert active L returns to baseline</td>
+                        </tr>
+                        <tr>
+                            <td>Fixed-point overflow</td>
+                            <td>Use <code>FullMath.mulDiv</code> (512-bit intermediate); fuzz with max <code>uint</code>
+                                inputs</td>
+                        </tr>
+                    </table>
+
+                    <h3>9.3 · Reuse vs re-derive</h3>
+                    <p><b>Reuse</b> the battle-tested libs: <code>TickMath</code>, <code>SqrtPriceMath</code>,
+                        <code>FullMath</code>. <code>FullMath.mulDiv(a, b, denominator)</code> computes
+                        <code>a·b/denominator</code> at full <b>512-bit</b> precision — it splits the 512-bit product
+                        across two words and does long division, so <code>a·b</code> can exceed <code>2^256</code>
+                        without overflow. Re-deriving this from scratch is the most common source of value-leaking bugs,
+                        so reuse it.
+                    </p>
+
+                    <h3>9.4 · Non-EVM porting (conceptual)</h3>
+                    <ul>
+                        <li><b>Account model</b>: on Solana there's no contract storage of <code>mapping</code>s —
+                            ticks/positions become program-derived accounts (PDAs); the bitmap becomes a set of
+                            fixed-size accounts.</li>
+                        <li><b>Compute budget</b>: the swap loop must bound tick crossings per transaction; a long
+                            crossing run can exceed the compute limit.</li>
+                        <li><b>Fixed-point libs</b>: no native 256-bit mulDiv — you implement the 512-bit trick or use
+                            <code>u128</code> with care.
+                        </li>
+                        <li><b>No callbacks</b>: the EVM mint/swap callback pattern is replaced by pre-funded
+                            transfers/CPI ordering.</li>
+                    </ul>
+
+                    <h3>9.5 · Minimal invariant tests</h3>
+                    <ul>
+                        <li><b>Reserve conservation</b>: sum of all positions' real reserves at the current price ≈ pool
+                            token balances (minus fees/protocol fees).</li>
+                        <li><b>Liquidity conservation</b>: a swap that doesn't cross a tick leaves active <code>L</code>
+                            unchanged.</li>
+                        <li><b>Fee-growth monotonicity</b>: <code>feeGrowthGlobal</code> never decreases.</li>
+                        <li><b>No-arb round trip</b>: swap <code>A→B→A</code> returns ≤ the input (fees make it strictly
+                            less) — never more.</li>
+                        <li><b>Tick consistency</b>: <code>getTickAtSqrtRatio(getSqrtRatioAtTick(i)) == i</code> for all
+                            valid <code>i</code>.</li>
+                    </ul>
+
+                    <div class="summary">
+                        <span class="lbl">Summary</span>
+                        <ul>
+                            <li>Build bottom-up: math libs → ticks/bitmap → positions/fees → mint/burn → swap loop →
+                                oracle/factory.</li>
+                            <li>Reuse <code>TickMath</code>/<code>SqrtPriceMath</code>/<code>FullMath</code> (the
+                                512-bit <code>mulDiv</code>); re-derive only what you must, and fuzz the
+                                rounding/ordering/bitmap edges.</li>
+                            <li>Porting off-EVM mainly reshapes storage (accounts/PDAs), bounds the swap loop to the
+                                compute budget, and replaces callbacks.</li>
+                        </ul>
+                    </div>
+                    <div class="selfcheck">
+                        <span class="lbl">Self-check</span>
+                        <ol>
+                            <li>Why build the swap loop last?</li>
+                            <li>What does <code>FullMath.mulDiv</code> protect against, and how?</li>
+                            <li>Give one invariant test that would immediately catch a <code>liquidityNet</code> sign
+                                error.</li>
+                        </ol>
+                        <details>
+                            <summary>Show answers</summary>
+                            <p>1) It composes every other component (ticks, bitmap, deltas, fees), so they must be
+                                correct first. 2) Intermediate overflow of <code>a·b</code> beyond 2^256 — it carries a
+                                512-bit product across two words and long-divides. 3) Mint a position, swap across both
+                                its bounds and back; active liquidity must return to its starting value — a sign error
+                                leaves it wrong.</p>
+                        </details>
+                    </div>
+                </section>
+
+                <hr class="breakLine">
+
+                <!-- ============================ REFERENCES ============================ -->
+                <section id="refs" class="refs reveal">
+                    <h2 style="font-family:var(--display);font-size:1.9rem;color:var(--bone);margin-bottom:1rem">
+                        References</h2>
+                    <ul>
+                        <li><a href="https://github.com/Uniswap/v3-core" target="_blank">Uniswap/v3-core</a> —
+                            <code>UniswapV3Pool.sol</code>, <code>UniswapV3Factory.sol</code>; libraries
+                            <code>TickMath</code>, <code>SqrtPriceMath</code>, <code>SwapMath</code>, <code>Tick</code>,
+                            <code>TickBitmap</code>, <code>Position</code>, <code>Oracle</code>, <code>FullMath</code>.
+                        </li>
+                        <li><a href="https://github.com/Uniswap/v3-periphery" target="_blank">Uniswap/v3-periphery</a> —
+                            <code>NonfungiblePositionManager.sol</code>, <code>SwapRouter.sol</code>.
+                        </li>
+                        <li><a href="https://uniswap.org/whitepaper-v3.pdf" target="_blank">Uniswap V3 Core
+                                whitepaper</a> — the canonical derivations.</li>
+                        <li>RareSkills V3 series — concentrated liquidity, ticks, Q number format, sqrtPriceX96, tick
+                            limits, tick spacing, getSqrtRatioAtTick, virtual/real reserves, getAmountDelta, positions.
+                        </li>
+                    </ul>
+                    <p style="margin-top:1.2rem;font-size:0.86rem;color:var(--ash-dim)">Code excerpts are abbreviated
+                        for teaching; always cross-check against the canonical <code>v3-core</code> source before
+                        relying on exact lines in your own implementation.</p>
+                </section>
+
+
             </div>
-
-            <!-- Calculating liquidity -->
-            <!--  CONCENTRATED LIQUIDITY -->
-            <!-- Range Orders -->
-            <!-- Multiple Pools Per Pair -->
-            <!-- Non-Fungible Liquidity -->
-            <!-- GOVERNANCE -->
-            <!-- ORACLE UPGRADES -->
-            <!-- swap and flash loan fee -->
-
         </div>
 
-        <!-- References -->
-        <div class="container">
-            <br>
-            <h3>>> Reference</h3>
-            <ul>
-                <li>
-                    <a href="https://docs.uniswap.org/contracts/v3/overview" target="_blank">Uniswap V3 Overview</a>
-                </li>
-                <li>
-                    <a href="https://uniswap.org/whitepaper-v3.pdf" target="_blank">Uniswap-V3 whitepaper</a>
-                </li>
-                <li>
-                    <a href="https://www.youtube.com/playlist?list=PLO5VPQH6OWdXp2_Nk8U7V-zh7suI05i0E"
-                        target="_blank">Smart contract programmer Uniswap-V3</a>
-                </li>
-                <li>
-                    <a href="https://atiselsts.github.io/pdfs/uniswap-v3-liquidity-math.pdf"
-                        target="_blank">uniswap-v3-liquidity-math</a>
-                </li>
-                <li>
-                    <a href="https://uniswapv3book.com/" target="_blank">Uniswap-V3 Book</a>
-                </li>
-            </ul>
-        </div>
-
-        <!-- Footer -->
-        <footer id="footer">
-            <div class="container">
-                <div class="copyright">
-                    <strong><span>Fund Me</span></strong>
-                </div>
-                <div class="credits">
-                    <a href="#" style="font-size: 10px;">0xd0509B83468409A75De2771C1Ae7bE1026A69927</a>
-                </div>
-            </div>
+        <footer class="foot">
+            <span>© 2026 Rama Chandra Reddy · Field Notes</span>
+            <span>Code cited from <a href="https://github.com/Uniswap/v3-core" target="_blank">Uniswap/v3-core</a> &amp;
+                <a href="https://github.com/Uniswap/v3-periphery" target="_blank">v3-periphery</a></span>
         </footer>
+    </main>
 
-        <!-- Scripts imports -->
-        <div>
-            <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
-                    class="bi bi-arrow-up-short"></i></a>
+    <button class="top" id="top" aria-label="Back to top">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <line x1="12" y1="19" x2="12" y2="5" />
+            <polyline points="5 12 12 5 19 12" />
+        </svg>
+    </button>
 
-            <!-- Vendor JS Files -->
-            <script src="../assets/vendor/purecounter/purecounter_vanilla.js"></script>
-            <script src="../assets/vendor/aos/aos.js"></script>
-            <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-            <script src="../assets/vendor/glightbox/js/glightbox.min.js"></script>
-            <script src="../assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
-            <script src="../assets/vendor/swiper/swiper-bundle.min.js"></script>
-            <script src="../assets/vendor/typed.js/typed.umd.js"></script>
-            <script src="../assets/vendor/waypoints/noframework.waypoints.js"></script>
-            <script src="../assets/vendor/php-email-form/validate.js"></script>
+    <script>
+        /* ============================ KaTeX (guarded, non-hanging) ============================ */
+        var _kt = 0;
+        function renderMath() {
+            if (!window.katex) { if (_kt++ < 60) setTimeout(renderMath, 100); return; }
+            document.querySelectorAll('[data-katex]').forEach(function (el) {
+                if (el.getAttribute('data-rendered')) return;
+                try { katex.render(el.textContent.trim(), el, { throwOnError: false, displayMode: true }); el.setAttribute('data-rendered', '1'); }
+                catch (e) { }
+            });
+        }
+        renderMath();
 
-            <!-- Template Main JS File -->
-            <script src="../assets/js/main.js"></script>
-        </div>
+        /* ============================ code highlighter ============================ */
+        // (function () {
+        //     var KW = new RegExp("\\b(pragma|solidity|contract|interface|library|struct|function|external|internal|public|private|view|pure|payable|returns|return|require|revert|if|else|for|while|mapping|address|uint|uint8|uint16|uint24|uint128|uint160|uint256|int24|int128|int256|bool|bytes|bytes32|memory|storage|calldata|immutable|constant|emit|event|assembly|new|keccak256|abi|type|this)\\b", "g");
+        //     function esc(s) { return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
+        //     function highlight(raw) {
+        //         var out = "", i = 0, n = raw.length;
+        //         while (i < n) {
+        //             var c = raw[i], c2 = raw[i + 1];
+        //             if (c === "/" && c2 === "/") { var j = raw.indexOf("\n", i); if (j < 0) j = n; out += '<span class="tok-com">' + esc(raw.slice(i, j)) + '</span>'; i = j; continue; }
+        //             if (c === '"' || c === "'") { var k = i + 1; while (k < n && raw[k] !== c) { if (raw[k] === "\\") k++; k++; } k++; out += '<span class="tok-str">' + esc(raw.slice(i, Math.min(k, n))) + '</span>'; i = k; continue; }
+        //             var j2 = i; while (j2 < n && raw[j2] !== "/" && raw[j2] !== '"' && raw[j2] !== "'") j2++;
+        //             var seg = esc(raw.slice(i, j2));
+        //             seg = seg.replace(/\b(0x[0-9a-fA-F]+|\d[\d_]*(?:\.\d+)?(?:e\d+)?)\b/g, '<span class="tok-num">$1</span>');
+        //             seg = seg.replace(KW, '<span class="tok-kw">$1</span>');
+        //             out += seg; i = j2;
+        //         }
+        //         return out;
+        //     }
+        //     document.querySelectorAll('.codebox pre code').forEach(function (code) {
+        //         code.innerHTML = highlight(code.textContent);
+        //         var box = code.closest('.codebox');
+        //         if (box && !box.querySelector('.copy')) {
+        //             var btn = document.createElement('button'); btn.className = 'copy'; btn.textContent = 'copy';
+        //             btn.addEventListener('click', function () {
+        //                 navigator.clipboard.writeText(code.textContent).then(function () {
+        //                     btn.textContent = 'copied'; btn.classList.add('copied');
+        //                     setTimeout(function () { btn.textContent = 'copy'; btn.classList.remove('copied'); }, 1400);
+        //                 });
+        //             });
+        //             box.appendChild(btn);
+        //         }
+        //     });
+        // })();
+
+        function $(id) { return document.getElementById(id); }
+        function fmt(n, d) { d = d == null ? 2 : d; return n.toLocaleString(undefined, { maximumFractionDigits: d, minimumFractionDigits: 0 }); }
+
+        /* ============================ Desmos: capital efficiency (M0) ============================ */
+        (function () {
+            var elt = $('effGraph'); if (!elt || !window.Desmos) return;
+            var calc = Desmos.GraphingCalculator(elt, { expressions: false, settingsMenu: false, keypad: false, border: false });
+            function v(id) { return parseFloat($(id).value); }
+            function update() {
+                var P = v('eP'), Pa = Math.min(v('ePa'), P - 1), Pb = Math.max(v('ePb'), P + 1);
+                $('ePO').textContent = fmt(P, 0); $('ePaO').textContent = fmt(Pa, 0); $('ePbO').textContent = fmt(Pb, 0);
+                // E(w) as range half-width fraction w shrinks: Pa=P(1-w), Pb=P(1+w)
+                calc.setMathBounds({ left: 0, right: 0.6, bottom: 0, top: 60 });
+                calc.setExpression({ id: 'e', latex: 'E(w)=\\frac{1}{1-\\left(\\frac{1-w}{1+w}\\right)^{0.25}}\\left\\{0.01\\le w\\le0.6\\right\\}', color: Desmos.Colors.PURPLE, lineWidth: 3 });
+                var ratio = Pa / Pb, E = 1 / (1 - Math.pow(ratio, 0.25));
+                var wNow = (Pb - Pa) / (Pb + Pa);
+                calc.setExpression({ id: 'pt', latex: '(' + wNow.toFixed(4) + ',' + Math.min(E, 60).toFixed(2) + ')', color: Desmos.Colors.GREEN, pointSize: 12 });
+                $('effO').textContent = E.toFixed(1) + '×'; $('ratioO').textContent = ratio.toFixed(4);
+            }
+            ['eP', 'ePa', 'ePb'].forEach(function (id) { $(id).addEventListener('input', update); });
+            update();
+        })();
+
+        /* ============================ Desmos: position reserves (M3) ============================ */
+        (function () {
+            var elt = $('reservesGraph'); if (!elt || !window.Desmos) return;
+            var calc = Desmos.GraphingCalculator(elt, { expressions: false, settingsMenu: false, keypad: false, border: false });
+            function v(id) { return parseFloat($(id).value); }
+            function update() {
+                var P = v('rP'), Pa = Math.min(v('rPa'), v('rPb') - 25), Pb = Math.max(v('rPb'), Pa + 25), L = v('rL');
+                $('rPO').textContent = fmt(P, 0); $('rPaO').textContent = fmt(Pa, 0); $('rPbO').textContent = fmt(Pb, 0); $('rLO').textContent = L;
+                calc.setMathBounds({ left: Math.max(0, Pa - 600), right: Pb + 600, bottom: -L * 0.05, top: L / Math.sqrt(Pa) * 1.2 });
+                // token0 reserves: in-range L(1/√P − 1/√Pb), below = const, above = 0
+                calc.setExpression({ id: 'pa', latex: 'a=' + Pa }); calc.setExpression({ id: 'pb', latex: 'b=' + Pb }); calc.setExpression({ id: 'L', latex: 'L=' + L });
+                calc.setExpression({ id: 'x0', latex: 'X(p)=\\left\\{p\\le a:L\\left(\\frac{1}{\\sqrt{a}}-\\frac{1}{\\sqrt{b}}\\right),p\\ge b:0,L\\left(\\frac{1}{\\sqrt{p}}-\\frac{1}{\\sqrt{b}}\\right)\\right\\}', color: Desmos.Colors.PURPLE, lineWidth: 3 });
+                calc.setExpression({ id: 'y0', latex: 'Y(p)=\\left\\{p\\le a:0,p\\ge b:L\\left(\\sqrt{b}-\\sqrt{a}\\right),L\\left(\\sqrt{p}-\\sqrt{a}\\right)\\right\\}', color: Desmos.Colors.GREEN, lineWidth: 3 });
+                calc.setExpression({ id: 'pl', latex: 'x=' + P, color: '#E9B8FF', lineStyle: Desmos.Styles.DASHED, lineWidth: 1.5 });
+                var x0 = P <= Pa ? L * (1 / Math.sqrt(Pa) - 1 / Math.sqrt(Pb)) : (P >= Pb ? 0 : L * (1 / Math.sqrt(P) - 1 / Math.sqrt(Pb)));
+                var y0 = P <= Pa ? 0 : (P >= Pb ? L * (Math.sqrt(Pb) - Math.sqrt(Pa)) : L * (Math.sqrt(P) - Math.sqrt(Pa)));
+                $('x0O').textContent = fmt(x0); $('y0O').textContent = fmt(y0);
+                $('regO').textContent = P <= Pa ? 'below (all token0)' : (P >= Pb ? 'above (all token1)' : 'in range (mix)');
+            }
+            ['rP', 'rPa', 'rPb', 'rL'].forEach(function (id) { $(id).addEventListener('input', update); });
+            update();
+        })();
+
+        /* ============================ canvas: active liquidity steps (M5) ============================ */
+        function renderLiq() {
+            var c = $('liqCanvas'); if (!c) return;
+            var ct = parseFloat($('ct').value);
+            // three positions: [lo, hi, L]
+            var pos = [[-400, 200, 800], [-100, 400, 1200], [100, 500, 600]];
+            var ctx = c.getContext('2d'), r = c.parentElement.getBoundingClientRect();
+            var dpr = window.devicePixelRatio || 1, W = Math.max(r.width, 50), H = Math.max(r.height, 50);
+            c.width = W * dpr; c.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, H);
+            var pad = { l: 46, r: 14, t: 16, b: 28 }, minT = -600, maxT = 600;
+            function X(t) { return pad.l + (t - minT) / (maxT - minT) * (W - pad.l - pad.r); }
+            // active liquidity at current tick
+            var activeL = 0, inRange = 0;
+            pos.forEach(function (p) { if (ct >= p[0] && ct < p[1]) { activeL += p[2]; inRange++; } });
+            var maxL = 2600;
+            function Y(l) { return H - pad.b - l / maxL * (H - pad.t - pad.b - 60); }
+            // grid
+            ctx.strokeStyle = 'rgba(255,255,255,0.07)'; ctx.lineWidth = 1; ctx.fillStyle = '#6E6C7A'; ctx.font = '10px JetBrains Mono, monospace';
+            for (var g = 0; g <= 4; g++) { var t = minT + (maxT - minT) * g / 4; ctx.beginPath(); ctx.moveTo(X(t), pad.t); ctx.lineTo(X(t), H - pad.b); ctx.stroke(); ctx.textAlign = 'center'; ctx.fillText(t, X(t), H - 10); }
+            // position range bars
+            var colors = ['#6D5BFF', '#B078FF', '#E9B8FF'];
+            pos.forEach(function (p, i) {
+                var y = pad.t + 6 + i * 16;
+                ctx.strokeStyle = colors[i]; ctx.lineWidth = 5; ctx.beginPath(); ctx.moveTo(X(p[0]), y); ctx.lineTo(X(p[1]), y); ctx.stroke();
+                ctx.fillStyle = colors[i]; ctx.textAlign = 'left'; ctx.fillText('L=' + p[2], X(p[1]) + 6, y + 3);
+            });
+            // stepped active-liquidity curve across all ticks
+            var edges = []; pos.forEach(function (p) { edges.push(p[0], p[1]); }); edges.push(minT, maxT);
+            edges = edges.filter(function (v, idx, a) { return a.indexOf(v) === idx; }).sort(function (a, b) { return a - b; });
+            ctx.strokeStyle = '#B078FF'; ctx.lineWidth = 2.5; ctx.beginPath();
+            for (var e = 0; e < edges.length - 1; e++) {
+                var midL = 0, t0 = edges[e], t1 = edges[e + 1], mid = (t0 + t1) / 2;
+                pos.forEach(function (p) { if (mid >= p[0] && mid < p[1]) midL += p[2]; });
+                ctx.moveTo(X(t0), Y(midL)); ctx.lineTo(X(t1), Y(midL));
+                if (e < edges.length - 2) {
+                    var nextL = 0, nmid = (edges[e + 1] + edges[e + 2]) / 2;
+                    pos.forEach(function (p) { if (nmid >= p[0] && nmid < p[1]) nextL += p[2]; });
+                    ctx.moveTo(X(t1), Y(midL)); ctx.lineTo(X(t1), Y(nextL));
+                }
+            }
+            ctx.stroke();
+            // current tick line
+            ctx.strokeStyle = '#6FE7B0'; ctx.lineWidth = 2; ctx.setLineDash([5, 4]); ctx.beginPath(); ctx.moveTo(X(ct), pad.t); ctx.lineTo(X(ct), H - pad.b); ctx.stroke(); ctx.setLineDash([]);
+            $('ctO').textContent = ct; $('alO').textContent = activeL; $('pirO').textContent = inRange;
+        }
+        var liqEl = $('ct'); if (liqEl) liqEl.addEventListener('input', renderLiq);
+
+        function initCanvases() { renderLiq(); }
+        if ('ResizeObserver' in window) {
+            var ro = new ResizeObserver(function () { requestAnimationFrame(initCanvases); });
+            document.querySelectorAll('.cwrap').forEach(function (w) { ro.observe(w); });
+        }
+        requestAnimationFrame(function () { requestAnimationFrame(initCanvases); });
+        window.addEventListener('load', function () { requestAnimationFrame(initCanvases); renderMath(); });
+
+        /* ============================ sidebar / scrollspy / UI ============================ */
+        (function () {
+            var rail = $('rail'), toggle = $('railToggle'), scrim = $('scrim');
+            function closeRail() { rail.classList.remove('open'); toggle.classList.remove('open'); scrim.classList.remove('show'); }
+            toggle.addEventListener('click', function () { var o = rail.classList.toggle('open'); toggle.classList.toggle('open', o); scrim.classList.toggle('show', o); });
+            scrim.addEventListener('click', closeRail);
+            var navA = Array.prototype.slice.call(document.querySelectorAll('#railNav a'));
+            navA.forEach(function (a) { a.addEventListener('click', function () { if (window.innerWidth <= 1100) closeRail(); }); });
+            var sections = navA.map(function (a) { return document.querySelector(a.getAttribute('href')); }).filter(Boolean);
+            var spy = new IntersectionObserver(function (entries) {
+                entries.forEach(function (e) { if (e.isIntersecting) { var id = '#' + e.target.id; navA.forEach(function (a) { a.classList.toggle('active', a.getAttribute('href') === id); }); } });
+            }, { rootMargin: '-20% 0px -70% 0px' });
+            sections.forEach(function (s) { spy.observe(s); });
+            var rev = new IntersectionObserver(function (entries) { entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); rev.unobserve(e.target); } }); }, { rootMargin: '0px 0px -10% 0px' });
+            document.querySelectorAll('.module, .reveal').forEach(function (el) { el.classList.add('reveal'); rev.observe(el); });
+            var search = $('railSearch');
+            search.addEventListener('input', function () { var q = search.value.toLowerCase(); navA.forEach(function (a) { a.classList.toggle('hide', q && a.textContent.toLowerCase().indexOf(q) < 0); }); });
+            var progress = $('progress'), top = $('top');
+            function onScroll() { var h = document.documentElement, sc = h.scrollTop, max = h.scrollHeight - h.clientHeight; progress.style.transform = 'scaleX(' + (max > 0 ? sc / max : 0) + ')'; top.classList.toggle('show', sc > 600); }
+            window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
+            top.addEventListener('click', function () { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+        })();
+    </script>
+
 </body>
 
 </html>
